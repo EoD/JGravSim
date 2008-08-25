@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<language id="49" maxid="520" maxbuffer="30000">
+	<text id="0">Simulator für speziell-relativistisch bewegte Massen im Newtonschen Gravitationsfeld</text>
+
+	<!-- text id="1">Sonstiges</text -->
+	<text id="5">in</text><!-- geschwindigkeit "in" m/s -->
+	<text id="6">„∞“</text>
+	<text id="7">Licht</text>
+	<text id="8">Klicken Sie hier, um ein Objekt hinzuzufügen!</text>
+	<text id="9">Massenpunkt</text>
+	<text id="10">Kontrollelemente</text>
+	<text id="101">Vergrößerung</text>
+	<text id="102">Rastergröße</text>
+	<text id="103">Rasterfarbe</text>
+	<text id="104">v-Vektor Farbe</text>
+	<text id="105">Verschiebung zurücksetzen</text>
+	<text id="106">Schwarzes Loch</text>
+	<text id="107">Einheit</text>
+	<text id="108">Schwarzschild-Radius</text>
+	<!-- text id="11">Ansichten</text -->
+	<text id="111">Oben</text>
+	<text id="112">Vorne</text>
+	<text id="113">Rechts</text>
+	<text id="199">In Arbeit!</text>
+	<text id="149">in Zeile %1d</text>
+	<text id="150">Fehler während dem Einlesen der Datei </text>
+	<text id="151">Unerwarteter Dateianfang.</text>
+	<text id="152">Unerwarteter Fehler beim Einlesen.</text>
+	<text id="153">Die Anzahl der Schritte scheint fehlerhaft.</text>
+	<text id="154">Die Anzahl der Massenpunkte scheint fehlerhaft.</text>
+	<text id="155">Datei nicht gefunden</text>
+	<text id="156">Lesefehler</text>
+	<text id="157">Fehler beim Einlesen der Datei</text>
+	<text id="158">Fehlerhafte Datei</text>
+	<text id="159">Eingabefehler</text>
+	<text id="160">Die Berechnung wurde aufgrund eines internen Fehlers abgebrochen.</text>
+	<text id="161">Der Computer schaffte es nicht die Berechnung genau genug</text>
+	<text id="162">zu machen, um unterhalb der Lichtgeschwindigkeit zu bleiben</text>
+	<text id="163">Ein Massenpunkt überschritt den Rand des Koordinatensystems.</text>
+	<text id="164">Ein Massenpunkt wurde schneller als das Licht.</text>
+	<text id="165">Zwei Objekte kamen sich naeher als deren doppelter Schwarzschild-Radius.</text>
+	<text id="166">Die Berechnung wurde ungenau.</text>
+	<text id="167">Die Berechnung wurde abgebrochen.</text>
+	<text id="168">Die Berechnung wurde erfolgreich beendet. Sie sehen nun den Stand\nam Ende der Berechnung. Wechseln sie nun in den Darstellungs-Tab um die Bewegung zu betrachten.</text>
+	<text id="169">Die Berechnung wurde beendet.\nWechseln sie nun in den Darstellungs-Tab\num die Bewegung zu betrachten.</text>
+	<text id="170">Beendet</text>
+	<text id="171">Erfolgreich</text>
+	<text id="172">Abgebrochen</text>
+	<text id="173">Warnung</text>
+	<text id="174">Die zu speichernde Datei is so groß, dass in der Visualisierung\nimmer nur 1/%1d der Datei eingeladen werden kann.Fortfahren?</text>
+	<text id="175">Es können nicht alle Punkte angezeigt werden, da nicht die ganze Datei eingeladen wurde.\nEs werden nur Frame %1d bis %2d angezeigt.</text>
+
+	<text id="2">Berechnung</text>
+	<!-- text id="20">Buttons</text -->
+	<text id="201">Zurücksetzen</text>
+	<text id="202">Berechnung starten</text>
+	<text id="203">Stop</text>
+	<text id="204">Berechnung speichern</text>
+	<text id="205">Datensatz laden</text>
+	<text id="206">Entfernen</text>
+	<text id="207">Werte bearbeiten</text>
+	<text id="208">Werte speichern</text>
+	<text id="209">Einige der Eingaben waren fehlerhaft. Die fehlerhaften Eingaben wurde rot markiert.</text>
+	<text id="210">Was soll zurueckgesetzt werden?</text>
+	<text id="211">Alles zurücksetzen</text>
+	<text id="212">Berechnung zurücksetzen</text>
+	<text id="213">Abbrechen</text>
+	<text id="214">Speichern</text>
+	<text id="215">Löschen</text>
+	<text id="216">Die Berechnung wurde in der Datei "%1s" gespeichert</text>
+	<text id="217">Wollen sie den Massenpunkt %1d entfernen?</text>
+	<text id="218">Zeige Geschwindigkeitsvektor</text>
+	<text id="219">Zeige Massenpunkt-IDs</text>
+	<text id="220">Optionen zur Berechnung</text>
+	<text id="221">Wie lange soll voraus berechnet werden? (Größere Werte, längere Berechnung)</text>
+	<text id="222">In welchen Zeitabstaenden soll die Berechnung gespeichert werden? (Größere Werte, größere Ausgabedatei)</text>
+	<text id="223">Mit welchen Zeitabständen soll gerechnet werden? (Kleine Werte, längere Berechnung)</text>
+	<text id="224">Benutze neue C/C++-Berechnung (nicht empfohlen)</text>
+	<text id="225">Die Version des Backends (v%1d) stimmt nicht mit der erwarteteten Version (v%2d) überein. Wollen sie fortfahren?</text>
+	<text id="226">Startwerte eines neuen Massenpunktes</text>
+	<text id="227">Hinzufügen</text>
+	<text id="228">Geschwindigkeitsvektor</text>
+	<text id="229">für Obj#</text>
+		
+	<text id="230">%1s in %2s</text>
+	<text id="231">%1s in %2s/%3s</text>
+	<text id="232">Polarwinkel</text>
+	<text id="233">Azimutwinkel</text>
+	
+	<text id="24">Daten</text>
+	<text id="240">Massepunkte</text>
+	<text id="241">Koordi.</text>
+	<text id="242">Geschw.</text>
+	<text id="243">v-Betrag</text>
+	<text id="244">feste Dichte</text>
+	<text id="245">Dichte</text>
+	<text id="246">Masse</text>
+	<text id="247">Radius</text>
+	<text id="248">Ge. Richtung</text>
+	<text id="250">Einfach</text>
+	<text id="251">Erweitert</text>
+	<text id="252">Infos</text>
+	<text id="253">Klonen</text>
+
+   	<text id="3">Darstellung</text>
+   	<text id="30">Steuerung</text>
+   	<text id="31">Objekt Daten</text>
+   	<text id="32">Verlaufslinie</text>
+   	<text id="33">Einstellungen</text>
+   	<text id="300">Datei laden</text>
+   	<text id="301">Letzte Berechnung laden</text>
+   	<text id="302">Datei schließen</text>
+   	<text id="303">Keine Datei geladen</text>
+   	<text id="304">Anzeigen</text>
+   	<text id="305">Hervorheben</text>
+   	<text id="306">Verstecken</text>
+   	<text id="307">Zeichne Verlauf</text>
+   	<text id="308">Entferne Verlauf</text>
+   	<text id="309">Massenpunkt-Liste</text>
+   	<text id="310">FPS</text>
+   	<text id="311">Start</text>
+   	<text id="312">Stop</text>
+   	<text id="313">Schritt</text>
+   	<text id="314">von</text>
+   	<text id="315">anzeigen</text>
+   	<text id="316">Alle Positionswerte</text>
+   	<text id="317">10% der Positionsw.</text>
+   	<text id="318">1% der Positionsw.</text>
+   	<text id="319">1‰ der Positionsw.</text>
+   	<text id="320">0,1‰ der Positionsw.</text>
+	<text id="321">Lade...</text>
+	<text id="322">Benutzerdefiniert</text>
+	<text id="323">Bitte den Bruchteil der anzuzeigenden\nPositionswerte eingeben (1/x):</text>
+   	<text id="324">Laden fehlgeschlagen</text>
+   	<text id="325">Datei wird geschlossen</text>
+    	
+	<text id="4">Über</text>
+	<text id="40">Version</text>
+	<text id="41">Dieses Programm wurde zur Simulation von Gravitationseinflüssen zwischen zwei oder mehreren Massepunkten entwickelt, unter Beachtung der Begrenzungen durch die spezielle Relativitätstheorie.</text>
+	<text id="42">Ich habe mich bemüht einen gewissen Grad physikalischer Genauigkeit einzuhalten, kann aber keine Garantie für die Verwendbarkeit der berechneten Ergebnisse dieses Programms übernehmen.</text>
+	<text id="43">Bekannte Einheiten</text>
+	<text id="44">Unbekannte Einheit</text>
+	<text id="45">Debug</text>
+	<text id="430">Y</text>
+	<text id="431">Z</text>
+	<text id="432">E</text>
+	<text id="433">P</text>
+	<text id="434">T</text>
+	<text id="435">G</text>
+	<text id="436">M</text>
+	<text id="437">k</text>
+	<text id="438">ha</text>
+	<text id="439">da</text>
+	<text id="440">d</text>
+	<text id="441">c</text>
+	<text id="442">m</text>
+	<text id="443">µ</text>
+	<text id="444">n</text>
+	<text id="445">p</text>
+	<text id="446">f</text>
+	<text id="447">a</text>
+	<text id="448">z</text>
+	<text id="449">y</text>
+	
+	<text id="45">Längeneinheiten</text>
+   	<text id="450">m</text>
+   	<text id="451" name="Angström">Å</text>
+   	<text id="452" name="Meile">mi</text>
+   	<text id="453" name="Astronomische Einheit">AE</text>
+   	<text id="454" name="Lichtjahr">Lj</text>
+   	<text id="455" name="Parsec">pc</text>
+   	<text id="456" name="Kubikmeter">m³</text>
+   	
+	<text id="46">Masseneinheiten</text>   	
+	<text id="460">kg</text>
+   	<text id="461">g</text>
+   	<text id="462" name="Atomare Masseneinheit">u</text>
+   	<text id="463" name="Tonne">t</text>
+   	<text id="464" name="Erdenmasse">EM</text>
+   	<text id="465" name="Sonnenmasse">SM</text>
+   	
+	<text id="47">Zeiteinheiten</text>
+   	<text id="470">s</text>
+   	<text id="471">min</text>
+   	<text id="472">h</text>
+   	<text id="473">d</text>
+   	<text id="474">Wochen</text>
+   	<text id="475">Monate</text>
+   	<text id="476">a</text>
+   	<text id="477">Jahrzehnte</text>
+   	<text id="478">Jahrhunderte</text>
+   	<text id="479">Jahrtausende</text>
+   	
+	<text id="48">zusätzl. Geschw.-Einheiten</text>
+   	<text id="480" name="Lichtgeschwindigkeit">c</text>
+   	<text id="481" name="Knoten">kn</text>
+   	<text id="482" name="Meilen pro Stunde">mph</text>
+
+	<text id="49">Einheitenpräfixe</text>
+	<text id="50">Bekannte stellare Objekte</text>
+	<text id="500">Mond</text>
+	<text id="501">Sonne</text>
+	<text id="502">Merkur</text>
+	<text id="503">Venus</text>
+	<text id="504">Erde</text>
+	<text id="505">Mars</text>
+	<text id="506">Jupiter</text>
+	<text id="507">Saturn</text>
+	<text id="508">Uranus</text>
+	<text id="509">Neptun</text>
+	<text id="510">Ceres</text>
+	<text id="511">Pluto</text>
+	<text id="512">Eris</text>
+	<text id="513">Proxima Centauri</text>
+	<text id="514">α Centauri A</text>
+	<text id="515">Rigel</text>
+	<text id="516">Zeta Puppis</text>
+	<text id="517">Sirius B</text>
+	<text id="518">Cygnus X-1</text>
+   	
+</language>
+
