@@ -53,10 +53,6 @@ public class CalcCode extends Thread {
 	boolean b_console;
 	Vector<Masspoint> vmps_temp;
 	Vector<Masspoint> vmps_current;
-
-	CalcCode(Controller MyController, Model MyModel, double ddatacount, double dtimecount, double dtimestep) {
-		new CalcCode(MyController, MyModel, ddatacount, dtimecount, dtimestep, false);
-	}
 	
 	CalcCode(Controller MyController, Model MyModel, double ddatacount, double dtimecount, double dtimestep, boolean console) {
 		dtmax = ddatacount;
@@ -65,6 +61,9 @@ public class CalcCode extends Thread {
 		exactstep = timestep/Math.pow(10.0, 3.0);
 		
 		myController = MyController;
+		if(MyController == null)
+			debugout("CalcCode Constructor - MyController==null!");
+		
 		myModel = MyModel;
 		b_console = console;
 		

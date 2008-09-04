@@ -135,7 +135,7 @@ public class TabVisualisationPlot extends JPanel {
 		
 		Masspoint_Sim[] mps_ref = stCurrent.getMasspoints();
 		vpo_plot_mp = new View_PlotOption[mps_ref.length];
-		debugout("updateVisualplotoptions() - NumofMPs="+mps_ref.length);
+		//debugout("updateVisualplotoptions() - NumofMPs="+mps_ref.length);
 		
 		for (int i = 0; i < mps_ref.length; i++) {
 			vpo_plot_mp[i] = new View_PlotOption(mps_ref[i],myXMLParser);

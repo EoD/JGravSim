@@ -18,7 +18,7 @@ public class TabVisualisation extends JPanel  {
 
 	ObjectView2D ov_vis_top = new ObjectView2D("xy");
 	ObjectView2D ov_vis_front = new ObjectView2D("xz");
-	ObjectView2D ov_vis_right = new ObjectView2D("yz");
+	ObjectView3D ov_vis_right = new ObjectView3D(null);//("yz");
 	
 	//TabVisualisationControls pa_visual_contrtab;
 	
@@ -185,8 +185,9 @@ public class TabVisualisation extends JPanel  {
 	public void changeOffsetY(int deltaYpx) {
 		//Controller.debugout("YOffset += "+deltaYpx+" (= "+pxtomm(deltaYpx)+"mm)");
 		double deltaY = pxtomm(deltaYpx);
-		ov_vis_front.addCoordOffsetY(deltaY);
+		//ov_vis_front.addCoordOffsetY(deltaY);
 		ov_vis_top.addCoordOffsetY(-deltaY);
+		ov_vis_right.addCoordOffsetY(deltaY);
 		updateCurFrame();
 	}
 	

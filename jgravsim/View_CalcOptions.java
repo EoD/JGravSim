@@ -211,7 +211,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				
 	    		if(cb_oldcalculation.isSelected() == false) {
 	    			debugout("actionPerformed - Java - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
-	    			myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep);
+	    			myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep, false);
 	    			myController.myCalculation.start();
 	    		}
 	    		else {

@@ -395,7 +395,7 @@ public class ObjectView2D extends JPanel {
 		setCoordOffset(dCoordOffsetX, dCoordOffsetY+x2, dCoordOffsetZ);
 	}
 	public void addCoordOffsetZ(double x3) {
-		setCoordOffset(dCoordOffsetZ, dCoordOffsetY, dCoordOffsetZ+x3);
+		setCoordOffset(dCoordOffsetX, dCoordOffsetY, dCoordOffsetZ+x3);
 	}
 	public double getCoordOffsetX() {
 		return dCoordOffsetX;

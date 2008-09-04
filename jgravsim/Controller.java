@@ -761,11 +761,14 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			source.iLastMouseY = e.getY();
 		}
 		else if(e.getSource() == myView.pa_visualtab.ov_vis_right) {
+			//TODO WARNING Object3DView Test
+			/*
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			myView.pa_visualtab.changeOffsetY(e.getX()-source.iLastMouseX);
 			myView.pa_visualtab.changeOffsetZ(e.getY()-source.iLastMouseY);
 			source.iLastMouseX = e.getX();
 			source.iLastMouseY = e.getY();
+			*/
 		}
 		else if(e.getSource() == myView.pa_computetab.ov_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
@@ -880,9 +883,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			((ObjectView2D)source).iLastMouseX = e.getX();
 			((ObjectView2D)source).iLastMouseY = e.getY();
 		}
-		else if(source == myView.pa_visualtab.ov_vis_right) {			
+		else if(source == myView.pa_visualtab.ov_vis_right) {	
+			//TODO WARNING Object3DView Test
+			/*
 			((ObjectView2D)source).iLastMouseX = e.getX();
 			((ObjectView2D)source).iLastMouseY = e.getY();
+			*/
 		}
 	}
 
@@ -1279,6 +1285,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 
 	public Vector<Masspoint> getVMasspoints() {
+		debugout("getVMasspoints() - collecting. Size: "+ vmasspoints.size());
 		return vmasspoints;
 	}
 	
@@ -1547,21 +1554,21 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		
 		switch(axe) {
 			case 'x': 
-				debugout("pxtomm() - getCoordOffsetX()="+ov_front.getCoordOffsetX());
+				//debugout("pxtomm() - getCoordOffsetX()="+ov_front.getCoordOffsetX());
 				double dx = (a-centerX);
 				dx /= ov_front.iGridOffset;
 				dx *= Math.pow(10, ov_front.iZoomLevel);
 				dx -= ov_front.getCoordOffsetX();
 				return Math.round(CalcCode.LACCURACY*dx);
 			case 'y': 
-				debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
+				//debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
 				double dy = (a-centerY);
 				dy /= ov_front.iGridOffset;
 				dy *= Math.pow(10, ov_front.iZoomLevel);
 				dy += ov_front.getCoordOffsetY();
 				return -Math.round(CalcCode.LACCURACY*dy);
 			case 'z': 
-				debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
+				//debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
 				double dz = (a-centerZ);
 				dz /= ov_front.iGridOffset;
 				dz *= Math.pow(10, ov_front.iZoomLevel);

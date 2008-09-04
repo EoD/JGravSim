@@ -60,7 +60,6 @@ public class TabCompute extends JPanel {
 		JPanel pa_comp_middleview;
 			//ObjectView3D ov_top; /* Ansicht von Oben (x,y) */
 			ObjectView2D ov_top; /* Ansicht von Oben (x,y) */
-			TEST ov_test; /* Ansicht von Vorne (x,z) */
 			ObjectView2D ov_front; /* Ansicht von Vorne (x,z) */
 	
 	JPanel pa_comp_bottombuttons; /* Unteres Panel f�r Buttons */
@@ -91,7 +90,6 @@ public class TabCompute extends JPanel {
 			
 			//ov_top = new ObjectView3D(null); //
 			ov_top = new ObjectView2D("xy");
-			//ov_test	= new TEST();
 			ov_front = new ObjectView2D("xz");
 			
 			ov_top.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(111)));
