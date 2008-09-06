@@ -89,16 +89,14 @@ public class ObjectView2D extends JPanel {
 					bselected = true;
 				
 			
-				double totradius;
+				double totradius = masspoint.getRadius();
 				if(masspoint.isBlackHole()) {
-					totradius = masspoint.getSchwarzschildRadius();
 					if(bselected)
 						coObjColor = BLACKHOLE_SELECTED;
 					else
 						coObjColor = BLACKHOLE;
 				}
 				else {
-					totradius = masspoint.getRadius();	
 					if(bselected)
 						coObjColor = STANDARD_SELECTED;
 					else

@@ -608,9 +608,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
         	mp_clone.setData(mp_old);
         	mp_clone.id = clone_id;
         	mp_clone.addMLVCoord(new MLVector(
-        			(long)(mp_clone.getRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
-        			(long)(mp_clone.getRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
-        			(long)(mp_clone.getRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY)));
+        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
+        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
+        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY)));
         	updateComputePanels(mp_clone, source);
         }  
         else if(source == myView.pa_computetab.b_edit)  {
@@ -737,7 +737,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		else if(source == myView.pa_computetab.pa_compute_dataeasy.sl_Radius) {
 			double dradius = myView.pa_computetab.pa_compute_dataeasy.sl_Radius.getValue();
 			dradius = Math.pow(dradius,CalcCode.SRADIUSCONST);
-			GetSelectedMasspoint().setRadius(dradius+Double.MIN_VALUE*CalcCode.RACCURACY);
+			GetSelectedMasspoint().setAbsRadius(dradius+Double.MIN_VALUE);
 			//debugout("sRadius - Slider moved. Value="+myMPDataView.sRadius.getValue()+", dradius="+dradius);
 			updateComputePanels(GetSelectedMasspoint(),source);
 		}
@@ -1154,7 +1154,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Mass) 
 			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, df_s));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Radius) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius(), myView.myXMLParser, df_s));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser, df_s));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Dense)	{
 			if(mp.isBlackHole())
 				myView.pa_computetab.pa_compute_dataeasy.tf_Dense.setText(myView.myXMLParser.getText(6));
@@ -1165,7 +1165,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Mass) 
 			myView.pa_computetab.pa_compute_dataeasy.sl_Mass.setValue((int)(Math.pow(mp.getAbsMass(),1.0/CalcCode.SMASSCONST)));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Radius)
-			myView.pa_computetab.pa_compute_dataeasy.sl_Radius.setValue((int)(Math.pow(mp.getRadius(),1.0/CalcCode.SRADIUSCONST)));
+			myView.pa_computetab.pa_compute_dataeasy.sl_Radius.setValue((int)(Math.pow(mp.getAbsRadius(),1.0/CalcCode.SRADIUSCONST)));
 		/*if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Dense)	{
 			if(mp.isBlackHole())
 				myView.pa_computetab.pa_compute_dataeasy.sl_Dense.setValue(100);
@@ -1197,7 +1197,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Mass) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Radius) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius(), myView.myXMLParser));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Dense) {
 			if(mp.isBlackHole())
 				myView.pa_computetab.pa_compute_dataadvanced.tf_Dense.setText(myView.myXMLParser.getText(6));	//inf
@@ -1246,7 +1246,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, null));
 		}
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Radius) {
-			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius(), myView.myXMLParser, null));		
+			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser, null));		
 		}			
 		if(mp.isBlackHole()) 
 			setBHVisible(true);
@@ -1504,9 +1504,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
 			MLVector mlvcoord = mptemp.getCoordMLV();
 			long relradius = Math.round(mptemp.getRadius()*CalcCode.LACCURACY);
-			
-			if(mptemp.isBlackHole())
-				relradius = Math.round(mptemp.getSchwarzschildRadius()*CalcCode.LACCURACY);
 						
 			if(axe == myView.myXMLParser.getText(111)) {
 				//debugout("CheckForHit() - Checking for hit at x="+lx+"; y="+ly+"; radius="+relradius);
@@ -1649,7 +1646,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				bacheck[1] = true;
 			}
 			if(bacheck[1] == false)
-				mp.setRadius(dtemp*dfactor);
+				mp.setAbsRadius(dtemp*dfactor);
 		}
 		//////////////////SPEEDX//////////////////
 		strtemp = myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact.getText();

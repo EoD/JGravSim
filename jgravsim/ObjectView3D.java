@@ -109,22 +109,26 @@ public class ObjectView3D extends JPanel {
 
 		vpTrans = su.getViewingPlatform().getViewPlatformTransform();
 		
-		Appearance appear = new Appearance();
 
 		///TEXTURE////
-		String filename = "earth.jpg";
-		TextureLoader loader = new TextureLoader(filename, this);
-		ImageComponent2D image = loader.getImage();
+		String texturefile_earth = "earth.jpg";
+		String texturefile_bh = "bh.jpg";
+		TextureLoader loader_earth = new TextureLoader(texturefile_earth, this);
+		TextureLoader loader_bh = new TextureLoader(texturefile_bh, this);
+		ImageComponent2D image_earth = loader_earth.getImage();
+		ImageComponent2D image_bh = loader_bh.getImage();
 
-		if (image == null) {
-			System.out.println("load failed for texture: " + filename);
+		if (image_earth == null || image_bh == null) {
+			System.out.println("load failed for texture: " + texturefile_earth);
 		}
 
 		// can't use parameterless constuctor
-		Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image.getWidth(), image.getHeight());
-		texture.setImage(0, image);
-
-		appear.setTexture(texture);
+		Texture2D texture_earth = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image_earth.getWidth(), image_earth.getHeight());
+		texture_earth.setImage(0, image_earth);
+		
+		Texture2D texture_bh = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image_bh.getWidth(), image_bh.getHeight());
+		texture_bh.setImage(0, image_bh);
+		
 		
 		
 		
@@ -141,6 +145,20 @@ public class ObjectView3D extends JPanel {
 				
 				if(masspoint == null)
 					continue;
+
+				Appearance appear = new Appearance();
+				double radius = masspoint.getRadius();
+				if(radius/CONVERT3D < 0.05f)
+					radius = 0.05f*CONVERT3D;
+				
+				if(masspoint.isBlackHole()) {
+					//Controller.debugout("Object3DView - Blackhole");
+					appear.setTexture(texture_bh);
+				}
+				else {
+					//Controller.debugout("Object3DView - Earth");
+					appear.setTexture(texture_earth);	
+				}
 				
 				//TransformGroup objTranslationSub = new TransformGroup();
 				Transform3D TranslationSub = new Transform3D();
@@ -156,7 +174,7 @@ public class ObjectView3D extends JPanel {
 			    TransformGroup yoyoTGT1 = new TransformGroup(TranslationSub);
 			    objRotate.addChild(yoyoTGT1);
 				
-				Sphere sphere = new Sphere((float)(masspoint.getRadius()/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);
+				Sphere sphere = new Sphere((float)(radius/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);
 				sphere.setCapability( BranchGroup.ALLOW_DETACH);
 				
 				//objTranslationSub.setTransform(TranslationSub);

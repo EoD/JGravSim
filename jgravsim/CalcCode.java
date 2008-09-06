@@ -30,7 +30,6 @@ public class CalcCode extends Thread {
 	static final double SRADIUSCONST = 5.6;		//constant for radius-slider (nach belieben �nderbar)
 	static final double SSPEEDCONST = 8.0;		//constant for speed-slider
 	static final double SDENSITYCONST = 4.0;
-	static final double RACCURACY = Math.pow(10.0, 3.0); //Genauigkeit des radius-feldes (std: km=1000)
 
 	static final int UNKNOWN = -1;
 	static final int NOERROR = 0;
@@ -420,23 +419,15 @@ public class CalcCode extends Thread {
 			for(int j=i-1 ;j >= 0 && i >= 1; j--) {
 				//debugout("collisionCheck() - Checking collision between No"+i+"and No"+j);
 				Masspoint mpj= (Masspoint)vmpinsert.get(j);
-				double iradius;
-				double jradius;
+				double iradius = mpi.getRadius();
+				double jradius = mpj.getRadius();
 				//check if the two objects are colliding 
 				//(they are also colliding if object goes into schwarzschild radius)
-				if(!mpi.isBlackHole())
-					iradius = mpi.getRadius(); 
-				else
-					iradius = mpi.getSchwarzschildRadius();
 				
-				if(!mpj.isBlackHole())
-					jradius = mpj.getRadius(); 
-				else {
-					jradius = mpj.getSchwarzschildRadius();
+				if(myController.flagschwarzschild == false && (mpj.isBlackHole() || mpi.isBlackHole()))
 					//if objects have a distance less than 2*Schwarzschild Radius the calculation gets very imprecisely
-					if(myController.flagschwarzschild == false && mpi.drange(mpj) < 2*(mpj.getSchwarzschildRadius()+mpi.getSchwarzschildRadius())) {
+					if(mpi.drange(mpj) < 2*(mpj.getSchwarzschildRadius()+mpi.getSchwarzschildRadius())) {
 						myController.flagschwarzschild = true;
-					}
 				}
 						
 				if(mpi.drange(mpj) < (iradius+jradius)) {
@@ -469,11 +460,11 @@ public class CalcCode extends Thread {
 		}*/
 		MDVector mpsecspeed = new MDVector(0,0,0);
 		double dmass = mpsurvive.getAbsMass() + mpkill.getAbsMass();	//die massen werden addiert
-		double dvolume = mpsurvive.getVolume() + mpkill.getVolume();	//die volumina (nicht die radien!) werden addiert
-		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getVolume()+") and Object "+mpkill.id+"/kill ("+mpkill.getVolume()+") collided. New volume: "+dvolume);
+		double dvolume = mpsurvive.getAbsVolume() + mpkill.getAbsVolume();	//die volumina (nicht die radien!) werden addiert
+		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getAbsVolume()+") and Object "+mpkill.id+"/kill ("+mpkill.getAbsVolume()+") collided. New volume: "+dvolume);
 		//Berechnung des neuen radiuses aus dem Volumen
 		double dradius = Math.pow((3*dvolume)/(4*Math.PI), 1.0/3.0);	//V=4/3*r^3*PI --> r = 3.sqrt(3*V/PI/4)
-		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getRadius()+") and Object "+mpkill.id+"/kill ("+mpkill.getRadius()+") collided. New radius: "+dradius);
+		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getAbsRadius()+") and Object "+mpkill.id+"/kill ("+mpkill.getAbsRadius()+") collided. New radius: "+dradius);
 		//double dradius = mp1.getRadius() + mp2.getRadius();  //DEBUG - has to be replaced by following line:
 		//Math.pow( (3*dvolume)/(4*Math.PI), 1/3);	//V=4/3*r^3*PI --> r = 3.sqrt(3*V/PI/4)
 		
@@ -501,12 +492,6 @@ public class CalcCode extends Thread {
 		double dvolumekill = mpkill.getVolume();
 		double dvolumesurvive = mpsurvive.getVolume();
 		
-		if(mpsurvive.isBlackHole())
-			dvolumesurvive = mpsurvive.getSchwarzschildVolume();
-		
-		if(mpkill.isBlackHole())
-			dvolumekill = mpkill.getSchwarzschildVolume();
-		
 		double dconst = (dvolumesurvive+dvolumekill) / 2.0;
 		
 		MLVector mlvcoordsur = MVMath.ProMVNum(mpsurvive.getCoordMLV(), dvolumesurvive/dconst);
@@ -516,9 +501,9 @@ public class CalcCode extends Thread {
 
 		//we don't want a black hole become a normal object after collision!
 		if(mpsurvive.isBlackHole() || mpkill.isBlackHole())
-			mpsurvive.setRadius(1.0);
+			mpsurvive.setAbsRadius(1.0);
 		else
-			mpsurvive.setRadius(dradius);
+			mpsurvive.setAbsRadius(dradius);
 		
 		mpsurvive.setCoordMLV(mlvnewcoord);
 		mpsurvive.setMass(dmass);

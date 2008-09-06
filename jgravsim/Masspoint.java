@@ -175,19 +175,20 @@ public class Masspoint {
 		return mlvpos;
 	}
 
-	public void setRadius(double a) {
+	public void setAbsRadius(double a) {
 		debugout("Masspoint - new Radius="+a);
 		radius = a;
 	}
-	public double getRadius() {
+	//Unit [m]
+	public double getAbsRadius() {
 		return radius;
 	}
 	
 	public double getDensity() {
-		return (mass / getVolume());
+		return (mass / getAbsVolume());
 	}
 	
-	public double getVolume() {
+	public double getAbsVolume() {
 		return (4.0/3.0*Math.pow(radius, 3.0)*Math.PI);
 	}
 	
@@ -205,15 +206,30 @@ public class Masspoint {
 		return ((2.0*CalcCode.GRAVCONST*this.getSRTMass())/Math.pow(CalcCode.LIGHTSPEED, 2.0));
 	}
 	
+	//Unit [m]
 	public double getSchwarzschildVolume() {
 		return (4.0/3.0*Math.pow(getSchwarzschildRadius(), 3.0)*Math.PI);
 	}
 
 	public boolean isBlackHole() {
-		if(getSchwarzschildRadius() >= getRadius())
+		if(getSchwarzschildRadius() >= getAbsRadius())
 			return true;
 		else
 			return false;
+	}
+	//Unit [m]
+	public double getRadius() {
+		if(isBlackHole()) 
+			return getSchwarzschildRadius();
+		else
+			return getAbsRadius();
+	}
+	//Unit [m]
+	public double getVolume() {
+		if(isBlackHole()) 
+			return getSchwarzschildVolume();
+		else
+			return getAbsVolume();
 	}
 	
 	//setData v2

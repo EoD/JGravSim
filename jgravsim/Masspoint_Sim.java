@@ -4,9 +4,9 @@ public class Masspoint_Sim {
 	private int iID;
 	private double dMass;
 	private double dRadius;
-	private double dSpeedVecX;
-	private double dSpeedVecY;
-	private double dSpeedVecZ;
+	private double dSpeedVecX = 0.0;
+	private double dSpeedVecY = 0.0;
+	private double dSpeedVecZ = 0.0;
 	private double dSpeed;
 	private double dAccX;
 	private double dAccY;
@@ -20,9 +20,16 @@ public class Masspoint_Sim {
 		iID = iid;
 		dMass = mass;
 		dRadius = radius;
-		dSpeedVecX = speedX;
-		dSpeedVecY = speedY;
-		dSpeedVecZ = speedZ;
+		
+		if(!Double.isNaN(speedX))
+			dSpeedVecX = speedX;
+		
+		if(!Double.isNaN(speedY))
+			dSpeedVecY = speedY;
+		
+		if(!Double.isNaN(speedZ))
+			dSpeedVecZ = speedZ;
+
 		dSpeed = speed;
 		dAccX = accX;
 		dAccY = accY;
@@ -95,7 +102,8 @@ public class Masspoint_Sim {
 	public long getPosZ() {
 		return dPosZ;
 	}
-	public double getRadius() {
+	//Unit [m]
+	public double getAbsRadius() {
 		return dRadius;
 	}
 	public double getSpeedX() {
@@ -159,21 +167,32 @@ public class Masspoint_Sim {
 		//falls der v-vektor (0|0|0) ist, ist auch v=0
 		if(mdvspeed.abs() <= 0) 
 			return dMass;
-			
+
+		//Controller.debugout("getSRTMass() - dMass="+dMass+", mdvspeed.abs()="+mdvspeed.abs());
 		return ( dMass*gamma(mdvspeed.abs()));
 	}
 	
+	
+	//Unit [m]
 	public double getSchwarzschildRadius() {
 		//r = 2Gm / c^2
 		return ((2.0*CalcCode.GRAVCONST*this.getSRTMass())/Math.pow(CalcCode.LIGHTSPEED, 2.0));
 	}
+	
 	public boolean isBlackHole() {
-		if(getSchwarzschildRadius() >= getRadius())
+		if(getSchwarzschildRadius() >= getAbsRadius())
 			return true;
 		else
 			return false;
 	}
 
+	//Unit [m]
+		public double getRadius() {
+		if(isBlackHole())
+			return getSchwarzschildRadius();
+		else
+			return getAbsRadius();
+	}
 	public void setSpeedVecNotNull() {
 		dSpeedVecX = 1.0;
 		dSpeedVecY = 1.0;

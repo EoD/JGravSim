@@ -20,6 +20,7 @@ public class MDVector {
 	
 	public double abs() {
 		double dres = 0.0;
+		//Controller.debugout("abs() - x1="+x1+", x2="+x2+", x3="+x3+", abs^2="+x1*x1 + x2*x2 + x3*x3);
 		dres = Math.sqrt(x1*x1 + x2*x2 + x3*x3);
 		return dres;
 	}

@@ -315,7 +315,7 @@ public class TabVisualisationData extends JPanel {
 		mp.setSpeedy(mpsim.getSpeedY());
 		mp.setSpeedz(mpsim.getSpeedZ());
 		mp.setMass(mpsim.getMass());
-		mp.setRadius(mpsim.getRadius());
+		mp.setAbsRadius(mpsim.getAbsRadius());
 		UpdatePanels(mp);
 	}
 	
@@ -336,10 +336,11 @@ public class TabVisualisationData extends JPanel {
 		tf_Speedz.setText(InterpretInput.niceInput_Speed(mvspeed.x3, myXMLParser));
 		tf_Speed_abs.setText(InterpretInput.niceInput_Speed(mp.getSpeed(), myXMLParser));
 		tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myXMLParser));
+		
+		tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius(), myXMLParser));
 		if(mp.isBlackHole()) {
 			la_Schwarzschild.setVisible(true);
 			la_Blackhole.setVisible(true);
-			tf_Radius.setText(InterpretInput.niceInput_Length(mp.getSchwarzschildRadius()/CalcCode.RACCURACY, myXMLParser));
 			tf_Dense.setText(myXMLParser.getText(6));
 		}
 		else {
@@ -347,7 +348,6 @@ public class TabVisualisationData extends JPanel {
 				la_Blackhole.setVisible(false);
 			if(la_Schwarzschild.isVisible()) 
 				la_Schwarzschild.setVisible(false);
-			tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius()/CalcCode.RACCURACY, myXMLParser));
 			tf_Dense.setText(InterpretInput.niceInput_Density(mp.getDensity(), myXMLParser));
 		}
 		//sl_Speed.setValue((int)(100*Math.pow(mp.getSpeed()/CalcCode.LIGHTSPEED, 1.0/CalcCode.SSPEEDCONST)));

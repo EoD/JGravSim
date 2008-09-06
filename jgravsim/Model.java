@@ -292,7 +292,7 @@ public class Model {
 						mptemp.setSpeedx(SpeedX);
 						mptemp.setSpeedy(SpeedY);
 						mptemp.setSpeedz(SpeedZ);
-						mptemp.setRadius(Radius);
+						mptemp.setAbsRadius(Radius);
 						mptemp.setMass(Mass);
 						stDataset.add(mptemp);
 					}
