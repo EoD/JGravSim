@@ -2,8 +2,9 @@
 <language id="44" maxid="520" maxbuffer="30000">
 	<text id="0">Simulator for special-relativistic-moving masses in the newtonian gravtional field</text>
 
-	<!-- text id="1">Misc</text -->
-	<text id="5">in</text><!-- geschwindigkeit "in" m/s -->
+	<!-- text id="-1">Misc</text -->
+	<text id="1">Do you want to enable Java3D?</text>
+	<text id="5">in</text><!-- speed "in" m/s -->
 	<text id="6">„∞“</text>
 	<text id="7">light</text>
 	<text id="8">Press here to add an object!</text>
@@ -34,7 +35,7 @@
 	<text id="158">Corrupted file</text>
 	<text id="159">Inputerro</text>
 	<text id="160">The calculation cancled because of an internal error.</text>
-  <text id="161">Your computer had problems with the accuracy</text>
+	<text id="161">Your computer had problems with the accuracy</text>
 	<text id="162">to stay below speed of light.</text>
 	<text id="163">A masspoint moved outside border of the coordination system.</text>
 	<text id="164">A masspoint got fast then the speed of light.</text>
@@ -76,7 +77,7 @@
 	<text id="222">How large should the timesteps for saving be? (larger values means output file)</text>
 	<text id="223">How large should the timesteps for calculationbe? (smaller values means longer calculation)</text>
 	<text id="224">Use new C/C++-calculation (not recommended)</text>
-  <text id="225">Your backend version (v%1d) doesn't match with the expected version (v%2d). Do you want to continue?</text>
+	<text id="225">Your backend version (v%1d) doesn't match with the expected version (v%2d). Do you want to continue?</text>
 	<text id="226">Startwerte eines neuen Massenpunktes</text>
 	<text id="227">Add</text>
 	<text id="228">Speedvector</text>
@@ -171,13 +172,13 @@
    	<text id="455" name="Parsec">pc</text>
    	<text id="456" name="Kubikmeter">m³</text>
    	
-	<text id="46">Masseneinheiten</text>   	
+	<text id="46">mass units</text>
 	<text id="460">kg</text>
    	<text id="461">g</text>
-   	<text id="462" name="Atomare Masseneinheit">u</text>
-   	<text id="463" name="Tonne">t</text>
-   	<text id="464" name="Erdenmasse">EM</text>
-   	<text id="465" name="Sonnenmasse">SM</text>
+   	<text id="462" name="atomic mass unit">u</text>
+   	<text id="463" name="tonne">t</text>
+   	<text id="464" name="earth mass">EM</text>
+   	<text id="465" name="sun mass">SM</text>
    	
 	<text id="47">Time units</text>
    	<text id="470">s</text>
@@ -192,9 +193,9 @@
    	<text id="479">millenia</text>
    	
 	<text id="48">additional speed units</text>
-   	<text id="480" name="Lichtgeschwindigkeit">c</text>
-   	<text id="481" name="Knoten">kn</text>
-   	<text id="482" name="Meilen pro Stunde">mph</text>
+   	<text id="480" name="speed of light">c</text>
+   	<text id="481" name="knots">kn</text>
+   	<text id="482" name="miles per hour">mph</text>
 
 	<text id="49">Unitprefixes</text>
 	<text id="50">Known stellar objects</text>

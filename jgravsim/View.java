@@ -16,10 +16,11 @@ public class View extends JFrame  {
 		super();
 		myXMLParser = new XMLParser(textfile,lang);
 		setTitle(myXMLParser.getText(0));
-
+		int answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);
+		
 		tp_tabs = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
 		pa_computetab = new TabCompute(myXMLParser); /* Berechnung und Ausgabe der Daten */
-		pa_visualtab = new TabVisualisation(myXMLParser); /* Visualisierung berechneter Daten */
+		pa_visualtab = new TabVisualisation(myXMLParser, answer==0?true:false ); /* Visualisierung berechneter Daten */
 		pa_abouttab = new TabAbout(myXMLParser); /* Über dieses Programm */
 		
 		// TODO add remove temp-file method!

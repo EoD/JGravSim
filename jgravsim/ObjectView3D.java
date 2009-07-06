@@ -2,7 +2,6 @@ package jgravsim;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 
 import javax.media.j3d.Appearance;
@@ -15,7 +14,6 @@ import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 
-import javax.swing.JPanel;
 import javax.vecmath.*;
 
 import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
@@ -27,49 +25,17 @@ import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-public class ObjectView3D extends JPanel {
+public class ObjectView3D extends ObjectView {
 
 	private static final long serialVersionUID = 1L;
-	public static final double LIGHTSPEED = CalcCode.LIGHTSPEED; // Lightspeed
-	// in m/s
-	public static final Color BLACKHOLE = Color.BLACK;
-	public static final Color BLACKHOLE_SELECTED = new Color(0, 0, 128); // NavyBlue
-	public static final Color STANDARD = Color.DARK_GRAY;
-	public static final Color STANDARD_SELECTED = Color.RED; // new
-	public static final float CONVERT3D = 2.0E7f; // new
-	// Color(34,139,34);
-	// ==ForestGreen
-	public static final Color HIDDEN = Color.LIGHT_GRAY; // gainsboro
-	public static final Color SPEEDVEC = Color.RED;
-	public static final Color STRING = Color.BLACK;
-	public static final Color STRING_BRIGHT = new Color(220, 220, 220); // gainsboro
-	public static final Color CLICKME = Color.ORANGE; // gainsboro
-	public static final int speedvecmax = 55; // gainsboro
+	
 	int iLastMouseX = 0;
 	int iLastMouseY = 0;
 
-	int iGridOffset = 25; /* 25px = 1*Unit */
-	double iZoomLevel = 12.0; /* pos / 10^zoomLevel */
-	boolean draw_strings = true;
-	boolean draw_speed = true;
-	boolean boxed = true;
-	Masspoint mp_selected = null;
-
-	Color coGridColor = Color.decode("#DDDDDD");
-	Color coSpeedvecColor = SPEEDVEC;
-	Color coObjColor = STANDARD;
-	double dCoordOffsetX = 0.0;
-	double dCoordOffsetY = 0.0;
-	double dCoordOffsetZ = 0.0;
-	Step[] alldots;
-	char[] cAxes;
-	String str_clickme;
-
-	private Step stCurrent = null;
-	
 	private BranchGroup bg_main;
 	private Canvas3D canvas_main;
 	private SimpleUniverse simpleU;
+	
 	
 	ObjectView3D(Step current) {
 		super();
@@ -100,6 +66,7 @@ public class ObjectView3D extends JPanel {
 		// str_clickme = "";
 		//repaint();
 	}
+	
 	public BranchGroup createSceneGraph(SimpleUniverse su) {
 		// Create the root of the branch graph
 		BranchGroup objRoot = new BranchGroup();
@@ -171,8 +138,8 @@ public class ObjectView3D extends JPanel {
 				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
 				
 				TranslationSub.setTranslation(vector);
-			    TransformGroup yoyoTGT1 = new TransformGroup(TranslationSub);
-			    objRotate.addChild(yoyoTGT1);
+				TransformGroup yoyoTGT1 = new TransformGroup(TranslationSub);
+				objRotate.addChild(yoyoTGT1);
 				
 				Sphere sphere = new Sphere((float)(radius/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);
 				sphere.setCapability( BranchGroup.ALLOW_DETACH);
@@ -229,7 +196,6 @@ public class ObjectView3D extends JPanel {
 	}
 	
 	
-	
 	public void updateSceneGraph() {
 		BranchGroup bg_new = createSceneGraph(simpleU);
 		//bg_main.compile();
@@ -238,17 +204,10 @@ public class ObjectView3D extends JPanel {
 		simpleU.getViewingPlatform().setNominalViewingTransform();
 
 	}
-	
-	
-	
-	void drawGridPoint(Graphics g, int offsetX, int offsetY) {
-		g.drawLine(offsetX, offsetY - 2, offsetX, offsetY + 2);
-		g.drawLine(offsetX - 2, offsetY, offsetX + 2, offsetY);
-	}
 
+	@Override
 	void displayStep(Step next) {
 		stCurrent = next;
-		//repaint();
 		updateSceneGraph();
 	}
 
@@ -274,57 +233,4 @@ public class ObjectView3D extends JPanel {
 	 * g2.drawString(as_clickme.getIterator(), centerX - fwidth / 2, centerY +
 	 * fheight / 2); }
 	 */
-
-	private double getVectorLength(double x, double y, double z) {
-		return Math.sqrt(x*x + y*y + z*z);
-	}
-
-	public void setCoordOffset(double x1, double x2, double x3) {
-		dCoordOffsetX = x1;
-		dCoordOffsetY = x2;
-		dCoordOffsetZ = x3;
-	}
-	public void setCoordOffset(double[] offset) {
-		if (offset.length != 3)
-			return;
-		setCoordOffset(offset[0], offset[1], offset[2]);
-	}
-	public void setCoordOffset(MDVector offset) {
-		setCoordOffset(offset.x1, offset.x2, offset.x3);
-	}
-	public void resetCoordOffset() {
-		setCoordOffset(0.0, 0.0, 0.0);
-	}
-	public void addCoordOffsetX(double x1) {
-		setCoordOffset(dCoordOffsetX+x1, dCoordOffsetY, dCoordOffsetZ);
-	}
-	public void addCoordOffsetY(double x2) {
-		setCoordOffset(dCoordOffsetX, dCoordOffsetY+x2, dCoordOffsetZ);
-	}
-	public void addCoordOffsetZ(double x3) {
-		setCoordOffset(dCoordOffsetZ, dCoordOffsetY, dCoordOffsetZ+x3);
-	}
-	public double getCoordOffsetX() {
-		return dCoordOffsetX;
-	}
-	public double getCoordOffsetY() {
-		return dCoordOffsetY;
-	}
-	public double getCoordOffsetZ() {
-		return dCoordOffsetZ;
-	}
-
-	public void resetAllSteps() {
-		alldots = null;
-	}
-	public void resetCurrentStep() {
-		stCurrent = null;
-	}
-	public Step getCurrentStep() {
-		return stCurrent;
-	}
-	
-	public void setBoxed(boolean b) {
-		boxed = b;
-	}
 }

@@ -2,7 +2,8 @@
 <language id="49" maxid="520" maxbuffer="30000">
 	<text id="0">Simulator für speziell-relativistisch bewegte Massen im Newtonschen Gravitationsfeld</text>
 
-	<!-- text id="1">Sonstiges</text -->
+	<!-- text id="-1">Sonstiges</text -->
+	<text id="1">Wollen Sie Java3D benutzen?</text>
 	<text id="5">in</text><!-- geschwindigkeit "in" m/s -->
 	<text id="6">„∞“</text>
 	<text id="7">Licht</text>

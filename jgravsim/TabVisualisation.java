@@ -15,10 +15,12 @@ public class TabVisualisation extends JPanel  {
 	private DynamicWPTLoader loader_plot;
 	//private double dMaxTime;
 	//private double dstep;
-
-	ObjectView2D ov_vis_top = new ObjectView2D("xy");
-	ObjectView2D ov_vis_front = new ObjectView2D("xz");
-	ObjectView3D ov_vis_right = new ObjectView3D(null);//("yz");
+	
+	public boolean b_enable3d;
+	
+	ObjectView ov_vis_top;
+	ObjectView ov_vis_front;
+	ObjectView ov_vis_right;
 	
 	//TabVisualisationControls pa_visual_contrtab;
 	
@@ -30,9 +32,30 @@ public class TabVisualisation extends JPanel  {
 	JTabbedPane tp_visual = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
 	XMLParser myXMLParser;
 	
+	public TabVisualisation(XMLParser parser, boolean b_3d) {
+		myXMLParser = parser;
+		b_enable3d = b_3d;
+		initializeVariables();
+	}
+	
 	public TabVisualisation(XMLParser parser) {
 		myXMLParser = parser;
+		b_enable3d = false;
+		initializeVariables();
+	}
+	
+	private void initializeVariables() {
 		setLayout(new GridLayout(2,2));
+		
+		if(b_enable3d) {
+			ov_vis_top = new ObjectView2D("xy");
+			ov_vis_front = new ObjectView2D("xz");
+			ov_vis_right = new ObjectView3D(null);
+		} else {
+			ov_vis_top = new ObjectView2D("xy");
+			ov_vis_front = new ObjectView2D("xz");
+			ov_vis_right = new ObjectView2D("yz");
+		}
 		
 		pa_visual_datatab = new TabVisualisationData(myXMLParser); /* Visualisierung berechneter Daten */
 		pa_visual_contrtab = new TabVisualisationControls(myXMLParser); /* Visualisierung berechneter Daten */
@@ -55,7 +78,7 @@ public class TabVisualisation extends JPanel  {
 		
 		setPlayControlsEnabled(false);
 	}
-	
+
 	public void setGridColor(Color newColor) {
 		ov_vis_front.coGridColor = newColor;
 		ov_vis_right.coGridColor = newColor;
@@ -278,5 +301,9 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.draw_strings = state;
 		ov_vis_right.draw_strings = state;
 		ov_vis_top.draw_strings = state;
+	}
+	
+	public boolean Is3dEnabled() {
+		return b_enable3d;
 	}
 }
