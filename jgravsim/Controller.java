@@ -19,8 +19,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	
 	static boolean MAINDEBUG = true;
-	static boolean CPP = false;
-	static boolean CPPDEBUG = false;
+	static boolean CPP = true;
+	static boolean CPPDEBUG = true;
 	
 	static double ZOOMLEVEL = 10.0;
 	static final double VERSION = 1.8;

@@ -201,9 +201,9 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				myController.myView.pa_computetab.b_stop.setEnabled(true);
 				if(myController.calc_datacount/myController.calc_timecount > DynamicWPTLoader.STANDARDBUFFERSIZE) {
 					String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
-					int awnser = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
-					if(awnser != 0)
-		    		return;
+					int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
+					if(answer != 0)
+						return;
 				}
 					
 				this.dispose();
@@ -237,20 +237,26 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 									debugout("actionPerformed() - ERROR: unknown path!");
 						}
 						else {*/
-							if(exedir.contains("/"))
-								exedir = exedir+"/"+filename+" "+exedir+"/temp.wpt";
-							else if(exedir.contains("\\"))
-								exedir = exedir+"\\"+filename+".exe "+exedir+"\\temp.wpt";
-							else
-									debugout("actionPerformed() - ERROR: unknown path!");
+						
+						String[] command = { "\""+exedir+"", ""};
+							if(exedir.contains("/")) {
+								command[0] = command[0]+"/"+filename+"\"";
+								command[1] = "\""+exedir+"/temp.wpt\"";
+	    					}
+							else if(exedir.contains("\\")) {
+								command[0] = command[0]+"\\"+filename+".exe\"";
+								command[1] = "\""+exedir+"\\temp.wpt\"";
+							}
+							//else
+							//		debugout("actionPerformed() - ERROR: unknown path!");
 						//}
 
-						Controller.cppdebugout("exedir=\""+exedir+"\"");
+						debugout("actionPerformed - C++ - Calculation : Command="+command[0]+" "+command[1]+"\"");
 					    //Process calculation = run.exec("/home/eod/data/workspace/Gravity_Simulation_Backend/exe/Gravity_debug "+currentfolder+"/temp.wpt");
 						
 						
 						//getVersion Number and compare it to Frontend version
-						Process versioncheck = run.exec(exedir+" -v");
+						Process versioncheck = run.exec( new String[] { command[0], " -v" } );
 						BufferedReader in_version = new BufferedReader( new InputStreamReader(versioncheck.getInputStream()) );
 						String version;
 						while ((version = in_version.readLine()) != null) {
@@ -268,17 +274,16 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							}
 						}
 						
-						Process calculation = run.exec(exedir);
+						Process calculation = run.exec(command);
 
-				    	//debugout(" c++: output-1");
-				    	debugout("output0");
+						debugout("C++ - Input ready?");
 					    BufferedReader in = new BufferedReader( new InputStreamReader(calculation.getInputStream()) );
-					    debugout("output1");
+						debugout("C++ - Reading input!");
 				    	String line;
 					    while ((line = in.readLine()) != null) {
 					    	Controller.cppdebugout(line);
 					    	if(line.startsWith("Percent#")) {
-					    		debugout("Percent#: "+(line.split("#"))[1]);
+					    		//debugout("Percent#: "+(line.split("#"))[1]);
 								myCalculationView.step();
 					    	}
 					    	/*else if(line.contains("Step#")) {
@@ -287,18 +292,17 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 					    	}*/
 					    	else if(line.contains("finished") || line.contains("failed")) {
 					    		myCalculationView.setVisible(false);
-					    		debugout("Quit - Roger and out");
+					    		Controller.cppdebugout("Quit - Roger and out");
 					    		myController.CalculationFinished();
 					    		break;
 					    	}
 					    }
 						calculation.waitFor();
-						debugout("output2");
+						debugout("C++ - Calculation finished!");
 					} catch (Exception excep) {
 					    debugout(excep.getMessage());
 			    		myController.CalculationFinished();
 					}
-					debugout("output3");
 	    		}
     		}
 		}
