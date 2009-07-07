@@ -762,13 +762,13 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(e.getSource() == myView.pa_visualtab.ov_vis_right) {
 			//TODO WARNING Object3DView Test
-			/*
-			ObjectView2D source = (ObjectView2D)e.getSource();
-			myView.pa_visualtab.changeOffsetY(e.getX()-source.iLastMouseX);
-			myView.pa_visualtab.changeOffsetZ(e.getY()-source.iLastMouseY);
-			source.iLastMouseX = e.getX();
-			source.iLastMouseY = e.getY();
-			*/
+			if(!myView.pa_visualtab.Is3dEnabled()) {
+				ObjectView2D source = (ObjectView2D)e.getSource();
+				myView.pa_visualtab.changeOffsetY(e.getX()-source.iLastMouseX);
+				myView.pa_visualtab.changeOffsetZ(e.getY()-source.iLastMouseY);
+				source.iLastMouseX = e.getX();
+				source.iLastMouseY = e.getY();
+			}
 		}
 		else if(e.getSource() == myView.pa_computetab.ov_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
@@ -885,10 +885,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(source == myView.pa_visualtab.ov_vis_right) {	
 			//TODO WARNING Object3DView Test
-			/*
-			((ObjectView2D)source).iLastMouseX = e.getX();
-			((ObjectView2D)source).iLastMouseY = e.getY();
-			*/
+			if(!myView.pa_visualtab.Is3dEnabled()) {
+				((ObjectView2D)source).iLastMouseX = e.getX();
+				((ObjectView2D)source).iLastMouseY = e.getY();
+			}
 		}
 	}
 

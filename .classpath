@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="lib" path="lib/ext/j3dcore.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/lib64/sun-java3d-bin/"/>
+			<attribute name="javadoc_location" value="http://download.java.net/media/java3d/javadoc/1.5.2/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jgravsim_frontend/lib/amd64"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="j3dcore.jar">
+	<classpathentry kind="lib" path="lib/ext/j3dutils.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://download.java.net/media/java3d/javadoc/1.5.2/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="j3dutils.jar">
+	<classpathentry kind="lib" path="lib/ext/vecmath.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://download.java.net/media/java3d/javadoc/1.5.2/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="vecmath.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://download.java.net/media/java3d/javadoc/1.5.2/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
