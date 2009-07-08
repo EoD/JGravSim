@@ -12,7 +12,7 @@ public class Model {
 	Vector<Masspoint> stDataset = null;
 	DynamicWPTLoader dynamicLoader = null;
 	
-
+	public static final String DELIMSTEP = "#";
 	public static final String DELIMLINE = "\r\n";
 	public static final String DELIMDATA = ";";
 	public static final int DATAPRECISION = 20;
@@ -82,7 +82,7 @@ public class Model {
 			//String snewCurLine = sCurLine.replaceFirst(saCurLine[1], String.valueOf(newSteps));
 			String snewSteps = String.valueOf(newSteps);
 			debugout("correcttempHeader() - newSteps("+snewSteps.length()+")="+snewSteps+", saCurLine[1]("+saCurLine[1].length()+")="+saCurLine[1]);
-			while(snewSteps.length() <= saCurLine[1].length()) {
+			while(snewSteps.length() < saCurLine[1].length()) {
 				debugout("correcttempHeader()-loop-newSteps ="+snewSteps+", saCurLine[1]="+saCurLine[1]);
 				snewSteps = "0"+snewSteps;
 			}
@@ -156,7 +156,7 @@ public class Model {
 		String stepid = String.valueOf(istep);
 		istep++;
 		String numofobj = String.valueOf(OneData.size());
-		writetempout("#"+stepid+DELIMDATA+numofobj+DELIMLINE, filename);
+		writetempout(DELIMSTEP+stepid+DELIMDATA+numofobj+DELIMLINE, filename);
     	//new DATAFILE output
     	//Add Data of each object to datafile
     	for(int i=0;i<OneData.size();i++) {

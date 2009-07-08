@@ -227,35 +227,23 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							filename += "_debug";
 						else
 							filename += "_release";
-
-						/*if(Controller.MAINDEBUG) {
-							if(exedir.contains("/"))
-								exedir = exedir+"/../Gravity_Simulation_Backend/exe/"+filename+" "+exedir+"/temp.wpt";
-							else if(exedir.contains("\\"))
-								exedir = exedir+"\\..\\Gravity_Simulation_Backend\\exe\\"+filename+".exe "+exedir+"\\temp.wpt";
-							else
-									debugout("actionPerformed() - ERROR: unknown path!");
-						}
-						else {*/
 						
-						String[] command = { "\""+exedir+"", ""};
+						String[] command = new String[2];
 							if(exedir.contains("/")) {
-								command[0] = command[0]+"/"+filename+"\"";
-								command[1] = "\""+exedir+"/temp.wpt\"";
+								command[0] = exedir+"/"+filename+"";
+								command[1] = exedir+"/temp.wpt";
 	    					}
 							else if(exedir.contains("\\")) {
-								command[0] = command[0]+"\\"+filename+".exe\"";
+								command[0] = "\""+exedir+"\\"+filename+".exe\"";
 								command[1] = "\""+exedir+"\\temp.wpt\"";
 							}
 							//else
 							//		debugout("actionPerformed() - ERROR: unknown path!");
 						//}
 
-						debugout("actionPerformed - C++ - Calculation : Command="+command[0]+" "+command[1]+"\"");
-					    //Process calculation = run.exec("/home/eod/data/workspace/Gravity_Simulation_Backend/exe/Gravity_debug "+currentfolder+"/temp.wpt");
-						
-						
+
 						//getVersion Number and compare it to Frontend version
+						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+" -v"+"'");
 						Process versioncheck = run.exec( new String[] { command[0], " -v" } );
 						BufferedReader in_version = new BufferedReader( new InputStreamReader(versioncheck.getInputStream()) );
 						String version;
@@ -273,7 +261,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 								}
 							}
 						}
-						
+
+						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+"'");
 						Process calculation = run.exec(command);
 
 						debugout("C++ - Input ready?");
