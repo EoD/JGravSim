@@ -9,10 +9,10 @@ public class TabAbout extends JPanel {
 	
 	public TabAbout(XMLParser myXMLParser) {
 		setLayout(new GridLayout(0,1));
-		String sAbouttext = (Controller.MAINDEBUG==true || Controller.CPPDEBUG==true?
+		String sAbouttext = (Controller.MAINDEBUG==true || (Controller.CPP==true && Controller.CPPDEBUG==true)? 
 								myXMLParser.getText(40)+": "+Controller.VERSION+" current build\n" +
 								myXMLParser.getText(45)+":\n"+
-									(Controller.CPPDEBUG==true?"* C++ Debug\n":"")+
+									((Controller.CPP==true && Controller.CPPDEBUG==true)?"* C++ Debug\n":"")+
 									(Controller.MAINDEBUG==true?
 										"* Java Debug: Controller "+
 										(CalcCode.DEBUG==true?"- Calculation ":"")+

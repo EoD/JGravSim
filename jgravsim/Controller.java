@@ -233,7 +233,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			System.out.println(a);
 	}
 	public static void cppdebugout(String a) {
-		if(CPPDEBUG)
+		if(CPP && CPPDEBUG)
 			System.out.println("c++: "+a);
 	}
 	
