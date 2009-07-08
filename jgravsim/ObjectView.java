@@ -28,6 +28,8 @@ public class ObjectView extends JPanel {
 	public static final float CONVERT3D = 2.0E7f; // new
 	public static final int speedvecmax = 55;
 	protected int iGridOffset = 25;
+	protected int iLastMouseX = 0;
+	protected int iLastMouseY = 0;
 	protected double iZoomLevel = 12.0;
 	protected boolean draw_strings = true;
 	protected boolean draw_speed = true;

@@ -3,6 +3,7 @@ package jgravsim;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
+import java.awt.event.MouseWheelListener;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -20,7 +21,7 @@ import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -28,9 +29,6 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 public class ObjectView3D extends ObjectView {
 
 	private static final long serialVersionUID = 1L;
-	
-	int iLastMouseX = 0;
-	int iLastMouseY = 0;
 
 	private BranchGroup bg_main;
 	private Canvas3D canvas_main;
@@ -168,18 +166,17 @@ public class ObjectView3D extends ObjectView {
 		myMouseRotate.setBoundsAutoCompute(true);
 		objRoot.addChild(myMouseRotate);
 
-		MouseTranslate myMouseTranslate = new MouseTranslate(
-				MouseBehavior.INVERT_INPUT);
+		MouseTranslate myMouseTranslate = new MouseTranslate(MouseBehavior.INVERT_INPUT);
 		myMouseTranslate.setTransformGroup(vpTrans);
 		myMouseTranslate.setSchedulingBounds(mouseBounds);
 		objRoot.addChild(myMouseTranslate);
 
-		MouseZoom myMouseZoom = new MouseZoom(MouseBehavior.INVERT_INPUT);
+		MouseWheelZoom myMouseZoom = new MouseWheelZoom();
 		myMouseZoom.setTransformGroup(vpTrans);
 		myMouseZoom.setSchedulingBounds(mouseBounds);
 		objRoot.addChild(myMouseZoom);
 
-		
+
         Vector3f translate = new Vector3f();
         Transform3D T3D = new Transform3D();
         translate.set( 0.0f, 0.03f, 0.0f);
@@ -188,13 +185,16 @@ public class ObjectView3D extends ObjectView {
         KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(vpTrans);
         keyNavBeh.setSchedulingBounds(new BoundingSphere(new Point3d(),1000.0));
         objRoot.addChild(keyNavBeh);
-		
+
 		// Let Java 3D perform optimizations on this scene graph.
 		objRoot.compile();
 
 		return objRoot;
 	}
 	
+	@Override
+	public synchronized void addMouseWheelListener(MouseWheelListener l) {
+	}
 	
 	public void updateSceneGraph() {
 		BranchGroup bg_new = createSceneGraph(simpleU);

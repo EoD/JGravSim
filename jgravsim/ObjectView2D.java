@@ -6,9 +6,6 @@ import java.awt.Graphics;
 public class ObjectView2D extends ObjectView {
 	private static final long serialVersionUID = 1L;
 	
-	int iLastMouseX = 0;
-	int iLastMouseY = 0;
-	
 	ObjectView2D(String axes) {
 		super();
 		cAxes = new char[2];
