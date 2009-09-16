@@ -211,7 +211,7 @@ public class Model {
 	    	return 0;
 	}
 	
-	public int loadDataset(File infile) {
+	public int loadDataset(File infile, int istep) {
 		//vSteps = new Vector<Step>();
 		//debugout("Parsing Inputfile: "+infile.getName());
 		
@@ -222,6 +222,7 @@ public class Model {
 			String sCurLine;
 			String[] saCurLine;
 			int iCurLine = 1;
+			int numObjects = 0;
 			fr = new FileReader(infile);	
 			br = new BufferedReader(fr);
 			
@@ -242,23 +243,38 @@ public class Model {
 			dtimeCount = Double.parseDouble(saCurLine[2]);
 			ddataCount = ((double)numSteps)*dtimeCount;
 			
+			//istep = -1 means "max" step count
+			if(istep < 0)
+				istep = numSteps;
+			
 			iCurLine++;
 			
-				sCurLine = br.readLine(); /* read the first line of the block */
-				
-				if(sCurLine == null) {
-					br.close();
-					return INFILE_EOFSTEPERROR;
+			//check all lines for the istep count we are looking for
+			while( (sCurLine = br.readLine()) != null ) {
+				if(!sCurLine.contains(DELIMSTEP))
+					continue;
+				else {
+					int istepid = Integer.valueOf(String.valueOf(sCurLine.toCharArray(), 1, sCurLine.indexOf(DELIMDATA)-1));
+					if(istepid != istep)
+						continue;
+					else {
+						saCurLine = sCurLine.split(DELIMDATA);
+						if(saCurLine.length != 2) {
+							br.close();
+							return iCurLine;
+						}
+						numObjects = Integer.parseInt(saCurLine[1]);
+						iCurLine++;
+						debugout("loadDataset() - We found Step #"+istepid+" (of #"+istep+") and we found "+numObjects+" number of objects");
+						break;
+					}
 				}
+			}
+			if(sCurLine == null) {
+				br.close();
+				return INFILE_EOFSTEPERROR;
+			}
 				
-				saCurLine = sCurLine.split(DELIMDATA);
-				if(saCurLine.length != 2) {
-					br.close();
-					return iCurLine;
-				}
-				int numObjects = Integer.parseInt(saCurLine[1]);
-				
-				iCurLine++;
 
 				stDataset = new Vector<Masspoint>();
 				
@@ -306,6 +322,11 @@ public class Model {
 			return INFILE_READERROR;
 		}
 		return INFILE_NOERROR; /* no error detected */
+	}
+	
+
+	public int loadDataset(File infile) {
+		return loadDataset(infile, 0);
 	}
 	
 	public void copydata(InputStream instream, OutputStream outstream) throws IOException { 

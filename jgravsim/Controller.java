@@ -1399,21 +1399,66 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	public void CalculationFinished() {
 		JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
 		
-		myView.pa_computetab.ButtonsStd();
-		id = vmasspoints.get(vmasspoints.size()-1).id;
-		Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
-		myView.pa_computetab.cb_Objects.setSelectedItem(mp);
-		updateComputePanels(mp, null);
-		myView.pa_computetab.ov_front.addMouseListener(this);
-		myView.pa_computetab.ov_top.addMouseListener(this);
-		myView.pa_computetab.ov_front.addMouseMotionListener(this);
-		myView.pa_computetab.ov_top.addMouseMotionListener(this);
-		myView.pa_computetab.ov_front.addMouseWheelListener(this);
-		myView.pa_computetab.ov_top.addMouseWheelListener(this);
-		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
-		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
-		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
-		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
+		//Get the latest step of the c++ temp file and show it
+			int errorline = myModel.loadDataset(new File( Model.Defaultname ), -1);
+			if(errorline != Model.INFILE_NOERROR) {
+				if(errorline == Model.INFILE_EOFSTARTERROR) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
+				}
+				else if(errorline == Model.INFILE_EOFSTEPERROR) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
+				}
+				else if(errorline == Model.INFILE_EOFOBJERROR) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
+				}
+				else if(errorline == Model.INFILE_FILENOTFOUND) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
+				}
+				else if(errorline == Model.INFILE_READERROR) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
+				}
+				
+				//Error, remove everything. Copied from b_reset
+				for(int i=vmasspoints.size()-1;i>=0;i--) {
+					RemoveMp(vmasspoints.get(i));
+				}
+				myView.pa_visualtab.displayStep(null);
+				myView.pa_visualtab.setPlayControlsEnabled(false);
+				myView.pa_visualtab.enableCounter(false);
+				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
+			}
+			else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+				//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
+				vmasspoints.removeAllElements();
+				vmasspoints.addAll(myModel.stDataset);
+				calc_datacount = myModel.ddataCount;
+				calc_timecount = myModel.dtimeCount;
+				calc_timestep = myModel.dtimeCount;
+				
+				myView.pa_computetab.cb_Objects.removeAllItems();
+				for(int i=0;i<vmasspoints.size();i++) {
+					myView.pa_computetab.cb_Objects.addItem(vmasspoints.get(i));
+				}
+				
+				myView.pa_computetab.ButtonsStd();
+				id = vmasspoints.get(vmasspoints.size()-1).id;
+				Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
+				myView.pa_computetab.cb_Objects.setSelectedItem(mp);
+				updateComputePanels(mp, null);
+				myView.pa_computetab.ov_front.addMouseListener(this);
+				myView.pa_computetab.ov_top.addMouseListener(this);
+				myView.pa_computetab.ov_front.addMouseMotionListener(this);
+				myView.pa_computetab.ov_top.addMouseMotionListener(this);
+				myView.pa_computetab.ov_front.addMouseWheelListener(this);
+				myView.pa_computetab.ov_top.addMouseWheelListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
+			}
 	}
 	
 	public void RemoveMp(Masspoint mp) {
