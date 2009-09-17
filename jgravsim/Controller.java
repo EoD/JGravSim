@@ -1396,10 +1396,11 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myModel.saveOutputfile(fpInputFile);
 	}
 	
-	public void CalculationFinished() {
-		JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
+	public void CalculationFinished(int error) {
+		if(error == CalcCode.NOERROR) {
+			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
 		
-		//Get the latest step of the c++ temp file and show it
+			//Get the latest step of the c++ temp file and show it
 			int errorline = myModel.loadDataset(new File( Model.Defaultname ), -1);
 			if(errorline != Model.INFILE_NOERROR) {
 				if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -1459,6 +1460,24 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
 				myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
 			}
+		}
+		else {				
+			myView.pa_computetab.ButtonsStd();
+			id = vmasspoints.get(vmasspoints.size()-1).id;
+			Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
+			myView.pa_computetab.cb_Objects.setSelectedItem(mp);
+			updateComputePanels(mp, null);
+			myView.pa_computetab.ov_front.addMouseListener(this);
+			myView.pa_computetab.ov_top.addMouseListener(this);
+			myView.pa_computetab.ov_front.addMouseMotionListener(this);
+			myView.pa_computetab.ov_top.addMouseMotionListener(this);
+			myView.pa_computetab.ov_front.addMouseWheelListener(this);
+			myView.pa_computetab.ov_top.addMouseWheelListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
+		}
 	}
 	
 	public void RemoveMp(Masspoint mp) {

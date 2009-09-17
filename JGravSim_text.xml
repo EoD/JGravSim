@@ -31,7 +31,7 @@
 	<text id="154">Die Anzahl der Massenpunkte scheint fehlerhaft.</text>
 	<text id="155">Datei nicht gefunden</text>
 	<text id="156">Lesefehler</text>
-	<text id="157">Fehler beim Einlesen der Datei</text>
+	<text id="157">Fehler beim Lesen der Datei</text>
 	<text id="158">Fehlerhafte Datei</text>
 	<text id="159">Eingabefehler</text>
 	<text id="160">Die Berechnung wurde aufgrund eines internen Fehlers abgebrochen.</text>
@@ -50,6 +50,9 @@
 	<text id="173">Warnung</text>
 	<text id="174">Die zu speichernde Datei is so groß, dass in der Visualisierung\nimmer nur 1/%1d der Datei eingeladen werden kann.Fortfahren?</text>
 	<text id="175">Es können nicht alle Punkte angezeigt werden, da nicht die ganze Datei eingeladen wurde.\nEs werden nur Frame %1d bis %2d angezeigt.</text>
+	<text id="176">Berechtigungsfehler</text>
+	<text id="177">Die Datei %1s konnte nicht ausgeführt werden.</text>
+	<text id="178">Soll ich versuchen das Problem zu beheben?</text>
 
 	<text id="2">Berechnung</text>
 	<!-- text id="20">Buttons</text -->
@@ -77,7 +80,7 @@
 	<text id="222">In welchen Zeitabstaenden soll die Berechnung gespeichert werden? (Größere Werte, größere Ausgabedatei)</text>
 	<text id="223">Mit welchen Zeitabständen soll gerechnet werden? (Kleine Werte, längere Berechnung)</text>
 	<text id="224">Benutze neue C/C++-Berechnung (nicht empfohlen)</text>
-	<text id="225">Die Version des Backends (v%1d) stimmt nicht mit der erwarteteten Version (v%2d) überein. Wollen sie fortfahren?</text>
+	<text id="225">Die Version des Backends (v%1.1f) stimmt nicht mit der erwarteteten Version (v%2.1f) überein. Wollen sie fortfahren?</text>
 	<text id="226">Startwerte eines neuen Massenpunktes</text>
 	<text id="227">Hinzufügen</text>
 	<text id="228">Geschwindigkeitsvektor</text>

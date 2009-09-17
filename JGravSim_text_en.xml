@@ -50,6 +50,9 @@
 	<text id="173">Warning</text>
 	<text id="174">The file you want to save is too large, so the visualisation\ncan only show 1/%1d of the file at once. Continue?</text>
 	<text id="175">Not all points can be shown, as the file is too large to be read at once.\nOnly frame %1d to %2d are shown.</text>
+	<text id="176">Permission Error</text>
+	<text id="177">The file %1s could not be executed.</text>
+	<text id="178">Should i try to fix the problem?</text>
 
 	<text id="2">Calculation</text>
 	<!-- text id="20">Buttons</text -->
@@ -77,7 +80,7 @@
 	<text id="222">How large should the timesteps for saving be? (larger values means output file)</text>
 	<text id="223">How large should the timesteps for calculationbe? (smaller values means longer calculation)</text>
 	<text id="224">Use new C/C++-calculation (not recommended)</text>
-	<text id="225">Your backend version (v%1d) doesn't match with the expected version (v%2d). Do you want to continue?</text>
+	<text id="225">Your backend version (v%1.1f) doesn't match with the expected version (v%2.1f). Do you want to continue?</text>
 	<text id="226">Startwerte eines neuen Massenpunktes</text>
 	<text id="227">Add</text>
 	<text id="228">Speedvector</text>

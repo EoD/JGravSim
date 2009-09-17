@@ -229,19 +229,51 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							filename += "_release";
 						
 						String[] command = new String[2];
-							if(exedir.contains("/")) {
-								command[0] = exedir+"/"+filename+"";
-								command[1] = exedir+"/temp.wpt";
-	    					}
-							else if(exedir.contains("\\")) {
-								command[0] = "\""+exedir+"\\"+filename+".exe\"";
-								command[1] = "\""+exedir+"\\temp.wpt\"";
-							}
+						if(exedir.contains("/")) {
+							command[0] = exedir+"/"+filename+"";
+							command[1] = exedir+"/temp.wpt";
+	    				}
+						else if(exedir.contains("\\")) {
+							command[0] = "\""+exedir+"\\"+filename+".exe\"";
+							command[1] = "\""+exedir+"\\temp.wpt\"";
+						}
 							//else
 							//		debugout("actionPerformed() - ERROR: unknown path!");
 						//}
 
 
+						File fcalc = new File(command[0]);
+						if(!fcalc.exists()) {
+							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(155) + ": " + command[0], myController.myView.myXMLParser.getText(156), JOptionPane.INFORMATION_MESSAGE);
+							throw new IOException("EoD - File not found!");
+						}
+						
+						if(!fcalc.canRead()) {
+							String question = myController.myView.myXMLParser.getText(157) + " " + command[0] + "\n" + myController.myView.myXMLParser.getText(178);
+							int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(156),JOptionPane.YES_NO_OPTION);
+							if(answer == 0) {
+								if(!fcalc.setReadable(true)) {
+									JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
+									throw new IOException("EoD - Could not make file readable!");
+								}
+							}
+							else
+								throw new IOException("EoD - File not readable!");
+						}
+						
+						if(!fcalc.canExecute()) {
+							String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(177) + "\n" + myController.myView.myXMLParser.getText(178), command[0]);
+							int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(176),JOptionPane.YES_NO_OPTION);
+							if(answer == 0) {
+								if(!fcalc.setExecutable(true)) {
+									JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
+									throw new IOException("EoD - Could not make file executeable!");
+								}
+							}
+							else
+								throw new IOException("EoD - File not executeable!");
+						}
+							
 						//getVersion Number and compare it to Frontend version
 						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+" -v"+"'");
 						Process versioncheck = run.exec( new String[] { command[0], " -v" } );
@@ -252,10 +284,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 								double dversion = Double.parseDouble(version.split(":")[1]);
 								if(dversion != Controller.VERSION) {
 									debugout("actionPerformed() - wrong version. Expected: v"+Controller.VERSION+", received: v"+dversion);
-									int awnser = JOptionPane.showConfirmDialog(myController.myView, myController.myView.myXMLParser.getText(231),myController.myView.myXMLParser.getText(40),JOptionPane.YES_NO_OPTION);
+									String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(225), 1.22, 1.8);
+									int awnser = JOptionPane.showConfirmDialog(myController.myView, question, myController.myView.myXMLParser.getText(40),JOptionPane.YES_NO_OPTION);
 									if(awnser != 0) {
-							    		myCalculationView.setVisible(false);
-										myController.CalculationFinished();
+										myController.CalculationFinished(CalcCode.UNKNOWN);
 							    		return;
 									}
 								}
@@ -279,23 +311,29 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 					    		Controller.cppdebugout("Step#: "+(line.split("#"))[1]);
 								myCalculationView.step();
 					    	}*/
-					    	else if(line.contains("finished") || line.contains("failed")) {
-					    		myCalculationView.setVisible(false);
+					    	else if(line.contains("finished")) {
 					    		Controller.cppdebugout("Quit - Roger and out");
-					    		myController.CalculationFinished();
+					    		myController.CalculationFinished(CalcCode.NOERROR);
+					    		break;
+					    	}
+					    	else if(line.contains("failed")) {
+					    		Controller.cppdebugout("Quit - Roger and out");
+					    		myController.CalculationFinished(CalcCode.UNKNOWN);
 					    		break;
 					    	}
 					    }
 						calculation.waitFor();
 						debugout("C++ - Calculation finished!");
-					} catch (Exception excep) {
+	    			} catch(Exception excep) {
 					    debugout(excep.getMessage());
-			    		myController.CalculationFinished();
-					}
+				   		myController.CalculationFinished(CalcCode.UNKNOWN);
+	    			}
+		    		finally {
+				   		myCalculationView.setVisible(false);
+		    		}
 	    		}
     		}
 		}
-		
 	}
 	
 	public boolean[] CheckInput(String[] sa_textfields) {
