@@ -25,7 +25,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	private static final long serialVersionUID = 1L;
 	
 	static final boolean DEBUG = true;
-	static final String exe = "gravitysim";
+	static final String exe = "cgravsim";
 	
 	Controller myController;
 	View_CalcProgress myCalculationView;
@@ -219,33 +219,38 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	    			debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
     				myCalculationView = new View_CalcProgress((int)99, myController);
 	    			try {
+						debugout("EoD - See: os.name        = "+System.getProperty("os.name"));
+						debugout("EoD - See: os.arch        = "+System.getProperty("os.arch"));
+						debugout("EoD - See: os.version     = "+System.getProperty("os.version"));
+						debugout("EoD - See: file.separator = "+System.getProperty("file.separator"));
+						
 						//myCalculationView = new CalcView((int)(myController.calc_datacount/myController.calc_timecount), myController);
 						String exedir= System.getProperty("user.dir").toString();
 							
 						String filename = exe;
 						if(Controller.CPPDEBUG)
-							filename += "_debug";
-						else
-							filename += "_release";
+							filename += "dbg";
+						
+						filename += "_"+System.getProperty("os.arch");
 						
 						String[] command = new String[2];
-						if(exedir.contains("/")) {
-							command[0] = exedir+"/"+filename+"";
-							command[1] = exedir+"/temp.wpt";
-	    				}
-						else if(exedir.contains("\\")) {
-							command[0] = "\""+exedir+"\\"+filename+".exe\"";
-							command[1] = "\""+exedir+"\\temp.wpt\"";
-						}
-							//else
-							//		debugout("actionPerformed() - ERROR: unknown path!");
-						//}
-
-
+						command[0] = exedir+File.separator+filename;
+						command[1] = exedir+File.separator+"temp.wpt";
+						
+						if(System.getProperty("os.name").contains("Windows"))
+							command[0] += ".exe";
+						
 						File fcalc = new File(command[0]);
-						if(!fcalc.exists()) {
+						while(!fcalc.exists()) {
+							if(System.getProperty("os.arch").contains("amd64") && command[0].contains("amd64")) {
+								debugout("WARNING - actionPerformed() - could not find C++ file for amd64, switchting to x86");
+								command[0] = command[0].replace("amd64", "x86");
+								fcalc = new File(command[0]);
+								continue;
+							}
+							
 							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(155) + ": " + command[0], myController.myView.myXMLParser.getText(156), JOptionPane.INFORMATION_MESSAGE);
-							throw new IOException("EoD - File not found!");
+							throw new IOException("EoD - File "+command[0]+" not found!");
 						}
 						
 						if(!fcalc.canRead()) {

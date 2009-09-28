@@ -20,7 +20,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	static boolean MAINDEBUG = true;
 	static boolean CPP = true;
-	static boolean CPPDEBUG = true;
+	static boolean CPPDEBUG = false;
 	
 	static double ZOOMLEVEL = 10.0;
 	static final double VERSION = 1.8;
@@ -215,15 +215,11 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		//Frame frame = new MainFrame(new Controller(), 512, 512);
 		//frame.setVisible(false);
 
-		if(args.length >= 0)
-			System.out.println("huhu0!");
-			
 		if(args.length > 0) {
-			System.out.println("huhu1! file="+args[0]);
+			System.out.println("main() - args.length > 0! file="+args[0]);
 			new Controller(args[0]);
-		}
-		else {
-			System.out.println("huhuX!"+args.length);
+		} else {
+			System.out.println("main() - args.length = "+args.length+" <= 0!");
 			new Controller();
 		}
 	}
