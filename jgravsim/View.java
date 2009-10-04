@@ -23,8 +23,7 @@ public class View extends JFrame  {
 		pa_visualtab = new TabVisualisation(myXMLParser, answer==0?true:false ); /* Visualisierung berechneter Daten */
 		pa_abouttab = new TabAbout(myXMLParser); /* Über dieses Programm */
 		
-		// TODO add remove temp-file method!
-		//setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		tp_tabs.addTab(myXMLParser.getText(2), pa_computetab);
 		tp_tabs.addTab(myXMLParser.getText(3), pa_visualtab);
 		tp_tabs.addTab(myXMLParser.getText(4), pa_abouttab);

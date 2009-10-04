@@ -123,7 +123,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView = new View(lang);
 		myModel = new Model();
 		
-		//myView.addWindowListener(this);
+		myView.addWindowListener(this);
 		myView.addKeyListener(this);	
 		myView.setFocusable(true);
 
@@ -1066,6 +1066,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			if(!MAINDEBUG)
 				myModel.deleteFile(Model.Defaultname);		
 		}
+		System.exit(0);
 	}
 	
 	public void windowDeactivated(WindowEvent e) {
