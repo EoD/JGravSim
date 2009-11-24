@@ -231,7 +231,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						if(Controller.CPPDEBUG)
 							filename += "dbg";
 						
-						filename += "_"+System.getProperty("os.arch");
+						if(System.getProperty("os.arch").matches("i[1-9]86"))
+							filename += "_x86";
+						else
+							filename += "_"+System.getProperty("os.arch");
 						
 						String[] command = new String[2];
 						command[0] = exedir+File.separator+filename;
