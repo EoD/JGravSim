@@ -39,7 +39,6 @@ public class CalcCode extends Thread {
 	
 	Controller myController;
 	Model myModel;
-	View_CalcProgress myCalculationView;
 	double dtmax;
 	double timecount;
 	double timestep;
@@ -67,7 +66,7 @@ public class CalcCode extends Thread {
 		b_console = console;
 		
 		if(b_console == false)
-			myCalculationView = new View_CalcProgress((int)(dtmax/timecount), myController);
+			myController.startCalcProgress((int)(dtmax/timecount));
 		error = NOERROR;
 	}
 	
@@ -187,7 +186,7 @@ public class CalcCode extends Thread {
 				dt = timestep; //reset to old step size
 				debugout("calcMain() - end, dt = timestep ="+dt+"="+timestep);
 				if(b_console == false)
-					myCalculationView.step();
+					myController.myView_CalcProgress.step();
 			}
 			else
 				debugout("dtsmallsum < timestep: "+dtsmallsum+" < "+timestep+".dtsum="+dtsum);
@@ -203,7 +202,7 @@ public class CalcCode extends Thread {
 		}
 		debugout("calcMain - Quit - Roger and out");
 		if(b_console == false) {
-			myCalculationView.setVisible(false);
+			myController.myView_CalcProgress.setVisible(false);
 			myController.ThreadFinished(vmps_current, error);
 		}
 		else

@@ -28,9 +28,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	static final String exe = "cgravsim";
 	
 	Controller myController;
-	View_CalcProgress myCalculationView;
 	XMLParser myXMLParser;
 	Model myModel;
+	ProcessBuilder calculation;
+	Process calculationp;
 	
 	JPanel pan_main;
 		JPanel pan_headline;
@@ -216,7 +217,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				else {
 					Runtime run = Runtime.getRuntime();
 					debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
-					myCalculationView = new View_CalcProgress((int)99, myController);
 					try {
 						debugout("EoD - See: os.name	= "+System.getProperty("os.name"));
 						debugout("EoD - See: os.arch	= "+System.getProperty("os.arch"));
@@ -235,10 +235,12 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						else
 							filename += "_"+System.getProperty("os.arch");
 						
-						String[] command = new String[2];
+						String[] command = new String[4];
 						command[0] = exedir+File.separator+filename;
-						command[1] = exedir+File.separator+"temp.wpt";
-
+						command[1] = "-t";
+						command[2] = Double.toString(myController.calc_timestep);
+						command[3] = exedir+File.separator+"temp.wpt";
+						
 						if(System.getProperty("os.name").contains("Windows"))
 							command[0] += ".exe";
 
@@ -276,6 +278,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
 								throw new IOException("EoD - Could not make file executeable!");
 							}
+							else
+								throw new IOException("EoD - File not executeable!");
 						}
 						else
 							throw new IOException("EoD - File not executeable!");
@@ -283,7 +287,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 						//getVersion Number and compare it to Frontend version
 						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+" -v"+"'");
-						Process versioncheck = run.exec( new String[] { command[0], " -v" } );
+						Process versioncheck = run.exec( command[0]+" -v" );
 						BufferedReader in_version = new BufferedReader( new InputStreamReader(versioncheck.getInputStream()) );
 						String version;
 						while ((version = in_version.readLine()) != null) {
@@ -310,39 +314,26 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						if(version == null)
 							throw new IOException("EoD - Error while executing "+command[0]+" -v !");
 
-						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+"'");
-						Process calculation = run.exec(command);
-						debugout("C++ - Input ready?");
-						BufferedReader in = new BufferedReader( new InputStreamReader(calculation.getInputStream()) );
-						debugout("C++ - Reading input!");
-						String line;
-						while ((line = in.readLine()) != null) {
-							Controller.cppdebugout(line);
-							if(line.startsWith("Percent#")) {
-									myCalculationView.step();
-							}
-							else if(line.contains("finished")) {
-							Controller.cppdebugout("Quit - Roger and out");
-							myController.CalculationFinished(CalcCode.NOERROR);
-							break;
-							}
-							else if(line.contains("failed")) {
-								Controller.cppdebugout("Quit - Roger and out");
-								myController.CalculationFinished(CalcCode.UNKNOWN);
-								break;
-							}
+						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+" "+command[2]+" "+command[3]);
+						if(System.getProperty("os.name").contains("Windows")) {
+							calculation = new ProcessBuilder( new String[]{"cmd.exe", "/C", command[0], command[1], command[2], command[3]} );
 						}
-						calculation.waitFor();
-						debugout("C++ - Calculation finished!");
-					} catch(Exception excep) {
-						debugout(excep.getMessage());
-						myController.CalculationFinished(CalcCode.UNKNOWN);
-					}
-					finally {
-						myCalculationView.setVisible(false);
-					}
-				}
-			}
+						else
+							calculation = new ProcessBuilder( command );
+						//TODO Fix stop button functionality
+						//myController.myView.pa_computetab.b_stop.setEnabled(true);
+						calculationp = calculation.start();
+						if(calculationp == null)
+							throw new IOException("EoD - Error while executing "+command[0]+" "+command[1]+" "+command[2]+" "+command[3]);
+						
+						myController.myCalcProgress = new CalcProgress(myController, Model.FILE_PERCENT, calculationp);
+						myController.myCalcProgress.start();
+	    			} catch(Exception excep) {
+					    debugout(excep.getMessage());
+				   		myController.CalculationFinished(CalcCode.UNKNOWN);
+	    			}
+	    		}
+    		}
 		}
 	}
 

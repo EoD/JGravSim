@@ -8,6 +8,7 @@ public class Model {
 
 	public static boolean DEBUG = false;
 	public static final String Defaultname = "temp.wpt";
+	public static final String FILE_PERCENT = "percent.tmp";
 	
 	Vector<Masspoint> stDataset = null;
 	DynamicWPTLoader dynamicLoader = null;
@@ -112,6 +113,42 @@ public class Model {
 			return INFILE_READERROR;
 		}
 		return INFILE_NOERROR; /* no error detected */	
+	}
+	
+	public int findlaststep(File infile) {
+		debugout("findlaststep() - Looking for last step...");
+		int step = 0;
+		try {
+			FileReader fr;
+			BufferedReader br;
+			String sCurLine;
+
+			fr = new FileReader(infile);	
+			br = new BufferedReader(fr);
+			
+			//check all lines for the istep count we are looking for
+			while( (sCurLine = br.readLine()) != null ) {
+				int[] iStepData = parseStep(sCurLine);
+				if(iStepData == null)
+					break;
+				else if(iStepData[0] < 0)
+					continue;
+				else
+					step = iStepData[0];
+			}
+
+			br.close();
+			fr.close();
+		} catch(FileNotFoundException e) {
+			debugout("readfile() - INFILE_FILENOTFOUND "+infile);
+			return Model.INFILE_FILENOTFOUND;
+		} catch(IOException e) {
+			debugout("readfile() - INFILE_READERROR!");
+			return Model.INFILE_READERROR;
+		}
+			
+		debugout("findlaststep() - Last step found "+step);
+		return step;
 	}
 	
 	/* 
@@ -251,21 +288,17 @@ public class Model {
 			
 			//check all lines for the istep count we are looking for
 			while( (sCurLine = br.readLine()) != null ) {
-				if(!sCurLine.contains(DELIMSTEP))
+				int[] iStepData = parseStep(sCurLine);
+				if(iStepData == null)
+					return iCurLine;
+				else if(iStepData[0] < 0)
 					continue;
 				else {
-					int istepid = Integer.valueOf(String.valueOf(sCurLine.toCharArray(), 1, sCurLine.indexOf(DELIMDATA)-1));
-					if(istepid != istep)
+					if(iStepData[0] != istep)
 						continue;
 					else {
-						saCurLine = sCurLine.split(DELIMDATA);
-						if(saCurLine.length != 2) {
-							br.close();
-							return iCurLine;
-						}
-						numObjects = Integer.parseInt(saCurLine[1]);
+						numObjects = iStepData[1];
 						iCurLine++;
-						debugout("loadDataset() - We found Step #"+istepid+" (of #"+istep+") and we found "+numObjects+" number of objects");
 						break;
 					}
 				}
@@ -355,5 +388,21 @@ public class Model {
 	    	if ( fos != null ) 
 	    		try { fos.close(); } catch ( IOException e ) { } 
 	    } 
+	}
+	public int[] parseStep(String sCurLine) {
+		int numObjects = -1;
+		int istepid = -1;
+		
+		if(sCurLine.contains(DELIMSTEP)) {
+			if(!sCurLine.contains(DELIMDATA))
+				return null;
+			istepid = Integer.valueOf(String.valueOf(sCurLine.toCharArray(), 1, sCurLine.indexOf(DELIMDATA)-1));
+			String[] saCurLine = sCurLine.split(DELIMDATA);
+			if(saCurLine.length != 2)
+				return null;
+			numObjects = Integer.parseInt(saCurLine[1]);
+			debugout("parseStep() - We found Step #"+istepid+" (of #"+istep+") and we found "+numObjects+" number of objects");
+		}
+		return new int[] {istepid, numObjects};
 	}
 }

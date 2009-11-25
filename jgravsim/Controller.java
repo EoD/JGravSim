@@ -50,6 +50,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	View myView;
 	Model myModel;
 	CalcCode myCalculation;
+	CalcProgress myCalcProgress;
+	View_CalcOptions myView_CalcOptions;
+	View_CalcProgress myView_CalcProgress;
 	File fpInputFile = null;
 	int lang;
 	
@@ -490,10 +493,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}	
 		}
         else if(source == myView.pa_computetab.b_compute)  {
-			//disable while program is running
+		//disable while program is running
         	myView.pa_computetab.ButtonsAni();
-			myView.pa_computetab.b_stop.setEnabled(false);
-        	new View_CalcOptions(this, myModel);
+		myView.pa_computetab.b_stop.setEnabled(false);
+		myView_CalcOptions = new View_CalcOptions(this, myModel);
     		myView.pa_computetab.ov_top.removeMouseListener(this);
     		myView.pa_computetab.ov_front.removeMouseListener(this);
     		myView.pa_computetab.ov_top.removeMouseMotionListener(this);
@@ -509,7 +512,18 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
         } 
         else if(source == myView.pa_computetab.b_stop) {
         	//Stop is pressed and timer is not running, so calculation has to be stopped
-           	flagcalc = false;
+           	if(myCalcProgress != null) {
+           		myCalcProgress.halt();
+           		debugout("Halted myCalcProgress "+ myCalcProgress.pcalculation.toString());
+           		int laststep = myModel.findlaststep(new File(Model.Defaultname));
+           		if(laststep > 0)
+           			myModel.correctHeader(new File(Model.Defaultname), laststep);
+           		
+           		myCalcProgress = null;
+           		CalculationFinished(CalcCode.NOERROR);
+           	}
+           	else
+           		flagcalc = false;
         }
         else if(source == myView.pa_computetab.b_savefile) {
 			JFileChooser fc;
@@ -1394,6 +1408,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 	
 	public void CalculationFinished(int error) {
+		if(myView_CalcProgress != null)
+			myView_CalcProgress.setVisible(false);
+		
 		if(error == CalcCode.NOERROR) {
 			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
 		
@@ -1458,7 +1475,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
 			}
 		}
-		else {				
+		else {		
+			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(167), myView.myXMLParser.getText(172),JOptionPane.INFORMATION_MESSAGE);
 			myView.pa_computetab.ButtonsStd();
 			id = vmasspoints.get(vmasspoints.size()-1).id;
 			Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
@@ -1914,5 +1932,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 	public void setEditing(boolean b) {
 		flagedit = b;		
+	}
+
+	public void startCalcProgress(int i) {
+		myView_CalcProgress = new View_CalcProgress(i, this);
 	}
 }
