@@ -45,7 +45,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		JPanel pan_input_timestep;
 			JTextField tf_timestep;
 			JLabel la_timestep;
-				
+	
 		JPanel pan_buttons;
 			JButton b_calculate;
 			JButton b_cancel ;
@@ -75,7 +75,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		setTitle(myXMLParser.getText(220));
 	   
 		Dimension dSizeDaten = new Dimension(160,21);  
-	    
+		
 		
 		la_datacount = new JLabel(myXMLParser.getText(221));
 		//Datacount field
@@ -88,7 +88,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		
 		tf_datacount = new JTextField(datacount);
 		tf_datacount.setMinimumSize(dSizeDaten);
-		tf_datacount.setPreferredSize(dSizeDaten);	
+		tf_datacount.setPreferredSize(dSizeDaten);
 		tf_datacount.setBorder( new BevelBorder(BevelBorder.RAISED) );
 		tf_datacount.setEditable(true);
 		
@@ -104,7 +104,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		
 		tf_timecount = new JTextField(timecount);
 		tf_timecount.setMinimumSize(dSizeDaten);
-		tf_timecount.setPreferredSize(dSizeDaten);	
+		tf_timecount.setPreferredSize(dSizeDaten);
 		tf_timecount.setBorder( new BevelBorder(BevelBorder.RAISED) );
 		tf_timecount.setEditable(true);
 		
@@ -121,7 +121,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		tf_timestep = new JTextField(timestep);
 		//tf_timestep.setHorizontalAlignment(JTextField.CENTER);
 		tf_timestep.setMinimumSize(dSizeDaten);
-		tf_timestep.setPreferredSize(dSizeDaten);	
+		tf_timestep.setPreferredSize(dSizeDaten);
 		tf_timestep.setBorder( new BevelBorder(BevelBorder.RAISED) );
 		tf_timestep.setEditable(true);
 
@@ -134,7 +134,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 		cb_oldcalculation = new JCheckBox(myXMLParser.getText(224), false);
 		if(Controller.CPP == true) {
-			pan_options.add(cb_oldcalculation);	
+			pan_options.add(cb_oldcalculation);
 		}
 		
 		pan_main = new JPanel(new GridLayout(0,1));
@@ -151,20 +151,19 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		pan_main.setSize(pan_main.getPreferredSize().width+20, pan_main.getPreferredSize().height+80);
 		
 		add(pan_main);
-		adjustWindow(this);	
+		adjustWindow(this);
 		setSize(pan_main.getSize());
 		setVisible(true);
 	}	
 	
-	void adjustWindow(Component frame) {	
+	void adjustWindow(Component frame) {
 		Point ViewPos = myController.myView.getLocation();
 		Dimension ViewSize = myController.myView.getSize();
 		Dimension frameSize = this.getPreferredSize();
-        
+	
 		frame.setLocation(
-                (2*ViewPos.x - frameSize.width  + ViewSize.width >> 1),
-                (2*ViewPos.y - frameSize.height + ViewSize.height >> 1)
-        );
+		(2*ViewPos.x - frameSize.width  + ViewSize.width >> 1),
+		(2*ViewPos.y - frameSize.height + ViewSize.height >> 1));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -173,60 +172,59 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			myController.ThreadFinished(null, 0);
 			this.dispose();
 		}
-		else if(source == b_calculate) {            		
+		else if(source == b_calculate) {
 			tf_datacount.setBackground(null);
 			tf_timecount.setBackground(null);
 			tf_timestep.setBackground(null);
 			b_calculate.setBackground(null);
 
-    		// TODO add check!
+			// TODO add check!
 			String[] sadata = {tf_datacount.getText(),tf_timecount.getText(),tf_timestep.getText()};
 			boolean[] bacheck = CheckInput(sadata);
-    		boolean flagcheck = true;
-    		for(int i=0;i<bacheck.length;i++) {
-    			if(bacheck[i]) {
-            		b_calculate.setBackground(Color.RED);
-            		switch(i) {
-            		case 0: tf_datacount.setBackground(Color.RED); break;
-            		case 1: tf_timecount.setBackground(Color.RED); break;
-            		case 2: tf_timestep.setBackground(Color.RED); break;
-            		}
-            		flagcheck = false;
-    			}
-    		}
-    		if(flagcheck) {
+			boolean flagcheck = true;
+			for(int i=0;i<bacheck.length;i++) {
+				if(bacheck[i]) {
+					b_calculate.setBackground(Color.RED);
+					switch(i) {
+					case 0: tf_datacount.setBackground(Color.RED); break;
+					case 1: tf_timecount.setBackground(Color.RED); break;
+					case 2: tf_timestep.setBackground(Color.RED); break;
+					}
+					flagcheck = false;
+				}
+			}
+			if(flagcheck) {
 				myController.flagcalc = true;
-	    		myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);    		
-	    		myModel.AddStep(myController.getVMasspoints());
+				myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
+				myModel.AddStep(myController.getVMasspoints());
 				myController.myView.pa_computetab.b_stop.setEnabled(true);
 				if(myController.calc_datacount/myController.calc_timecount > DynamicWPTLoader.STANDARDBUFFERSIZE) {
-					String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
-					int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
-					if(answer != 0)
-						return;
+				String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
+				int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
+				if(answer != 0)
+					return;
 				}
-					
+
 				this.dispose();
-				
-				
-	    		if(cb_oldcalculation.isSelected() == false) {
-	    			debugout("actionPerformed - Java - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
-	    			myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep, false);
-	    			myController.myCalculation.start();
-	    		}
-	    		else {
+
+				if(cb_oldcalculation.isSelected() == false) {
+					debugout("actionPerformed - Java - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
+					myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep, false);
+					myController.myCalculation.start();
+				}
+				else {
 					Runtime run = Runtime.getRuntime();
-	    			debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
-    				myCalculationView = new View_CalcProgress((int)99, myController);
-	    			try {
-						debugout("EoD - See: os.name        = "+System.getProperty("os.name"));
-						debugout("EoD - See: os.arch        = "+System.getProperty("os.arch"));
-						debugout("EoD - See: os.version     = "+System.getProperty("os.version"));
+					debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
+					myCalculationView = new View_CalcProgress((int)99, myController);
+					try {
+						debugout("EoD - See: os.name	= "+System.getProperty("os.name"));
+						debugout("EoD - See: os.arch	= "+System.getProperty("os.arch"));
+						debugout("EoD - See: os.version	= "+System.getProperty("os.version"));
 						debugout("EoD - See: file.separator = "+System.getProperty("file.separator"));
-						
+
 						//myCalculationView = new CalcView((int)(myController.calc_datacount/myController.calc_timecount), myController);
 						String exedir= System.getProperty("user.dir").toString();
-							
+
 						String filename = exe;
 						if(Controller.CPPDEBUG)
 							filename += "dbg";
@@ -239,10 +237,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						String[] command = new String[2];
 						command[0] = exedir+File.separator+filename;
 						command[1] = exedir+File.separator+"temp.wpt";
-						
+
 						if(System.getProperty("os.name").contains("Windows"))
 							command[0] += ".exe";
-						
+
 						File fcalc = new File(command[0]);
 						while(!fcalc.exists()) {
 							if(System.getProperty("os.arch").contains("amd64") && command[0].contains("amd64")) {
@@ -251,11 +249,11 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 								fcalc = new File(command[0]);
 								continue;
 							}
-							
+
 							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(155) + ": " + command[0], myController.myView.myXMLParser.getText(156), JOptionPane.INFORMATION_MESSAGE);
 							throw new IOException("EoD - File "+command[0]+" not found!");
 						}
-						
+
 						if(!fcalc.canRead()) {
 							String question = myController.myView.myXMLParser.getText(157) + " " + command[0] + "\n" + myController.myView.myXMLParser.getText(178);
 							int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(156),JOptionPane.YES_NO_OPTION);
@@ -268,20 +266,20 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							else
 								throw new IOException("EoD - File not readable!");
 						}
-						
+
 						if(!fcalc.canExecute()) {
-							String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(177) + "\n" + myController.myView.myXMLParser.getText(178), command[0]);
-							int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(176),JOptionPane.YES_NO_OPTION);
-							if(answer == 0) {
-								if(!fcalc.setExecutable(true)) {
-									JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
-									throw new IOException("EoD - Could not make file executeable!");
-								}
+						String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(177) + "\n" + myController.myView.myXMLParser.getText(178), command[0]);
+						int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(176),JOptionPane.YES_NO_OPTION);
+						if(answer == 0) {
+							if(!fcalc.setExecutable(true)) {
+							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
+								throw new IOException("EoD - Could not make file executeable!");
 							}
-							else
-								throw new IOException("EoD - File not executeable!");
 						}
-							
+						else
+							throw new IOException("EoD - File not executeable!");
+						}
+
 						//getVersion Number and compare it to Frontend version
 						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+" -v"+"'");
 						Process versioncheck = run.exec( new String[] { command[0], " -v" } );
@@ -296,54 +294,47 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 									int awnser = JOptionPane.showConfirmDialog(myController.myView, question, myController.myView.myXMLParser.getText(40),JOptionPane.YES_NO_OPTION);
 									if(awnser != 0) {
 										myController.CalculationFinished(CalcCode.UNKNOWN);
-							    		return;
+									return;
 									}
 								}
 							}
 						}
-
 						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+"'");
 						Process calculation = run.exec(command);
-
 						debugout("C++ - Input ready?");
-					    BufferedReader in = new BufferedReader( new InputStreamReader(calculation.getInputStream()) );
+						BufferedReader in = new BufferedReader( new InputStreamReader(calculation.getInputStream()) );
 						debugout("C++ - Reading input!");
-				    	String line;
-					    while ((line = in.readLine()) != null) {
-					    	Controller.cppdebugout(line);
-					    	if(line.startsWith("Percent#")) {
-					    		//debugout("Percent#: "+(line.split("#"))[1]);
-								myCalculationView.step();
-					    	}
-					    	/*else if(line.contains("Step#")) {
-					    		Controller.cppdebugout("Step#: "+(line.split("#"))[1]);
-								myCalculationView.step();
-					    	}*/
-					    	else if(line.contains("finished")) {
-					    		Controller.cppdebugout("Quit - Roger and out");
-					    		myController.CalculationFinished(CalcCode.NOERROR);
-					    		break;
-					    	}
-					    	else if(line.contains("failed")) {
-					    		Controller.cppdebugout("Quit - Roger and out");
-					    		myController.CalculationFinished(CalcCode.UNKNOWN);
-					    		break;
-					    	}
-					    }
+						String line;
+						while ((line = in.readLine()) != null) {
+							Controller.cppdebugout(line);
+							if(line.startsWith("Percent#")) {
+									myCalculationView.step();
+							}
+							else if(line.contains("finished")) {
+							Controller.cppdebugout("Quit - Roger and out");
+							myController.CalculationFinished(CalcCode.NOERROR);
+							break;
+							}
+							else if(line.contains("failed")) {
+								Controller.cppdebugout("Quit - Roger and out");
+								myController.CalculationFinished(CalcCode.UNKNOWN);
+								break;
+							}
+						}
 						calculation.waitFor();
 						debugout("C++ - Calculation finished!");
-	    			} catch(Exception excep) {
-					    debugout(excep.getMessage());
-				   		myController.CalculationFinished(CalcCode.UNKNOWN);
-	    			}
-		    		finally {
-				   		myCalculationView.setVisible(false);
-		    		}
-	    		}
-    		}
+					} catch(Exception excep) {
+						debugout(excep.getMessage());
+						myController.CalculationFinished(CalcCode.UNKNOWN);
+					}
+					finally {
+						myCalculationView.setVisible(false);
+					}
+				}
+			}
 		}
 	}
-	
+
 	public boolean[] CheckInput(String[] sa_textfields) {
 		double dtemp = 0.0;
 		double factor = 1.0;
@@ -353,12 +344,12 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			debugout("CheckInput() - Error");
 			return null;
 		}
-				
+		
 		for(int i=0;i<sa_textfields.length;i++) {
 			String strtemp = sa_textfields[i];
 			strtemp = InterpretInput.stringCommataReplace(strtemp);
 			String[] stratemp = strtemp.split(" ");
-			strtemp = stratemp[0];		
+			strtemp = stratemp[0];
 			try {
 					factor = InterpretInput.checkInput_Time(stratemp[1], myController.myView.myXMLParser);
 					if(factor == 0) { 
@@ -414,7 +405,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		debugout("windowClosing - CalcOptions has been closed.");
 		if(myController.flagcalc == false) {
 			myController.ThreadFinished(null, 0);
-			myController.myView.pa_computetab.ButtonsStd();	
+			myController.myView.pa_computetab.ButtonsStd();
 		}
 	}
 
@@ -429,5 +420,4 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 	public void windowOpened(WindowEvent arg0) {
 	}
-	
 }
