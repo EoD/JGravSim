@@ -31,7 +31,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	View_CalcProgress myCalculationView;
 	XMLParser myXMLParser;
 	Model myModel;
-	boolean flagclose;
 	
 	JPanel pan_main;
 		JPanel pan_headline;
@@ -197,12 +196,13 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				myController.flagcalc = true;
 				myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
 				myModel.AddStep(myController.getVMasspoints());
-				myController.myView.pa_computetab.b_stop.setEnabled(true);
 				if(myController.calc_datacount/myController.calc_timecount > DynamicWPTLoader.STANDARDBUFFERSIZE) {
-				String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
-				int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
-				if(answer != 0)
-					return;
+					String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
+					int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
+					if(answer != 0) {
+						myController.ThreadFinished(null, 0);
+						return;
+					}
 				}
 
 				this.dispose();
@@ -210,6 +210,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				if(cb_oldcalculation.isSelected() == false) {
 					debugout("actionPerformed - Java - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
 					myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep, false);
+					myController.myView.pa_computetab.b_stop.setEnabled(true);
 					myController.myCalculation.start();
 				}
 				else {
@@ -293,12 +294,22 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 									String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(225), 1.22, 1.8);
 									int awnser = JOptionPane.showConfirmDialog(myController.myView, question, myController.myView.myXMLParser.getText(40),JOptionPane.YES_NO_OPTION);
 									if(awnser != 0) {
+										in_version.close();
 										myController.CalculationFinished(CalcCode.UNKNOWN);
-									return;
+										return;
 									}
 								}
+								else {
+									debugout("actionPerformed() - backend dversion:"+dversion);
+									break;
+								}
 							}
+							version = null;
 						}
+						in_version.close();
+						if(version == null)
+							throw new IOException("EoD - Error while executing "+command[0]+" -v !");
+
 						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+"'");
 						Process calculation = run.exec(command);
 						debugout("C++ - Input ready?");

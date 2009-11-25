@@ -88,6 +88,7 @@ public class XMLParser {
 					break;
 				}
 			}
+			parser.close();
 		} catch (FileNotFoundException e) {
 			debugout("FileNotFoundException");
 		} catch (XMLStreamException e) {

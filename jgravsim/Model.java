@@ -7,7 +7,7 @@ import java.util.Vector;
 public class Model {
 
 	public static boolean DEBUG = false;
-	static final String Defaultname = "temp.wpt";
+	public static final String Defaultname = "temp.wpt";
 	
 	Vector<Masspoint> stDataset = null;
 	DynamicWPTLoader dynamicLoader = null;
@@ -22,9 +22,9 @@ public class Model {
 	public static final int INFILE_READERROR = -3;
 	public static final int INFILE_EOFSTARTERROR = -4;
 	public static final int INFILE_EOFSTEPERROR = -5;
-	public static final int INFILE_EOFOBJERROR = -6;	
+	public static final int INFILE_EOFOBJERROR = -6;
 	String filename;
-	//File file;
+
 	int istep;
 	double dtimeCount;
 	double ddataCount;
@@ -103,9 +103,9 @@ public class Model {
 						try { rafile.close(); } 
 						catch ( IOException e ) { e.printStackTrace(); }
 					}
-				}		
-			fr.close();
+				}
 			br.close();
+			fr.close();
 		} catch(FileNotFoundException e) {
 			return INFILE_FILENOTFOUND;
 		} catch(IOException e) {
