@@ -9,7 +9,7 @@ import javax.xml.stream.*;
 import javax.xml.stream.events.*;
 
 public class XMLParser {
-	
+
 	static private final boolean DEBUG = true;
 
 	String text[];

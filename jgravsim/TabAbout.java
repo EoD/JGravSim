@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class TabAbout extends JPanel {
-	public static final long serialVersionUID = LastChangedRevision ;
+	public static final long serialVersionUID = 42L;
 	
 	public JTextArea jHomepage;
 	public JTextArea jContact;

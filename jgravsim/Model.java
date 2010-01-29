@@ -6,6 +6,8 @@ import java.util.Vector;
 
 public class Model {
 
+	public static final long serialVersionUID = 42 ;
+	
 	public static boolean DEBUG = false;
 	public static final String Defaultname = "temp.wpt";
 	public static final String FILE_PERCENT = "percent.tmp";

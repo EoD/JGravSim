@@ -3,7 +3,8 @@ package jgravsim;
 import javax.swing.*;
 
 public class View extends JFrame  {
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 42L;
+	
 	static final String textfile = "JGravSim_text.xml";
 	
 	JTabbedPane tp_tabs; /* Die Tabs werden hierrin dargestellt ... */

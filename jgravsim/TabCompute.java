@@ -19,7 +19,7 @@ import javax.swing.JTabbedPane;
 
 
 public class TabCompute extends JPanel {
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 42L;
 	
 	JButton b_edit;
 	JPanel pa_comp_middle;

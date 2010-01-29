@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 public class TabVisualisation extends JPanel  {
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 42L;
 
 	//private int iCurFrame = 0;
 	//private double dCurTime = 0;
