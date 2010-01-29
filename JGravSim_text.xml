@@ -140,11 +140,16 @@
     	
 	<text id="4">Über</text>
 	<text id="40">Version</text>
-	<text id="41">Dieses Programm wurde zur Simulation von Gravitationseinflüssen zwischen zwei oder mehreren Massepunkten entwickelt, unter Beachtung der Begrenzungen durch die spezielle Relativitätstheorie.</text>
-	<text id="42">Ich habe mich bemüht einen gewissen Grad physikalischer Genauigkeit einzuhalten, kann aber keine Garantie für die Verwendbarkeit der berechneten Ergebnisse dieses Programms übernehmen.</text>
+	<text id="41">Build</text>
+	<text id="400">Debug</text>
+	<text id="401">Dieses Programm wurde zur Simulation von Gravitationseinflüssen zwischen zwei oder mehreren Massepunkten entwickelt, unter Beachtung der Begrenzungen durch die spezielle Relativitätstheorie.</text>
+	<text id="402">Ich habe mich bemüht einen gewissen Grad physikalischer Genauigkeit einzuhalten, kann aber keine Garantie für die Verwendbarkeit der berechneten Ergebnisse dieses Programms übernehmen.</text>
+	<text id="403">Homepage</text>
+	<text id="404">Auf dieser Seite kannst du Anleitungen, mehr Szenarien und die aktuelle Version von JGravSim finden.</text>
+	<text id="405">Kontakt</text>
+	<text id="406">Ich freue mich immer über interessante Szenarien oder Fehler.</text>
 	<text id="43">Bekannte Einheiten</text>
 	<text id="44">Unbekannte Einheit</text>
-	<text id="45">Debug</text>
 	<text id="430">Y</text>
 	<text id="431">Z</text>
 	<text id="432">E</text>

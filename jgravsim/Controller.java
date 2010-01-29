@@ -1,8 +1,10 @@
 package jgravsim;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.*;
 import java.io.File;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.Vector;
 import javax.swing.JColorChooser;
@@ -16,14 +18,20 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = LastChangedRevision ;
 	
+	public final long BUILD = 
+		Math.max(Controller.serialVersionUID, TabAbout.serialVersionUID);
+
 	static boolean MAINDEBUG = true;
 	static boolean CPP = true;
 	static boolean CPPDEBUG = false;
 	
 	static double ZOOMLEVEL = 10.0;
 	static final double VERSION = 1.8;
+	
+	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
+	static final String EMAIL = "jgravsim@gmail.com";
 	// TODO update version
 	//static final String error = "";
 
@@ -193,6 +201,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
 		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
 		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
+		myView.pa_abouttab.jHomepage.addMouseListener(this);
+		myView.pa_abouttab.jContact.addMouseListener(this);
 	
 		myView.pa_visualtab.ov_vis_front.addMouseMotionListener(this);
 		myView.pa_visualtab.ov_vis_right.addMouseMotionListener(this);
@@ -219,10 +229,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		//frame.setVisible(false);
 
 		if(args.length > 0) {
-			System.out.println("main() - args.length > 0! file="+args[0]);
+			debugout("main() - args.length > 0! file="+args[0]);
 			new Controller(args[0]);
 		} else {
-			System.out.println("main() - args.length = "+args.length+" <= 0!");
+			debugout("main() - args.length = "+args.length+" <= 0!");
 			new Controller();
 		}
 	}
@@ -830,7 +840,21 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					mySpeedVector = new View_SpeedVector(GetSelectedMasspoint(), this);
 				} else if(!mySpeedVector.isVisible())
 					mySpeedVector.setVisible(true);
-			}	
+			}
+		}
+		else if(source == myView.pa_abouttab.jHomepage) {
+			try { 
+				Desktop.getDesktop().browse( new URI( HOMEPAGE ) ); 
+			} catch ( Exception excep ) { 
+				debugout("Desktop.getDesktop().browse() - No program found");
+			}
+		}
+		else if(source == myView.pa_abouttab.jContact) {
+			try { 
+				Desktop.getDesktop().mail( new URI( "mailto:"+EMAIL ) ); 
+			} catch ( Exception excep ) { 
+				debugout("Desktop.getDesktop().mail() - No program found");
+			}
 		}
 	}
 

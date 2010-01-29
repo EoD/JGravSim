@@ -140,11 +140,16 @@
     	
 	<text id="4">About</text>
 	<text id="40">Version</text>
-	<text id="41">This program was designed to simulate the gravitional effects between two or more masspoints, in compliance with the limitations of special relavitiy.</text>
-	<text id="42">I tried to keep a certain amount of physical accuracy, but i can't guarantee the usability of the calculated results of this program.</text>
+	<text id="41">Build</text>
+	<text id="400">Debug</text>
+	<text id="401">This program was designed to simulate the gravitional effects between two or more masspoints, in compliance with the limitations of special relavitiy.</text>
+	<text id="402">I tried to keep a certain amount of physical accuracy, but i can't guarantee the usability of the calculated results of this program.</text>
+	<text id="403">Homepage</text>
+	<text id="404">You can find documentation, more scenarios and the current version of JGravSim on this homepage.</text>
+	<text id="405">Contact</text>
+	<text id="406">Feel free to email me any bugs you found or interesting scenarios you created.</text>
 	<text id="43">Known units</text>
 	<text id="44">Unknown unit</text>
-	<text id="45">Debug</text>
 	<text id="430">Y</text>
 	<text id="431">Z</text>
 	<text id="432">E</text>
