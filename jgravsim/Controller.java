@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 42L;
+	public static final long serialVersionUID = 43L;
 	
 	//manual version control
 	public static final long BUILD = 
@@ -69,7 +69,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	View_CalcOptions myView_CalcOptions;
 	View_CalcProgress myView_CalcProgress;
 	File fpInputFile = null;
-	int lang;
 	
 	Vector<Masspoint> vmasspoints = new Vector<Masspoint>();
 	//Vector<Masspoint> vmp_defaults = new Vector<Masspoint>();
@@ -90,14 +89,13 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	Timer tiPlayer;
 
-	Controller(String filename) {	
+	Controller(int language, String filename) {	
 		/* Register Stuff from Visualisation */
 		if(filename != null && filename != "") {
-			lang=49;
 			fpInputFile = new File( filename ); 
 			
 			myModel = new Model();
-			XMLParser myXMLParser = new XMLParser(View.textfile,lang);
+			XMLParser myXMLParser = new XMLParser(View.textfile, language);
 			
 			int errorline = myModel.loadDataset(fpInputFile);
 			
@@ -132,13 +130,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myCalculation.start();
 		}
 		else
-			new Controller();
+			new Controller(language);
 	}
 	
-	Controller() {	
+	Controller(int language) {	
 		/* Register Stuff from Visualisation */
-		lang = 49;
-		myView = new View(lang);
+		myView = new View(language);
 		myModel = new Model();
 		
 		myView.addWindowListener(this);
@@ -234,13 +231,15 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		//the two following lines are for an applet of this code
 		//Frame frame = new MainFrame(new Controller(), 512, 512);
 		//frame.setVisible(false);
-
+		
+		int language = 44;
+		
 		if(args.length > 0) {
 			debugout("main() - args.length > 0! file="+args[0]);
-			new Controller(args[0]);
+			new Controller(language, args[0]);
 		} else {
 			debugout("main() - args.length = "+args.length+" <= 0!");
-			new Controller();
+			new Controller(language);
 		}
 	}
 

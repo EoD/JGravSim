@@ -43,19 +43,20 @@ public class XMLParser {
 						break;
 					
 					StartElement element = event.asStartElement();
-					if(element.getName().toString() == "language") {
-						if(Integer.parseInt(element.getAttributeByName(new QName("id")).getValue()) == ilanguage) {
-							size = Integer.parseInt(element.getAttributeByName(new QName("maxid")).getValue());
-							text = new String[size];
-							DynamicWPTLoader.STANDARDBUFFERSIZE = Integer.parseInt(element.getAttributeByName(new QName("maxbuffer")).getValue());
-							break;
-						}
-						else {
+					if(element.getName().toString() == "jgravsim") {
+						size = Integer.parseInt(element.getAttributeByName(new QName("maxid")).getValue());
+						text = new String[size];
+						DynamicWPTLoader.STANDARDBUFFERSIZE = Integer.parseInt(element.getAttributeByName(new QName("maxbuffer")).getValue());
+						break;
+					}
+					else if(element.getName().toString() == "language") {
+						if(Integer.parseInt(element.getAttributeByName(new QName("id")).getValue()) != ilanguage) {
 							debugout("XMLParser() - Wrong language - skipping. "+QName.valueOf("id")+"="+Integer.parseInt(element.getAttributeByName(new QName("id")).getValue()));
 							skip = true;
 						}
+						break;
 					}
-					else if(element.getName().toString() == "text" && skip == false) {
+					else if(element.getName().toString() == "text") {
 						if(id >= Integer.MAX_VALUE) {
 							debugout("XMLParser - ID ERROR");
 							id = Integer.MAX_VALUE-1;
