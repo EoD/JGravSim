@@ -227,7 +227,7 @@
 		<text id="516">Zeta Puppis</text>
 		<text id="517">Sirius B</text>
 		<text id="518">Cygnus X-1</text></language>
-	<language id="44" name="English" maxid="520" maxbuffer="30000">
+	<language id="44" name="English">
 		<text id="0">Simulator for special-relativistic-moving masses in the newtonian gravtional field</text>
 
 		<!-- text id="-1">Misc</text -->
