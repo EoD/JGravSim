@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 43L;
+	public static final long serialVersionUID = 60L;
 	
 	//manual version control
 	public static final long BUILD = 
@@ -43,25 +43,27 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	// TODO update version
 	//static final String error = "";
 
-	static final Masspoint mpdf_sun 	= 	new Masspoint(CalcCode.SM,CalcCode.SR);
-	static final Masspoint mpdf_earth 	= 	new Masspoint(CalcCode.EM,CalcCode.ER);
-	static final Masspoint mpdf_moon 	= 	new Masspoint(7.3477E22,1.737103E6);
-	static final Masspoint mpdf_mercury = 	new Masspoint(3.302E23,2439700.0);
-	static final Masspoint mpdf_venus 	= 	new Masspoint(4.8685E24,6051900.0);
-	static final Masspoint mpdf_ceres 	= 	new Masspoint(9.46E20,942.0E3);
-	static final Masspoint mpdf_mars 	= 	new Masspoint(6.4185E23,3377400.0);
-	static final Masspoint mpdf_jupiter = 	new Masspoint(1.899E27,7.1492E7);
-	static final Masspoint mpdf_saturn 	= 	new Masspoint(5.6846E26,6.0268E7);
-	static final Masspoint mpdf_uranus 	= 	new Masspoint(8.6832E25,2.5559E7);
-	static final Masspoint mpdf_neptune = 	new Masspoint(1.0243E26,2.4764E7);
-	static final Masspoint mpdf_pluto 	=	new Masspoint(1.305E22,1.195E6);
-	static final Masspoint mpdf_eris 	= 	new Masspoint(1.66E22,1.2E6);
-	static final Masspoint mpdf_proxima_centauri = 	new Masspoint(0.123*CalcCode.SM,0.145*CalcCode.SR);
-	static final Masspoint mpdf_alpha_centauri_a = 	new Masspoint(1.10*CalcCode.SM,1.227*CalcCode.SR);
-	static final Masspoint mpdf_rigel 		= 	new Masspoint(17*CalcCode.SM,70*CalcCode.SR);
-	static final Masspoint mpdf_zeta_puppis = 	new Masspoint(59*CalcCode.SM,20*CalcCode.SR);
-	static final Masspoint mpdf_sirius_b 	= 	new Masspoint(0.978*CalcCode.SM,0.0084*CalcCode.SR);
-	static final Masspoint mpdf_cygnus_x1 	= 	new Masspoint(8.7*CalcCode.SM,1.0);		//Cygnus X-1
+	static final Masspoint mpdf_sun		=	new Masspoint(CalcCode.SM,CalcCode.SR);
+	static final Masspoint mpdf_earth	=	new Masspoint(CalcCode.EM,CalcCode.ER);
+	static final Masspoint mpdf_moon	=	new Masspoint(7.3477E22	,1.737103E6);
+	static final Masspoint mpdf_mercury	=	new Masspoint(3.3022E23	,2.4397E6);
+	static final Masspoint mpdf_venus	=	new Masspoint(4.8685E24	,6.0518E6);
+	static final Masspoint mpdf_mars	=	new Masspoint(6.4185E23	,(3.3962E6+3.3762E6)/2.);
+	static final Masspoint mpdf_ceres	=	new Masspoint(9.43E20	,(0.4873E6+0.4547E6)/2.);
+	static final Masspoint mpdf_jupiter	=	new Masspoint(1.8986E27	,(71.492E6+66.854E6)/2.);
+	static final Masspoint mpdf_saturn	=	new Masspoint(5.6846E26	,(60.268E6+54.364E6)/2.);
+	static final Masspoint mpdf_uranus	=	new Masspoint(8.681E25	,(25.559E6+24.973E6)/2.);
+	static final Masspoint mpdf_neptune	=	new Masspoint(1.0243E26	,(24.764E6+24.341E6)/2.);
+	static final Masspoint mpdf_pluto	=	new Masspoint(1.305E22	,1.153E6);
+	static final Masspoint mpdf_haumea	=	new Masspoint(4.006E21	,1.436E6);
+	static final Masspoint mpdf_makemake	=	new Masspoint(4E21	,0.750E6);
+	static final Masspoint mpdf_eris	=	new Masspoint(1.67E22	,1.3E6);
+	static final Masspoint mpdf_proxima_centauri =	new Masspoint(0.123*CalcCode.SM,0.145*CalcCode.SR);
+	static final Masspoint mpdf_alpha_centauri_a =	new Masspoint(1.100*CalcCode.SM,1.227*CalcCode.SR);
+	static final Masspoint mpdf_rigel	=	new Masspoint(17*CalcCode.SM,78*CalcCode.SR);
+	static final Masspoint mpdf_zeta_puppis	=	new Masspoint(53.9*CalcCode.SM,18.6*CalcCode.SR);	// http://arxiv.org/abs/1003.0892
+	static final Masspoint mpdf_sirius_b	=	new Masspoint(0.978*CalcCode.SM,0.0084*CalcCode.SR);
+	static final Masspoint mpdf_cygnus_x1	=	new Masspoint(8.7*CalcCode.SM,1.0);
 	
 	View myView;
 	Model myModel;
