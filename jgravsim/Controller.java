@@ -35,7 +35,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static boolean CPP = true;
 	static boolean CPPDEBUG = false;
 	
-	static double ZOOMLEVEL = 10.0;
+	static float ZOOMLEVEL = 10.0f;
 	static final double VERSION = 1.8;
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
@@ -312,7 +312,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					myView.pa_visualtab.ov_vis_top.alldots = null;
 					myView.pa_visualtab.ov_vis_front.alldots = null;
 					myView.pa_visualtab.ov_vis_right.alldots = null;
-					myView.pa_visualtab.updateViews();
+					myView.pa_visualtab.updateViews(true);
 				 }
 			}
 		}
@@ -352,7 +352,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_visualtab.ov_vis_top.alldots = null;
 				myView.pa_visualtab.ov_vis_front.alldots = null;
 				myView.pa_visualtab.ov_vis_right.alldots = null;
-				myView.pa_visualtab.updateViews();
+				myView.pa_visualtab.updateViews(true);
 			 }
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_unloadfile) {
@@ -728,14 +728,14 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myView.pa_visualtab.displayStep(myModel.dynamicLoader.getStep(source.getValue()));
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel) {
-			double zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
-			myView.pa_visualtab.setZoom(zoomLevel);
+			float zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
+			myView.pa_visualtab.setZoom(zoomLevel, false);
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_gridoffset) {
 			myView.pa_visualtab.setGridOffset(source.getValue());
 		}
 		else if(source == myView.pa_computetab.sl_zoomlevel) {
-			double zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
+			float zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
 			//double zoomLevel = source.getValue()/ZOOMLEVEL;
 			myView.pa_computetab.setZoom(zoomLevel);
 			myView.pa_computetab.repaintViews();
@@ -992,13 +992,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			if((curZoom <= myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getMaximum() 
 					&& curZoom >= myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getMinimum())) {
 				
-				myView.pa_visualtab.setZoom((curZoom)/ZOOMLEVEL);
-				myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.setValue((int)curZoom);
+				myView.pa_visualtab.addZoom(e.getWheelRotation()/ZOOMLEVEL);
 			}
 		}		
 		else if(source == myView.pa_computetab.ov_front || 
 				(ObjectView2D)e.getSource() == myView.pa_computetab.ov_top) {
-			double curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
+			float curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
 			curZoom -= e.getWheelRotation();
 			if((curZoom <= myView.pa_computetab.sl_zoomlevel.getMaximum() 
 					&& curZoom >= myView.pa_computetab.sl_zoomlevel.getMinimum())) {

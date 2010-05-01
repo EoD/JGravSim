@@ -17,6 +17,7 @@ public class TabVisualisationOptions  extends JPanel {
 	JPanel pa_vis_option_chbs;
 		JCheckBox chb_mpids;
 		JCheckBox chb_vvector;
+		JCheckBox chb_autoresize;
 	JPanel pa_vis_option_color;
 		JButton b_colorch_grid;
 		JButton b_colorch_speedvec;
@@ -30,8 +31,10 @@ public class TabVisualisationOptions  extends JPanel {
 		pa_vis_option_chbs = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		chb_vvector = new JCheckBox(myXMLParser.getText(218), true);
 		chb_mpids = new JCheckBox(myXMLParser.getText(219), true);
+		chb_autoresize = new JCheckBox(myXMLParser.getText(234), true);
 		pa_vis_option_chbs.add(chb_vvector);
 		pa_vis_option_chbs.add(chb_mpids);
+		pa_vis_option_chbs.add(chb_autoresize);
 		
 		pa_vis_option_color = new JPanel(new GridLayout());
 		b_colorch_grid = new JButton(myXMLParser.getText(103));

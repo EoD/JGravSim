@@ -30,7 +30,7 @@ public class ObjectView extends JPanel {
 	protected int iGridOffset = 25;
 	protected int iLastMouseX = 0;
 	protected int iLastMouseY = 0;
-	protected double iZoomLevel = 12.0;
+	protected float iZoomLevel = 12.0f;
 	protected boolean draw_strings = true;
 	protected boolean draw_speed = true;
 	boolean boxed = true;

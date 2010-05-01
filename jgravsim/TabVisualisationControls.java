@@ -139,7 +139,7 @@ public class TabVisualisationControls extends JPanel {
 		pa_vis_contr_center_panel2 = new JPanel(new GridLayout(2,0));
 		pa_vis_contr_center_panel2.setBackground(Color.white);
 		la_zoomlevel = new JLabel(myXMLParser.getText(101)+": ");
-		sl_zoomlevel = new JSlider(CalcCode.SZOOMCONST,162,130);
+		sl_zoomlevel = new JSlider(TabVisualisation.ZOOM_MIN,TabVisualisation.ZOOM_MAX,130);
 		sl_zoomlevel.setPaintTicks(true);
 		sl_zoomlevel.setMinorTickSpacing(10);
 		sl_zoomlevel.setMajorTickSpacing(50);

@@ -91,6 +91,7 @@
 		<text id="231">%1s in %2s/%3s</text>
 		<text id="232">Polarwinkel</text>
 		<text id="233">Azimutwinkel</text>
+		<text id="234">Automatischer Zoom</text>
 		
 		<text id="24">Daten</text>
 		<text id="240">Massepunkte</text>
@@ -318,6 +319,7 @@
 		<text id="231">%1s in %2s/%3s</text>
 		<text id="232">polar angle</text>
 		<text id="233">azimuth angle</text>
+		<text id="234">Automatic zoom</text>
 		
 		<text id="24">Data</text>
 		<text id="240">Masspoints</text>

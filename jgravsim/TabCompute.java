@@ -594,7 +594,7 @@ public class TabCompute extends JPanel {
 		pa_compute_dataadvanced.tf_Mass.setBackground(null);	
 	}
 	
-	public void setZoom(double zoomLevel) {
+	public void setZoom(float zoomLevel) {
 		ov_front.iZoomLevel = zoomLevel;
 		ov_top.iZoomLevel = zoomLevel;
 		DecimalFormat df = new DecimalFormat("0.0000");
