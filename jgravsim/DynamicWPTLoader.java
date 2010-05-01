@@ -264,7 +264,7 @@ public class DynamicWPTLoader {
 	
 	public Step getStep(int stepnumber) {
 		//debugout("- getStep("+stepnumber+") request");
-		if(stepnumber > steps.length || stepnumber < 0) {
+		if(stepnumber >= steps.length || stepnumber < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 		prefetchSteps(stepnumber);
