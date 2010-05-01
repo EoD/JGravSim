@@ -1,5 +1,7 @@
 package jgravsim;
 
+import java.lang.Long;
+
 public class MVMath {
 
 	public static final double ACCURACY = CalcCode.LACCURACY;
@@ -145,12 +147,20 @@ public class MVMath {
 		return mvres;
 	}
 	*/
+	static public long ConvertToL(double d) {
+		return Math.round(d*ACCURACY);
+	}
+	
+	static public double ConvertToD(long l) {
+		return (new Long(l).doubleValue())/ACCURACY;
+	}
+
 	static public MLVector ConvertToL(MDVector mdv) {
 		debugout(" MVMath() - Converting MDVector to MLVector");
 		MLVector mlv = new MLVector(0,0,0);
-		mlv.x1 = Math.round(mdv.x1*(double)ACCURACY);
-		mlv.x2 = Math.round(mdv.x2*(double)ACCURACY);
-		mlv.x3 = Math.round(mdv.x3*(double)ACCURACY);
+		mlv.x1 = ConvertToL(mdv.x1);
+		mlv.x2 = ConvertToL(mdv.x2);
+		mlv.x3 = ConvertToL(mdv.x3);
 		return mlv;
 	}
 	
@@ -158,9 +168,9 @@ public class MVMath {
 	static public MDVector ConvertToD(MLVector mlv) {
 		debugout(" MVMath() - Converting MLVector to MDVector");
 		MDVector mdv = new MDVector(0,0,0);
-		mdv.x1 = (double)(mlv.x1/ACCURACY);
-		mdv.x2 = (double)(mlv.x2/ACCURACY);
-		mdv.x3 = (double)(mlv.x3/ACCURACY);
+		mdv.x1 = ConvertToD(mlv.x1);
+		mdv.x2 = ConvertToD(mlv.x2);
+		mdv.x3 = ConvertToD(mlv.x3);
 		//debugout(" MVMath() - MLV:"+mlv.x1+","+mlv.x2+","+mlv.x3);
 		//debugout(" MVMath() ->MDV:"+mdv.x1+","+mdv.x2+","+mdv.x3);
 		return mdv;
@@ -186,21 +196,21 @@ public class MVMath {
 				dx /= ov_front.iGridOffset;
 				dx *= Math.pow(10, ov_front.iZoomLevel);
 				dx -= ov_front.getCoordOffsetX();
-				return Math.round(CalcCode.LACCURACY*dx);
+				return ConvertToL(dx);
 			case 'y': 
 				debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
 				double dy = (a-centerY);
 				dy /= ov_front.iGridOffset;
 				dy *= Math.pow(10, ov_front.iZoomLevel);
 				dy += ov_front.getCoordOffsetY();
-				return -Math.round(CalcCode.LACCURACY*dy);
+				return -ConvertToL(dy);
 			case 'z': 
 				debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
 				double dz = (a-centerZ);
 				dz /= ov_front.iGridOffset;
 				dz *= Math.pow(10, ov_front.iZoomLevel);
 				dz += ov_front.getCoordOffsetZ();
-				return -Math.round(CalcCode.LACCURACY*dz); 
+				return -ConvertToL(dz); 
 			default: 
 				debugout("pxtomm() - ERROR"); 
 				return 0;

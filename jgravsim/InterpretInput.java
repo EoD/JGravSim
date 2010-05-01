@@ -98,52 +98,52 @@ public class InterpretInput {
 		String unit = myXMLParser.getText(44);
 		double factor = 1.0;
 
-		if (var >= (CalcCode.ps*CalcCode.LACCURACY)) {
+		if (var >= MVMath.ConvertToL(CalcCode.ps)) {
 			unit = myXMLParser.getText(455);
 			factor = CalcCode.ps;
-		} else if (var >= (CalcCode.LY*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(CalcCode.LY)) {
 			unit = myXMLParser.getText(454);
 			factor = CalcCode.LY;
-		} else if (var >= (CalcCode.AE*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(CalcCode.AE)) {
 			unit = myXMLParser.getText(453);
 			factor = CalcCode.AE;
-		} else if (var >= (1000*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1000)) {
 			factor = 1.0E3;	// km
 			unit = myXMLParser.getText(437)+myXMLParser.getText(450);
-		} else if (var >= (1.0*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0)) {
 			factor = 1.0;	// m
 			unit = myXMLParser.getText(450);		
-		} else if (var >= (1.0E-1*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-1)) {
 			factor = 1.0E-1;
 			unit = myXMLParser.getText(440)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-2*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-2)) {
 			factor = 1.0E-2;
 			unit = myXMLParser.getText(441)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-3*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-3)) {
 			factor = 1.0E-3;
 			unit = myXMLParser.getText(442)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-6*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-6)) {
 			factor = 1.0E-6;
 			unit = myXMLParser.getText(443)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-9*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-9)) {
 			factor = 1.0E-9;
 			unit = myXMLParser.getText(444)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-12*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-12)) {
 			factor = 1.0E-12;
 			unit = myXMLParser.getText(445)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-15*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-15)) {
 			factor = 1.0E-15;
 			unit = myXMLParser.getText(446)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-18*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-18)) {
 			factor = 1.0E-18;
 			unit = myXMLParser.getText(447)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-21*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-21)) {
 			factor = 1.0E-21;
 			unit = myXMLParser.getText(448)+myXMLParser.getText(450);
-		} else if (var >= (1.0E-24*CalcCode.LACCURACY)) {
+		} else if (var >= MVMath.ConvertToL(1.0E-24)) {
 			factor = 1.0E-24;
 			unit = myXMLParser.getText(449)+myXMLParser.getText(450);
-		} else {//if (var >= (CalcCode.A*CalcCode.LACCURACY)) {
+		} else {//if (var >= MVMath.ConvertToL(CalcCode.A)) {
 			factor = CalcCode.A;
 			unit = myXMLParser.getText(451);
 		} 
@@ -151,9 +151,9 @@ public class InterpretInput {
 		//	return myXMLParser.getText(159);
 
 		if(df == null)
-			return stringCommataRevert(String.valueOf(lvar / factor / CalcCode.LACCURACY))+" "+unit;
+			return stringCommataRevert(String.valueOf( MVMath.ConvertToD(lvar)/factor ))+" "+unit;
 		else
-			return (df.format((lvar / factor / CalcCode.LACCURACY)) + " " + unit);
+			return (df.format( MVMath.ConvertToD(lvar)/factor )) + " " + unit;
 	}
 	
 	public static String niceInput_Length(double dvar, XMLParser myXMLParser, DecimalFormat df) {
@@ -446,11 +446,10 @@ public class InterpretInput {
 	public static long checkInput_Length_Long(String strtemp, XMLParser myXMLParser) {
 		double dtemp = checkInput_Length(strtemp, myXMLParser);
 		long ltemp;
-		if (dtemp < 1) {
-			ltemp = (long) ((double) checkInput_Length(strtemp, myXMLParser) * (double) CalcCode.LACCURACY);
+		if (dtemp < CalcCode.LACCURACY) {
+			ltemp = MVMath.ConvertToL((double) checkInput_Length(strtemp, myXMLParser));
 		} else {
-			ltemp = (long) checkInput_Length(strtemp, myXMLParser)
-					* (long) CalcCode.LACCURACY;
+			ltemp = (long) checkInput_Length(strtemp, myXMLParser) * (long) CalcCode.LACCURACY;
 		}
 		// debugout("checkInput_Length_Long() - strtemp="+strtemp+",
 		// dtemp="+dtemp+", ltemp="+ltemp);

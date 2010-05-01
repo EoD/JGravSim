@@ -168,24 +168,24 @@ public class ObjectView2D extends ObjectView {
 						int mpPosX = 0; /* Masspoint position */
 						
 						if(cAxes[0] == 'x') {
-							mpPosX = (int) (((masspoint.getPosX()/CalcCode.LACCURACY+dCoordOffsetX)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
+							mpPosX = (int) ((( MVMath.ConvertToD(masspoint.getPosX()) +dCoordOffsetX)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
 						} 
 						else if (cAxes[0] == 'y') {
-							mpPosX = (int) (((masspoint.getPosY()/CalcCode.LACCURACY+dCoordOffsetY)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
+							mpPosX = (int) ((( MVMath.ConvertToD(masspoint.getPosY()) +dCoordOffsetY)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
 						}
 						else {
-							mpPosX = (int) (((masspoint.getPosZ()/CalcCode.LACCURACY+dCoordOffsetZ)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
+							mpPosX = (int) ((( MVMath.ConvertToD(masspoint.getPosZ()) +dCoordOffsetZ)/Math.pow(10, iZoomLevel))*iGridOffset) + centerX - (int) (dRadius);
 						}
 						
 						int mpPosY = 0;
 						if(cAxes[1] == 'x') {
-							mpPosY = centerY - (int) (((masspoint.getPosX()/CalcCode.LACCURACY+dCoordOffsetX)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
+							mpPosY = centerY - (int) ((( MVMath.ConvertToD(masspoint.getPosX()) +dCoordOffsetX)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
 						}
 						else if (cAxes[1] == 'y') {
-							mpPosY = centerY - (int) (((masspoint.getPosY()/CalcCode.LACCURACY+dCoordOffsetY)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
+							mpPosY = centerY - (int) ((( MVMath.ConvertToD(masspoint.getPosY()) +dCoordOffsetY)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
 						}
 						else {
-							mpPosY = centerY - (int) (((masspoint.getPosZ()/CalcCode.LACCURACY+dCoordOffsetZ)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
+							mpPosY = centerY - (int) ((( MVMath.ConvertToD(masspoint.getPosZ()) +dCoordOffsetZ)/Math.pow(10, iZoomLevel))*iGridOffset) - (int) (dRadius);
 						}
 						
 						g.setColor(coObjColor);

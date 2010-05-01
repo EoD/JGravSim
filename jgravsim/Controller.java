@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.net.URI;
 import java.text.DecimalFormat;
+import java.util.Random;
 import java.util.Vector;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
@@ -633,10 +634,13 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
         	int clone_id = mp_clone.id;
         	mp_clone.setData(mp_old);
         	mp_clone.id = clone_id;
+        	Random randomizer = new Random();
+        	//don't randomize x-coordinate in order to improve visibility
         	mp_clone.addMLVCoord(new MLVector(
-        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
-        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY),
-        			(long)(mp_clone.getAbsRadius()*CalcCode.LACCURACY+CalcCode.LACCURACY)));
+        			/*MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 * (randomizer.nextInt(2)>0?1:-1) ),*/
+        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5),
+        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)),
+        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)) ));
         	updateComputePanels(mp_clone, source);
         }  
         else if(source == myView.pa_computetab.b_edit)  {
@@ -1612,7 +1616,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		for(int i=0;i<vmasspoints.size();i++) {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
 			MLVector mlvcoord = mptemp.getCoordMLV();
-			long relradius = Math.round(mptemp.getRadius()*CalcCode.LACCURACY);
+			long relradius = MVMath.ConvertToL(mptemp.getRadius());
 						
 			if(axe == myView.myXMLParser.getText(111)) {
 				//debugout("CheckForHit() - Checking for hit at x="+lx+"; y="+ly+"; radius="+relradius);
@@ -1665,21 +1669,21 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				dx /= ov_front.iGridOffset;
 				dx *= Math.pow(10, ov_front.iZoomLevel);
 				dx -= ov_front.getCoordOffsetX();
-				return Math.round(CalcCode.LACCURACY*dx);
+				return MVMath.ConvertToL(dx);
 			case 'y': 
 				//debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
 				double dy = (a-centerY);
 				dy /= ov_front.iGridOffset;
 				dy *= Math.pow(10, ov_front.iZoomLevel);
 				dy += ov_front.getCoordOffsetY();
-				return -Math.round(CalcCode.LACCURACY*dy);
+				return -MVMath.ConvertToL(dy);
 			case 'z': 
 				//debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
 				double dz = (a-centerZ);
 				dz /= ov_front.iGridOffset;
 				dz *= Math.pow(10, ov_front.iZoomLevel);
 				dz += ov_front.getCoordOffsetZ();
-				return -Math.round(CalcCode.LACCURACY*dz); 
+				return -MVMath.ConvertToL(dz); 
 			default: 
 				debugout("pxtomm() - ERROR"); 
 				return 0;
@@ -1938,11 +1942,11 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			return false;
 		}
 		else if (!basubcheck[1]) {
-			//this *(double)CalcCode.LACCURACY is there to avoid multiple parser functions
+			//this *(double)CalcCode.LACCURACY (=MVMath.ConvertToL) is there to avoid multiple parser functions
 			switch(coord) {
-			case 'x': mp.setCoordx((long)(dtemp*dfactor*(double)CalcCode.LACCURACY)); break;
-			case 'y': mp.setCoordy((long)(dtemp*dfactor*(double)CalcCode.LACCURACY)); break;
-			case 'z': mp.setCoordz((long)(dtemp*dfactor*(double)CalcCode.LACCURACY)); break;
+			case 'x': mp.setCoordx(MVMath.ConvertToL(dtemp*dfactor)); break;
+			case 'y': mp.setCoordy(MVMath.ConvertToL(dtemp*dfactor)); break;
+			case 'z': mp.setCoordz(MVMath.ConvertToL(dtemp*dfactor)); break;
 			default: return true;
 			}
 			debugout("bacheck_coords() - setCoord"+coord+"() - dtemp="+dtemp+", dfactor="+dfactor);

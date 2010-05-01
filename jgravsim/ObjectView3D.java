@@ -129,9 +129,9 @@ public class ObjectView3D extends ObjectView {
 				Transform3D TranslationSub = new Transform3D();
 
 				Vector3d vector = new Vector3d(
-						masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel, 
-						masspoint.getPosY()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel,  
-						masspoint.getPosZ()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
+						MVMath.ConvertToD(masspoint.getPosX())/CONVERT3D/iZoomLevel, 
+						MVMath.ConvertToD(masspoint.getPosY())/CONVERT3D/iZoomLevel,  
+						MVMath.ConvertToD(masspoint.getPosZ())/CONVERT3D/iZoomLevel);
 				
 				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
 				
