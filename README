@@ -1,0 +1,27 @@
+JGravSim v1.8 beta
+
+A program to calculate and visualize gravitational effects with relativistic
+corrections!
+
+
+INSTALLATION
+
+  Copy the JGravSim.jar and the file JGravSim_text.xml to the same folder and be
+  sure that you have enough free space on your hard disk, as every calculation 
+  will be saved to this folder!
+
+  Additionally you can download the cgravsim_ARCH files in order to have the
+  new (and much more accurate) version of the calculation.
+  The java calculation is going to be deprecated soon.
+
+
+REQUIREMENTS
+
+  You need a Java runtime environment which is equivalent to Sun's Java SE 
+  Runtime Environment 1.6 or newer.
+  It is recommended to use IcedTea 6 or newer.
+
+
+For more information visit the homepage:
+
+	http://jgravsim.eod.xmw.de/
