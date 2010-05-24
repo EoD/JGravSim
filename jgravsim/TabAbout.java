@@ -1,20 +1,19 @@
 package jgravsim;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class TabAbout extends JPanel {
-	public static final long serialVersionUID = 62L;
+	public static final long serialVersionUID = 63L;
 	
 	public JTextArea jHomepage;
 	public JTextArea jContact;
 	
 	public TabAbout(XMLParser myXMLParser) {
-		setLayout(new FlowLayout(FlowLayout.LEADING, 15, 17) );	
+		setLayout(new VerticalLayout(17, VerticalLayout.BOTH));
 		setBackground(Color.WHITE);
 		
 		String sTitle = "JGravSim";
