@@ -67,7 +67,7 @@ public class View_PlotOption extends JPanel implements ItemListener {
 	}
 	
 	private static void debugout(String a) {
-		if(DEBUG && Controller.MAINDEBUG)
+		if(DEBUG && Controller.CURRENTBUILD)
 			System.out.println(a);
 	}	
 	

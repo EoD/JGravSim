@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 60L;
+	public static final long serialVersionUID = 62L;
 	
 	//manual version control
 	public static final long BUILD = 
@@ -31,11 +31,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				TabCompute.serialVersionUID),
 				TabVisualisation.serialVersionUID);
 
-	static boolean MAINDEBUG = true;
+	static boolean CURRENTBUILD = true;
 	static boolean CPP = true;
 	static boolean CPPDEBUG = false;
-	
-	static float ZOOMLEVEL = 10.0f;
+
+	static final boolean DEBUG = true;
+	static final float ZOOMLEVEL = 10.0f;
 	static final double VERSION = 1.8;
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
@@ -247,7 +248,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 
 	public static void debugout(String a) {
-		if(MAINDEBUG)
+		if(CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 	public static void cppdebugout(String a) {
@@ -1112,7 +1113,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		Object source= e.getSource();
 		if(source == myView) {
 			debugout("Controller() - Closing...");
-			if(!MAINDEBUG)
+			if(!CURRENTBUILD)
 				myModel.deleteFile(Model.Defaultname);		
 		}
 		System.exit(0);

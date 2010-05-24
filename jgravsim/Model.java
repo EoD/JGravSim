@@ -159,7 +159,7 @@ public class Model {
      * [Objekt ID];[Masse];[Radius];[Geschw.Vektor x];[Geschw.Vektor y];[Geschw.Vektor z];[Beschl.Vektor x];[Beschl.Vektor y];[Beschl.Vektor z];[Position x];[Position y];[Position z]
      */
 	private	static void debugout(String a) {
-		if(Controller.MAINDEBUG && DEBUG)
+		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 	

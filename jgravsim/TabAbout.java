@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class TabAbout extends JPanel {
-	public static final long serialVersionUID = 42L;
+	public static final long serialVersionUID = 62L;
 	
 	public JTextArea jHomepage;
 	public JTextArea jContact;
@@ -21,19 +21,20 @@ public class TabAbout extends JPanel {
 			//+Controller.VERSION+(Controller.MAINDEBUG==true || (Controller.CPP==true && Controller.CPPDEBUG==true)?" current build":"");
 		
 		String sSubTitle = myXMLParser.getText(0) + "\nv" + Controller.VERSION +
-			(Controller.MAINDEBUG==true || (Controller.CPP==true && Controller.CPPDEBUG==true)?" current build":"");
+			(Controller.CURRENTBUILD || (Controller.CPP && Controller.CPPDEBUG)?" current build":"");
 		
-		String sAbouttext =	(Controller.MAINDEBUG==true || (Controller.CPP==true && Controller.CPPDEBUG==true)? 
+		String sAbouttext =	(Controller.CURRENTBUILD || (Controller.CPP && Controller.CPPDEBUG)? 
 								myXMLParser.getText(41)+": " + Controller.BUILD + "\n" +
 								myXMLParser.getText(400)+":\n"+
-									((Controller.CPP==true && Controller.CPPDEBUG==true)?"  C++ Debug\n":"")+
-									(Controller.MAINDEBUG==true?
-										"  Java Debug: Controller "+
-										(CalcCode.DEBUG==true?"- Calculation ":"")+
-										(Masspoint.DEBUG==true?"- Masspoint ":"")+
-										(Model.DEBUG==true?"- File I/O ":"")+
-										(MVMath.DEBUG==true?"- MVector Math ":"")+
-										(View_CalcOptions.DEBUG==true?"- CalcOption":"")
+									((Controller.CPP && Controller.CPPDEBUG)?"  C++ Debug\n":"")+
+									(Controller.CURRENTBUILD?
+										"  Java Debug: "+
+										(Controller.DEBUG?" Controller ":"")+
+										(CalcCode.DEBUG?"- Calculation ":"")+
+										(Masspoint.DEBUG?"- Masspoint ":"")+
+										(Model.DEBUG?"- File I/O ":"")+
+										(MVMath.DEBUG?"- MVector Math ":"")+
+										(View_CalcOptions.DEBUG?"- CalcOption":"")
 									:"")
 							+"\n\n":"")
 							+myXMLParser.getText(401)+"\n"+myXMLParser.getText(402); //+"\n\n";

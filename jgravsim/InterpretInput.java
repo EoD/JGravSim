@@ -9,7 +9,7 @@ public class InterpretInput {
 	private static final boolean DEBUG = false;
 
 	private static void debugout(String a) {
-		if (Controller.MAINDEBUG && DEBUG)
+		if (Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 

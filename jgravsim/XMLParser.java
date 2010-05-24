@@ -16,7 +16,7 @@ public class XMLParser {
 	int size;
 	
 	private void debugout(String a){
-		if(DEBUG == true && Controller.MAINDEBUG==true)
+		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 	
@@ -91,9 +91,11 @@ public class XMLParser {
 			}
 			parser.close();
 		} catch (FileNotFoundException e) {
-			debugout("FileNotFoundException");
+			debugout("XMLParser() - FileNotFoundException!");
+			e.printStackTrace();
 		} catch (XMLStreamException e) {
-			debugout("XMLStreamException");
+			debugout("XMLParser() - XMLStreamException!");
+			e.printStackTrace();
 		}
 	}
 

@@ -88,7 +88,7 @@ public class TabVisualisationPlot extends JPanel {
 	}
 
 	private static void debugout(String a) {
-		if(DEBUG && Controller.MAINDEBUG)
+		if(DEBUG && Controller.CURRENTBUILD)
 			System.out.println(a);
 	}	
 	

@@ -18,7 +18,7 @@ public class View extends JFrame  {
 		myXMLParser = new XMLParser(textfile,lang);
 		setTitle(myXMLParser.getText(0));
 		int answer = 1;
-		if(Controller.MAINDEBUG)
+		if(Controller.CURRENTBUILD)
 			answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);
 		
 		tp_tabs = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */

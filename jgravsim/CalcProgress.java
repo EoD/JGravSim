@@ -16,7 +16,7 @@ public class CalcProgress extends Thread {
 
 	
 	private	static void debugout(String a) {
-		if(Controller.MAINDEBUG && DEBUG)
+		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 	

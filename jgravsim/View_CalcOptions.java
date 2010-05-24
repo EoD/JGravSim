@@ -54,7 +54,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			JCheckBox cb_oldcalculation;
 			
 	private	static void debugout(String a) {
-		if(Controller.MAINDEBUG && DEBUG)
+		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
 			
