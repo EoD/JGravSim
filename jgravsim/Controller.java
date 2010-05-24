@@ -19,17 +19,19 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 62L;
+	public static final long serialVersionUID = 64L;
 	
 	//manual version control
 	public static final long BUILD = 
-		Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Controller.serialVersionUID, 
+		Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(
+				Controller.serialVersionUID, 
 				Model.serialVersionUID),
 				CalcCode.serialVersionUID),
 				View.serialVersionUID),
 				TabAbout.serialVersionUID),
 				TabCompute.serialVersionUID),
-				TabVisualisation.serialVersionUID);
+				TabVisualisation.serialVersionUID),
+				LanguageSelection.serialVersionUID);
 
 	static boolean CURRENTBUILD = true;
 	static boolean CPP = true;
@@ -235,15 +237,20 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		//the two following lines are for an applet of this code
 		//Frame frame = new MainFrame(new Controller(), 512, 512);
 		//frame.setVisible(false);
-		
-		int language = 44;
-		
-		if(args.length > 0) {
-			debugout("main() - args.length > 0! file="+args[0]);
-			new Controller(language, args[0]);
-		} else {
-			debugout("main() - args.length = "+args.length+" <= 0!");
-			new Controller(language);
+
+		LanguageSelection langsel = new LanguageSelection();
+		if(langsel.readLanguages(View.textfile)) {
+			langsel.writeLanguages();
+			
+			int language = -1;
+			
+			if(args.length > 0) {
+				debugout("main() - args.length > 0! file="+args[0]);
+				new Controller(language, args[0]);
+			} else {
+				debugout("main() - args.length = "+args.length+" <= 0!");
+				new Controller(language);
+			}
 		}
 	}
 

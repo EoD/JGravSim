@@ -46,6 +46,10 @@ public class XMLParser {
 					if(element.getName().toString() == "jgravsim") {
 						size = Integer.parseInt(element.getAttributeByName(new QName("maxid")).getValue());
 						text = new String[size];
+						if(ilanguage <= 0) {
+							ilanguage = Integer.parseInt(element.getAttributeByName(new QName("default_lang")).getValue());
+							debugout("XMLParser() - overwrite language id with default="+ilanguage);
+						}
 						DynamicWPTLoader.STANDARDBUFFERSIZE = Integer.parseInt(element.getAttributeByName(new QName("maxbuffer")).getValue());
 						break;
 					}
