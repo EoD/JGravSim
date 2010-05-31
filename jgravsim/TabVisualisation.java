@@ -11,21 +11,15 @@ public class TabVisualisation extends JPanel  {
 	public static final int ZOOM_MAX = 162;
 	public static final int ZOOM_MIN = CalcCode.SZOOMCONST;
 	public static final float ZOOM_THRESHOLD = 0.8f;
-	//private int iCurFrame = 0;
-	//private double dCurTime = 0;
 	private int data_plot;
 	private int dynamic_iCurMax;
 	private DynamicWPTLoader loader_plot;
-	//private double dMaxTime;
-	//private double dstep;
 	
 	public boolean b_enable3d;
 	
 	ObjectView ov_vis_top;
 	ObjectView ov_vis_front;
 	ObjectView ov_vis_right;
-	
-	//TabVisualisationControls pa_visual_contrtab;
 	
 	TabVisualisationData pa_visual_datatab;		
 	TabVisualisationControls pa_visual_contrtab;
@@ -230,7 +224,6 @@ public class TabVisualisation extends JPanel  {
 	public void changeOffsetY(int deltaYpx) {
 		//Controller.debugout("YOffset += "+deltaYpx+" (= "+pxtomm(deltaYpx)+"mm)");
 		double deltaY = pxtomm(deltaYpx);
-		//ov_vis_front.addCoordOffsetY(deltaY);
 		ov_vis_top.addCoordOffsetY(-deltaY);
 		ov_vis_right.addCoordOffsetY(deltaY);
 		updateCurFrame();

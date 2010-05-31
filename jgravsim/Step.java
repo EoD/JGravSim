@@ -41,7 +41,4 @@ public class Step {
 	public long getWPTLineNumber() {
 		return lWPTLineNumber;
 	}
-	
-	// TODO Zeit anzeigen!
-	// TODO objekt daten anzeigen!
 }

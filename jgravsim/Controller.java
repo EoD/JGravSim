@@ -43,8 +43,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
 	static final String EMAIL = "jgravsim@gmail.com";
-	// TODO update version
-	//static final String error = "";
 
 	static final Masspoint mpdf_sun		=	new Masspoint(CalcCode.SM,CalcCode.SR);
 	static final Masspoint mpdf_earth	=	new Masspoint(CalcCode.EM,CalcCode.ER);
@@ -77,7 +75,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	File fpInputFile = null;
 	
 	Vector<Masspoint> vmasspoints = new Vector<Masspoint>();
-	//Vector<Masspoint> vmp_defaults = new Vector<Masspoint>();
 	Masspoint mp_default;
     Step currentstep = new Step(0, 0);
     String strlastfolder = null;
@@ -126,7 +123,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				}
 			}
 			else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
-				//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 				calc_datacount = myModel.ddataCount;
 				calc_timecount = myModel.dtimeCount;
 				calc_timestep = myModel.dtimeCount;
@@ -194,7 +190,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.pa_compute_dataeasy.sl_Mass.addChangeListener(this);
 		myView.pa_computetab.pa_compute_dataeasy.sl_Speed.addChangeListener(this);
 		myView.pa_computetab.pa_compute_dataeasy.sl_Radius.addChangeListener(this);
-		//myView.pa_computetab.pa_compute_dataeasy.sl_Dense.addChangeListener(this);
 
 		myView.pa_computetab.chb_mpids.addItemListener(this);
 		myView.pa_computetab.chb_vvector.addItemListener(this);
@@ -477,7 +472,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}
 			else if(a == 1){
 				fpInputFile = new File( Model.Defaultname ); 
-				//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
 				int errorline = myModel.loadDataset(fpInputFile);
 				if(errorline != Model.INFILE_NOERROR) {
 					if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -500,7 +494,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					}
 				}
 				else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
-					//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 					vmasspoints.removeAllElements();
 					vmasspoints.addAll(myModel.stDataset);
 					calc_datacount = myModel.ddataCount;
@@ -519,40 +512,40 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				}
 			}	
 		}
-        else if(source == myView.pa_computetab.b_compute)  {
+	else if(source == myView.pa_computetab.b_compute)  {
 		//disable while program is running
-        	myView.pa_computetab.ButtonsAni();
+		myView.pa_computetab.ButtonsAni();
 		myView.pa_computetab.b_stop.setEnabled(false);
 		myView_CalcOptions = new View_CalcOptions(this, myModel);
-    		myView.pa_computetab.ov_top.removeMouseListener(this);
-    		myView.pa_computetab.ov_front.removeMouseListener(this);
-    		myView.pa_computetab.ov_top.removeMouseMotionListener(this);
-    		myView.pa_computetab.ov_front.removeMouseMotionListener(this);
-    		myView.pa_computetab.ov_top.removeMouseWheelListener(this);
-    		myView.pa_computetab.ov_front.removeMouseWheelListener(this);
-    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.removeMouseListener(this);
-    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.removeMouseListener(this);
-    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.removeMouseListener(this);
-    		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.removeMouseListener(this);
-    		if(mySpeedVector != null && mySpeedVector.isVisible())
-    			mySpeedVector.dispose();
-        } 
-        else if(source == myView.pa_computetab.b_stop) {
-        	//Stop is pressed and timer is not running, so calculation has to be stopped
-           	if(myCalcProgress != null) {
-           		myCalcProgress.halt();
-           		debugout("Halted myCalcProgress "+ myCalcProgress.pcalculation.toString());
-           		int laststep = myModel.findlaststep(new File(Model.Defaultname));
-           		if(laststep > 0)
-           			myModel.correctHeader(new File(Model.Defaultname), laststep);
-           		
-           		myCalcProgress = null;
-           		CalculationFinished(CalcCode.NOERROR);
-           	}
-           	else
-           		flagcalc = false;
-        }
-        else if(source == myView.pa_computetab.b_savefile) {
+		myView.pa_computetab.ov_top.removeMouseListener(this);
+		myView.pa_computetab.ov_front.removeMouseListener(this);
+		myView.pa_computetab.ov_top.removeMouseMotionListener(this);
+		myView.pa_computetab.ov_front.removeMouseMotionListener(this);
+		myView.pa_computetab.ov_top.removeMouseWheelListener(this);
+		myView.pa_computetab.ov_front.removeMouseWheelListener(this);
+		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.removeMouseListener(this);
+		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.removeMouseListener(this);
+		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.removeMouseListener(this);
+		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.removeMouseListener(this);
+		if(mySpeedVector != null && mySpeedVector.isVisible())
+    		mySpeedVector.dispose();
+	} 
+	else if(source == myView.pa_computetab.b_stop) {
+		//Stop is pressed and timer is not running, so calculation has to be stopped
+	   	if(myCalcProgress != null) {
+	   		myCalcProgress.halt();
+	   		debugout("Halted myCalcProgress "+ myCalcProgress.pcalculation.toString());
+	   		int laststep = myModel.findlaststep(new File(Model.Defaultname));
+	   		if(laststep > 0)
+	   			myModel.correctHeader(new File(Model.Defaultname), laststep);
+	   		
+	   		myCalcProgress = null;
+	   		CalculationFinished(CalcCode.NOERROR);
+	   	}
+	   	else
+	   		flagcalc = false;
+	}
+	else if(source == myView.pa_computetab.b_savefile) {
 			JFileChooser fc;
 			
 			if(strlastfolder == null) 
@@ -565,19 +558,14 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+".wpt"));
 			int ret = fc.showSaveDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
-				 fpInputFile = fc.getSelectedFile().getAbsoluteFile();
-				 
-	  /*      	String filename = myView.pa_computetab.tf_filename.getText();
-	        	if(filename.isEmpty() || filename == null) {
-	        		filename = String.valueOf(System.currentTimeMillis());
-	        	}
-	        	filename += ".wpt";
-	   */     	myModel.saveOutputfile(fpInputFile);
-	        	JOptionPane.showMessageDialog(myView, String.format(myView.myXMLParser.getText(216),fpInputFile.getName()),myView.myXMLParser.getText(214),JOptionPane.INFORMATION_MESSAGE);			
+				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
+
+				myModel.saveOutputfile(fpInputFile);
+				JOptionPane.showMessageDialog(myView, String.format(myView.myXMLParser.getText(216),fpInputFile.getName()),myView.myXMLParser.getText(214),JOptionPane.INFORMATION_MESSAGE);			
 			}
 			myView.pa_computetab.ButtonsDeactive(true);
-        }
-        else if(source == myView.pa_computetab.b_loadfile) {
+	}
+	else if(source == myView.pa_computetab.b_loadfile) {
 			JFileChooser fc;
 			if(strlastfolder == null) 
 				fc = new JFileChooser(getCurrentFolder());
@@ -587,7 +575,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
-				//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
 				int errorline = myModel.loadDataset(fpInputFile);
 				 if(errorline != Model.INFILE_NOERROR) {
 					 if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -609,10 +596,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
 					 }
 					myView.pa_computetab.ButtonsStd();
-					//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(324));
 				}
 				else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
-					//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 					vmasspoints.removeAllElements();
 					vmasspoints.addAll(myModel.stDataset);
 					calc_datacount = myModel.ddataCount;
@@ -630,89 +615,88 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					updateComputePanels(mp, source);
 				}
 			}
-        }
-        else if(source == myView.pa_computetab.b_Remove)  {
-        	int a = JOptionPane.showConfirmDialog(myView, String.format(myView.myXMLParser.getText(217), GetSelectedMasspoint().id),myView.myXMLParser.getText(215),JOptionPane.YES_NO_OPTION);
-        	if(a == 0) {
-	        	Masspoint mp = GetSelectedMasspoint();
-	        	RemoveMp(mp);
-        	}
-        }
-        else if(source == myView.pa_computetab.b_clone)  {
-        	Masspoint mp_old = GetSelectedMasspoint();
-        	Masspoint mp_clone = addMasspoint(0, 0, 0, mp_old);
-        	int clone_id = mp_clone.id;
-        	mp_clone.setData(mp_old);
-        	mp_clone.id = clone_id;
-        	Random randomizer = new Random();
-        	//don't randomize x-coordinate in order to improve visibility
-        	mp_clone.addMLVCoord(new MLVector(
-        			/*MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 * (randomizer.nextInt(2)>0?1:-1) ),*/
-        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5),
-        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)),
-        			MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)) ));
-        	updateComputePanels(mp_clone, source);
-        }  
-        else if(source == myView.pa_computetab.b_edit)  {
-        	if(flagedit == false) {
-        		myView.pa_computetab.b_edit.setText(myView.myXMLParser.getText(208));
-        		myView.pa_computetab.b_edit.setBackground(Color.GREEN);
-        		myView.pa_computetab.ButtonsEdit();
-        		myView.pa_computetab.ov_top.removeMouseListener(this);
-        		myView.pa_computetab.ov_top.removeMouseMotionListener(this);
-        		myView.pa_computetab.ov_front.removeMouseListener(this);
-        		myView.pa_computetab.ov_front.removeMouseMotionListener(this);
-        		myView.pa_computetab.ov_top.removeMouseWheelListener(this);
-        		myView.pa_computetab.ov_front.removeMouseWheelListener(this);
-        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.removeMouseListener(this);
-        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.removeMouseListener(this);
-        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.removeMouseListener(this);
-        		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.removeMouseListener(this);
-        		if(mySpeedVector != null && mySpeedVector.isVisible())
-        			mySpeedVector.dispose();
-        		flagedit = true;
-        	}
-        	else if(flagedit == true) {
-        		myView.pa_computetab.TFColorStd();
-        		boolean flagcheck = true;
-        		boolean[] bacheck = CheckInput();
-        		for(int i=0;i<bacheck.length;i++) {
-        			if(bacheck[i]) {
-                		myView.pa_computetab.b_edit.setBackground(Color.RED);
-                		switch(i) {
-                		case 0: myView.pa_computetab.pa_compute_dataadvanced.tf_Mass.setBackground(Color.RED); break;
-                		case 1: myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setBackground(Color.RED); break;
-                		case 2: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact.setBackground(Color.RED); break;
-                		case 3: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_exact.setBackground(Color.RED); break;
-                		case 4: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_exact.setBackground(Color.RED); break;
-                		case 5: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx.setBackground(Color.RED); break;
-                		case 6: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordy.setBackground(Color.RED); break;
-                		case 7: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz.setBackground(Color.RED); break;
-                		}
-                		flagcheck = false;
-        			}
-        		}
-        		if(flagcheck) {
-	        		flagedit = false;
-	        		myView.pa_computetab.b_edit.setBackground(null);
-	        		myView.pa_computetab.b_edit.setText(myView.myXMLParser.getText(207));
-	        		myView.pa_computetab.ButtonsStd();
-	        		myView.pa_computetab.ov_top.addMouseListener(this);
-	        		myView.pa_computetab.ov_top.addMouseMotionListener(this);
-	        		myView.pa_computetab.ov_front.addMouseListener(this);
-	        		myView.pa_computetab.ov_front.addMouseMotionListener(this);
-	        		myView.pa_computetab.ov_top.addMouseWheelListener(this);
-	        		myView.pa_computetab.ov_front.addMouseWheelListener(this);
-	        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
-	        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
-	        		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
-	        		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
-	        		updateComputePanels(GetSelectedMasspoint(), source);
-        		}
-        		else
-                	JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(209),myView.myXMLParser.getText(159),JOptionPane.ERROR_MESSAGE);
-        	}
-        }	
+	}
+	else if(source == myView.pa_computetab.b_Remove)  {
+		int a = JOptionPane.showConfirmDialog(myView, String.format(myView.myXMLParser.getText(217), GetSelectedMasspoint().id),myView.myXMLParser.getText(215),JOptionPane.YES_NO_OPTION);
+		if(a == 0) {
+			Masspoint mp = GetSelectedMasspoint();
+			RemoveMp(mp);
+		}
+	}
+	else if(source == myView.pa_computetab.b_clone)  {
+		Masspoint mp_old = GetSelectedMasspoint();
+		Masspoint mp_clone = addMasspoint(0, 0, 0, mp_old);
+		int clone_id = mp_clone.id;
+		mp_clone.setData(mp_old);
+		mp_clone.id = clone_id;
+		Random randomizer = new Random();
+		//don't randomize x-coordinate in order to improve visibility
+		mp_clone.addMLVCoord(new MLVector(
+				MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5),
+				MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)),
+				MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)) ));
+		updateComputePanels(mp_clone, source);
+	}  
+	else if(source == myView.pa_computetab.b_edit) {
+		if(flagedit == false) {
+			myView.pa_computetab.b_edit.setText(myView.myXMLParser.getText(208));
+			myView.pa_computetab.b_edit.setBackground(Color.GREEN);
+			myView.pa_computetab.ButtonsEdit();
+			myView.pa_computetab.ov_top.removeMouseListener(this);
+			myView.pa_computetab.ov_top.removeMouseMotionListener(this);
+			myView.pa_computetab.ov_front.removeMouseListener(this);
+			myView.pa_computetab.ov_front.removeMouseMotionListener(this);
+			myView.pa_computetab.ov_top.removeMouseWheelListener(this);
+			myView.pa_computetab.ov_front.removeMouseWheelListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.removeMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.removeMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.removeMouseListener(this);
+			myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.removeMouseListener(this);
+			if(mySpeedVector != null && mySpeedVector.isVisible())
+				mySpeedVector.dispose();
+			flagedit = true;
+		}
+		else if(flagedit == true) {
+			myView.pa_computetab.TFColorStd();
+			boolean flagcheck = true;
+			boolean[] bacheck = CheckInput();
+			for(int i=0;i<bacheck.length;i++) {
+				if(bacheck[i]) {
+				myView.pa_computetab.b_edit.setBackground(Color.RED);
+				switch(i) {
+				case 0: myView.pa_computetab.pa_compute_dataadvanced.tf_Mass.setBackground(Color.RED); break;
+				case 1: myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setBackground(Color.RED); break;
+				case 2: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact.setBackground(Color.RED); break;
+				case 3: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_exact.setBackground(Color.RED); break;
+				case 4: myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_exact.setBackground(Color.RED); break;
+				case 5: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx.setBackground(Color.RED); break;
+				case 6: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordy.setBackground(Color.RED); break;
+				case 7: myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz.setBackground(Color.RED); break;
+				}
+				flagcheck = false;
+				}
+			}
+			if(flagcheck) {
+				flagedit = false;
+				myView.pa_computetab.b_edit.setBackground(null);
+				myView.pa_computetab.b_edit.setText(myView.myXMLParser.getText(207));
+				myView.pa_computetab.ButtonsStd();
+				myView.pa_computetab.ov_top.addMouseListener(this);
+				myView.pa_computetab.ov_top.addMouseMotionListener(this);
+				myView.pa_computetab.ov_front.addMouseListener(this);
+				myView.pa_computetab.ov_front.addMouseMotionListener(this);
+				myView.pa_computetab.ov_top.addMouseWheelListener(this);
+				myView.pa_computetab.ov_front.addMouseWheelListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
+				myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
+				updateComputePanels(GetSelectedMasspoint(), source);
+			}
+			else
+			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(209),myView.myXMLParser.getText(159),JOptionPane.ERROR_MESSAGE);
+		}
+	}	
 		else if(source == myView.pa_computetab.b_colorch_grid) {
 			Color newColor = JColorChooser.showDialog(myView, myView.myXMLParser.getText(103), myView.pa_computetab.ov_front.coGridColor);
 			if(newColor != null) {
@@ -746,7 +730,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(source == myView.pa_computetab.sl_zoomlevel) {
 			float zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
-			//double zoomLevel = source.getValue()/ZOOMLEVEL;
 			myView.pa_computetab.setZoom(zoomLevel);
 			myView.pa_computetab.repaintViews();
 		}
@@ -784,8 +767,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		//debugout("Position: "+e.getPoint());
-		
 		if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			myView.pa_visualtab.changeOffsetX(e.getX()-source.iLastMouseX);
@@ -801,7 +782,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			source.iLastMouseY = e.getY();
 		}
 		else if(e.getSource() == myView.pa_visualtab.ov_vis_right) {
-			//TODO WARNING Object3DView Test
 			if(!myView.pa_visualtab.Is3dEnabled()) {
 				ObjectView2D source = (ObjectView2D)e.getSource();
 				myView.pa_visualtab.changeOffsetY(e.getX()-source.iLastMouseX);
@@ -889,9 +869,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	public void mousePressed(MouseEvent e) {
 		//debugout("Dragging startet at: "+arg0.getPoint());
 		Object source = e.getSource();
-		//if((e.getModifiers() & InputEvent.CTRL_MASK) == 0)
-		//	debugout("Dmouse pressed - CTRL_DOWN_MASK");
-			
 
 		if(source == myView.pa_computetab.ov_top) {	
 			((ObjectView2D)source).iLastMouseX = e.getX();
@@ -937,8 +914,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			((ObjectView2D)source).iLastMouseX = e.getX();
 			((ObjectView2D)source).iLastMouseY = e.getY();
 		}
-		else if(source == myView.pa_visualtab.ov_vis_right) {	
-			//TODO WARNING Object3DView Test
+		else if(source == myView.pa_visualtab.ov_vis_right) {
 			if(!myView.pa_visualtab.Is3dEnabled()) {
 				((ObjectView2D)source).iLastMouseX = e.getX();
 				((ObjectView2D)source).iLastMouseY = e.getY();
@@ -948,7 +924,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 	public void mouseReleased(MouseEvent e) {
 		//debugout("Dragging stopped at: "+arg0.getPoint());
-		//ObjectView2D source = (ObjectView2D) e.getSource();
 		Object source = e.getSource();	
 		
 		if(source == myView.pa_computetab.ov_top && flagctrl == false) {
@@ -977,13 +952,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			flagclick = 0;
 			myView.pa_computetab.setSelectedMasspointAndRepaint(null);
 		}
-		//else if(!flagedit){ 
-		//	if(source == myView.pa_computetab.pa_compute_dataeasy.tf_Dense) {
-		//		myView.pa_computetab.pa_compute_dataeasy.tf_Dense.setEditable(true);
-		//		flagedit = true;
-		//		setEditButton(source);
-		//	}
-		//}
 		else if(flagedit) {
 			debugout("Flagedit1 = true");
 			flagedit = false;
@@ -1022,10 +990,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		Object source = e.getSource();
 		//Object-ID changed. Update all output data
 		if(source == myView.pa_computetab.cb_Objects && myView.pa_computetab.cb_Objects.getItemCount() > 0) {
-	        Masspoint mp = GetSelectedMasspoint();
-	        if(mp != null) {
-	           	updateComputePanels(mp,source);
-	           	//debugout("Object "+(int)mp.id+" selected");
+		Masspoint mp = GetSelectedMasspoint();
+		if(mp != null) {
+		   	updateComputePanels(mp,source);
+		   	//debugout("Object "+(int)mp.id+" selected");
 			}
 		}		
 		if(source == myView.pa_computetab.cb_mpdefaults) {
@@ -1037,10 +1005,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myView.pa_computetab.pa_compute_dataadvanced.chb_Dense.setSelected(e.getStateChange() == ItemEvent.SELECTED);
 		}	
 		else if(source == myView.pa_visualtab.pa_visual_datatab.cb_Objects && myView.pa_visualtab.pa_visual_datatab.cb_Objects.getItemCount() > 0) {
-	        Masspoint_Sim mp = (Masspoint_Sim)myView.pa_visualtab.pa_visual_datatab.cb_Objects.getSelectedItem();
-	        if(mp != null) {
-	        	myView.pa_visualtab.pa_visual_datatab.UpdatePanels(mp);
-	           	//debugout("Object "+(int)mp.getID()+" selected");
+		Masspoint_Sim mp = (Masspoint_Sim)myView.pa_visualtab.pa_visual_datatab.cb_Objects.getSelectedItem();
+		if(mp != null) {
+			myView.pa_visualtab.pa_visual_datatab.UpdatePanels(mp);
+		   	//debugout("Object "+(int)mp.getID()+" selected");
 			}
 		}	
 		else if(source == myView.pa_computetab.chb_mpids) {
@@ -1158,14 +1126,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			return;
 		}
 
-//		if(myView.pa_computetab.isEnabled() == false) 
-//			myView.pa_computetab.setEnabled(true);
-
 		//debugout("UpdatePanels() - Object:"+String.valueOf(object));
 		//debugout("speed,mass: "+mp.getSpeed()+","+mp.getAbsMass());
 		MDVector mvspeed = mp.getMDVSpeed();
 		MLVector mvcoord = mp.getCoordMLV();
-		//myView.pa_computetab.la_headline.setText(TabCompute.sheadline+" "+ mp.id);
 		
 		myView.pa_computetab.sl_zoomlevel.removeChangeListener(this);		
 		myView.pa_computetab.pa_compute_dataeasy.sl_Mass.removeChangeListener(this);
@@ -1220,26 +1184,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myView.pa_computetab.pa_compute_dataeasy.sl_Mass.setValue((int)(Math.pow(mp.getAbsMass(),1.0/CalcCode.SMASSCONST)));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Radius)
 			myView.pa_computetab.pa_compute_dataeasy.sl_Radius.setValue((int)(Math.pow(mp.getAbsRadius(),1.0/CalcCode.SRADIUSCONST)));
-		/*if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Dense)	{
-			if(mp.isBlackHole())
-				myView.pa_computetab.pa_compute_dataeasy.sl_Dense.setValue(100);
-			else
-				myView.pa_computetab.pa_compute_dataeasy.sl_Dense.setValue((int)(Math.pow(mp.getDensity(),1.0/CalcCode.SDENSITYCONST)));
-		}
-		*/
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx.setText(InterpretInput.niceInput_Length(mvcoord.x1, myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordy) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Coordy.setText(InterpretInput.niceInput_Length(mvcoord.x2, myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz.setText(InterpretInput.niceInput_Length(mvcoord.x3, myView.myXMLParser, null));
-		/*if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_direction) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_direction.setText(InterpretInput.niceInput_Speed(Math.pow(mp.mdvzerospeed.x1,2.0)));
-		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_direction) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_direction.setText(InterpretInput.niceInput_Speed(Math.pow(mp.mdvzerospeed.x2,2.0)));
-		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_direction) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_direction.setText(InterpretInput.niceInput_Speed(Math.pow(mp.mdvzerospeed.x3,2.0)));
-		*/
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedabs) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedabs.setText(InterpretInput.niceInput_Speed(mvspeed.abs(), myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact) 
@@ -1292,11 +1242,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	public void UpdateEdit(Masspoint mp, Object object) {
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Speed) { 
-			//myView.pa_computetab.sl_Speed.setValue((int)(100*Math.pow(mp.getSpeed()/CalcCode.LIGHTSPEED, 1.0/CalcCode.SSPEEDCONST)));
 			updateComputePanels(GetSelectedMasspoint(), object);
 		}
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Mass) {
-			//myView.pa_computetab.sl_Mass.setValue((int)(Math.pow(mp.getAbsMass(),1.0/CalcCode.SMASSCONST)));
 			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, null));
 		}
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Radius) {
@@ -1351,7 +1299,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		    	debugout("Thread Finished() - error=UNKNOWN!");
 				finish += myView.myXMLParser.getText(160)+"\n";
 			} else if(error == CalcCode.NOERROR) {
-				//finish += "\nKein Fehler.";*/
 				debugout("ThreadFinished() - finished without error");
 			} else if(error == CalcCode.DOUBLELIMIT) {
 		    	debugout("Thread Finished() - error=DOUBLELIMIT!");
@@ -1489,7 +1436,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
 			}
 			else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
-				//myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 				vmasspoints.removeAllElements();
 				vmasspoints.addAll(myModel.stDataset);
 				calc_datacount = myModel.ddataCount;
@@ -1582,11 +1528,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		id++;
 		//debugout("Controller() - Adding data for object "+id);
-/*		ObjectView2D ov_front = myView.pa_computetab.ov_front;
-		ObjectView2D ov_top = myView.pa_computetab.ov_top;
-		double centerX = ov_front.getWidth()/2;
-		double centerY = ov_front.getHeight()/2;
-		double centerZ = ov_top.getHeight()/2;*/
 		
 		long lx = pxtomm(x, 'x');
 		long ly = pxtomm(y, 'y');
@@ -1714,7 +1655,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			debugout("CheckInput() - Error");
 			return null;
 		}
-		// TODO Verfeinern! (abfrage ob m/mm/km oder aehnliches eingegeben wurde)
 		
 		/////////////////MASS/////////////////
 		strtemp = myView.pa_computetab.pa_compute_dataadvanced.tf_Mass.getText();
@@ -1951,7 +1891,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			return false;
 		}
 		else if (!basubcheck[1]) {
-			//this *(double)CalcCode.LACCURACY (=MVMath.ConvertToL) is there to avoid multiple parser functions
 			switch(coord) {
 			case 'x': mp.setCoordx(MVMath.ConvertToL(dtemp*dfactor)); break;
 			case 'y': mp.setCoordy(MVMath.ConvertToL(dtemp*dfactor)); break;

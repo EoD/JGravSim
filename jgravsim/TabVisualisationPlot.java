@@ -64,7 +64,6 @@ public class TabVisualisationPlot extends JPanel {
 		pa_plot_mps_sub.setLayout(new BoxLayout(pa_plot_mps_sub, BoxLayout.Y_AXIS));
 
 		pa_plot_mps = new JPanel(new GridLayout(0, 1));
-		//pa_plot_mps.setMinimumSize(new Dimension(400,400));
 		sp_plot_mp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp_plot_mp.setViewportView(pa_plot_mps_sub);
@@ -77,7 +76,6 @@ public class TabVisualisationPlot extends JPanel {
 		
 		pa_plot_mps.add(sp_plot_mp);
 
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(new JPanel());
 		add(pa_plot_options);

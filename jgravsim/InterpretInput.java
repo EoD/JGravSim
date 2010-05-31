@@ -22,7 +22,6 @@ public class InterpretInput {
 
 		String unit = myXMLParser.getText(44);
 		double factor = 1.0;
-		// TODO check
 
 		if (time >= 1000.0 * 365.25 * 24.0 * 3600.0) {
 			unit = myXMLParser.getText(479);

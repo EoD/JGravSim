@@ -48,8 +48,6 @@ public class View_SpeedVector extends JFrame implements ChangeListener {
 				dSizeSpeedSlider.width+20, 
 				dSizeSpeedSlider.height+dSizeObjectViews.height+40);
 		
-		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		//setLayout(new FlowLayout(FlowLayout.CENTER));
 		setLayout(new GridLayout(0,1));
 		adjustWindow(this);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -59,7 +57,6 @@ public class View_SpeedVector extends JFrame implements ChangeListener {
 	///////Panel Top
 		pa_top = new JPanel();
 		pa_top.setLayout(new FlowLayout(FlowLayout.CENTER));
-		//pa_top.setLayout(new BoxLayout(pa_top, BoxLayout.Y_AXIS));
 		pa_top.setPreferredSize(dSizePanels);
 		pa_top.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
 				myXMLParser.getText(233)+" ("+String.valueOf(myTab.ov_top.cAxes)+"-"+myXMLParser.getText(228)+"):"));
@@ -94,7 +91,6 @@ public class View_SpeedVector extends JFrame implements ChangeListener {
 		
 	//////Panel Front
 		pa_front = new JPanel();
-		//pa_front.setLayout(new BoxLayout(pa_front, BoxLayout.Y_AXIS));
 		pa_front.setLayout(new FlowLayout(FlowLayout.CENTER));
 		pa_front.setPreferredSize(dSizePanels);
 		pa_front.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),

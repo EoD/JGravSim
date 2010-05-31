@@ -227,7 +227,6 @@ public class DynamicWPTLoader {
 	}
 	
 	private void prefetchSteps(int stepnumber) {
-		// TODO check!
 		//if(stepnumber < iCurMax-(iBufferSize/2) && stepnumber > iCurMin+1) {
 		if(stepnumber < iCurMax && stepnumber > iCurMin) {
 			/* no need to buffer something*/

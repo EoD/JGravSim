@@ -58,18 +58,11 @@ public class TabVisualisationData extends JPanel {
 		myXMLParser = parser;
 		
 		setLayout(new GridLayout(1,1));
-		Dimension dSizeCoord = new Dimension(185,20);      	 
-		Dimension dSizeSpeed = new Dimension(195,20);        	    
-		Dimension dSizeMass = new Dimension(220,20);   	
-		Dimension dSizeRadius = new Dimension(220,20);  
-		Dimension dSizeDense = new Dimension(220,20);   
-		
-		//TODO remove!
-		/*Dimension dSizeCoord = new Dimension(170,20);      	 
-		Dimension dSizeSpeed = new Dimension(180,20);        	    
-		Dimension dSizeMass = new Dimension(166,20);   	
-		Dimension dSizeRadius = new Dimension(150,20);        
-		 */
+		Dimension dSizeCoord = new Dimension(185,20);
+		Dimension dSizeSpeed = new Dimension(195,20);
+		Dimension dSizeMass = new Dimension(220,20);
+		Dimension dSizeRadius = new Dimension(220,20);
+		Dimension dSizeDense = new Dimension(220,20);
 		
 		//* Mittlere Buttons - Data *//
 		pa_comp_middledata = new JPanel();
@@ -178,7 +171,6 @@ public class TabVisualisationData extends JPanel {
 				tf_Radius.setText(myXMLParser.getText(247)+" in km");
 
 				la_Schwarzschild = new JLabel("("+myXMLParser.getText(108)+")");
-				//la_Schwarzschild.setBorder(new BevelBorder(BevelBorder.RAISED));
 				la_Schwarzschild.setHorizontalAlignment(JLabel.CENTER);
 				la_Schwarzschild.setFont(new Font(null, Font.BOLD, 14));
 				la_Schwarzschild.setVisible(false);
@@ -256,13 +248,8 @@ public class TabVisualisationData extends JPanel {
 				pa_comp_middledata.add(pa_comp_mass);
 				pa_comp_middledata.add(pa_comp_radius);
 				pa_comp_middledata.add(pa_comp_dense);
-				//pa_comp_middledata.add(la_Blackhole);
 			
 			add(pa_comp_middledata);
-			
-		//pa_comp_middle.add(pa_comp_middlebuttons);
-			
-		//add(pa_comp_middle);
 	}
 	
 	public void repaintViews() {
@@ -282,33 +269,6 @@ public class TabVisualisationData extends JPanel {
 		return (mm*ov_top.iGridOffset/Math.pow(10, ov_top.iZoomLevel));
 	}
 	
-/*	public void resetOffset() {
-		ov_front.dCoordOffsetX = 0.0;
-		ov_front.dCoordOffsetY = 0.0;
-		ov_front.dCoordOffsetZ = 0.0;
-		
-		ov_top.dCoordOffsetX = 0.0;
-		ov_top.dCoordOffsetY = 0.0;
-		ov_top.dCoordOffsetZ = 0.0;
-		repaintViews();
-	}
-	public void displayStep(Step nextStep) {
-		ov_front.displayStep(nextStep);
-		ov_top.displayStep(nextStep);
-	}
-	
-	public void setGridColor(Color newColor) {
-		ov_front.coGridColor = newColor;
-		ov_top.coGridColor = newColor;
-		repaintViews();
-	}
-	
-	public void setObjectColor(Color newColor) {
-		ov_front.coSpeedvecColor = newColor;
-		ov_top.coSpeedvecColor = newColor;
-		repaintViews();		
-	}
-*/	
 	public void UpdatePanels(Masspoint_Sim mpsim) {
 		Masspoint mp = new Masspoint(mpsim.getID(),mpsim.getPosX(),mpsim.getPosY(),mpsim.getPosZ());
 		mp.setSpeedx(mpsim.getSpeedX());
@@ -350,8 +310,5 @@ public class TabVisualisationData extends JPanel {
 				la_Schwarzschild.setVisible(false);
 			tf_Dense.setText(InterpretInput.niceInput_Density(mp.getDensity(), myXMLParser));
 		}
-		//sl_Speed.setValue((int)(100*Math.pow(mp.getSpeed()/CalcCode.LIGHTSPEED, 1.0/CalcCode.SSPEEDCONST)));
-		//sl_Mass.setValue((int)(Math.pow(mp.getAbsMass(),1.0/CalcCode.SMASSCONST)));
-		//sl_Radius.setValue((int)(Math.pow(mp.getRadius(),1.0/CalcCode.SRADIUSCONST)));
 	}
 }

@@ -160,7 +160,7 @@ public class CalcCode extends Thread {
 			}		
 */
 			debugout("calcMain() - calcAcc("+dt+","+vmps_current.size()+") wird gestartet");
-			// TODO correct: Not for final Version!
+			// Something really weird happened
 			if(vmps_current.size() <= 0) {
 				debugout("calcMain() - vmps_current.size <= 0!");
 				myController.flagcalc = false;

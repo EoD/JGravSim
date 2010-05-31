@@ -41,7 +41,7 @@ public class Model {
 		istep = 0;
 		//file = new File(Defaultname);
 		
-		// TODO check if file is really deleted
+		//check if file is really deleted
 		int idelete = deleteFile(Defaultname);
 		if(idelete == 1)
 			debugout("writeHeader() - file has been deleted");
@@ -52,7 +52,7 @@ public class Model {
 		
 		filename = Defaultname;
 		String version = String.valueOf(Controller.VERSION);
-		String steps = String.valueOf((long)(datacount/timecount)+1);	// TODO maybe correct output
+		String steps = String.valueOf((long)(datacount/timecount)+1);
 		String steptime = String.valueOf(timecount);
 		writetempout(version+DELIMDATA+steps+DELIMDATA+steptime+DELIMLINE, filename);
 	}

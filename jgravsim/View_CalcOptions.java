@@ -119,7 +119,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			timestep = InterpretInput.niceInput_Time(CalcCode.TIMESTEPX, myController.myView.myXMLParser);
 		
 		tf_timestep = new JTextField(timestep);
-		//tf_timestep.setHorizontalAlignment(JTextField.CENTER);
 		tf_timestep.setMinimumSize(dSizeDaten);
 		tf_timestep.setPreferredSize(dSizeDaten);
 		tf_timestep.setBorder( new BevelBorder(BevelBorder.RAISED) );
@@ -145,7 +144,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		pan_main.add(la_timestep);
 		pan_main.add(tf_timestep);
 		
-		//pan_main = new JPanel(new GridLayout(0,1));
 		pan_main.add(pan_buttons);
 		pan_main.add(pan_options);
 		pan_main.setSize(pan_main.getPreferredSize().width+20, pan_main.getPreferredSize().height+80);
@@ -178,7 +176,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			tf_timestep.setBackground(null);
 			b_calculate.setBackground(null);
 
-			// TODO add check!
 			String[] sadata = {tf_datacount.getText(),tf_timecount.getText(),tf_timestep.getText()};
 			boolean[] bacheck = CheckInput(sadata);
 			boolean flagcheck = true;
@@ -223,7 +220,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						debugout("EoD - See: os.version	= "+System.getProperty("os.version"));
 						debugout("EoD - See: file.separator = "+System.getProperty("file.separator"));
 
-						//myCalculationView = new CalcView((int)(myController.calc_datacount/myController.calc_timecount), myController);
 						String exedir= System.getProperty("user.dir").toString();
 
 						String filename = exe;

@@ -61,13 +61,7 @@ public class TabVisualisationControls extends JPanel {
 			JButton b_playcontr_stepforw;
 			JButton b_playcontr_end;
 		JPanel pa_vis_contr_bottom_row4;
-			//JButton b_colorch_grid;
-			//JButton b_colorch_speedvec;
 			JButton b_resetoffset;
-
-	//ObjectView2D ov_top; /* Ansicht von Oben (x,y) */
-	//ObjectView2D ov_front; /* Ansicht von Vorne (x,z) */
-	//ObjectView2D ov_right; /* Ansicht von Rechts (y,z) */	
 	
 	public TabVisualisationControls(XMLParser parser) {
 		setLayout(new GridLayout(0,1));
@@ -112,7 +106,6 @@ public class TabVisualisationControls extends JPanel {
 		pa_vis_contr_center_panel1.add(pa_vis_contr_center_panel1_sub1);
 		pa_vis_contr_center_panel1.add(pa_vis_contr_center_panel1_sub2);
 
-		// TODO check
 		pa_vis_contr_center_paneltime = new JPanel(new GridLayout(2,5));
 		la_mscounter = new JLabel();
 		la_scounter = new JLabel();
@@ -175,8 +168,6 @@ public class TabVisualisationControls extends JPanel {
 		b_playcontr_stepforw = new JButton(">");
 		b_playcontr_end = new JButton(">>");
 
-		//b_colorch_grid = new JButton(myXMLParser.getText(103));
-		//b_colorch_speedvec = new JButton(myXMLParser.getText(104));
 		b_resetoffset = new JButton(myXMLParser.getText(105));
 		
 		pa_vis_contr_bottom_row1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -190,8 +181,6 @@ public class TabVisualisationControls extends JPanel {
 		sl_playcontr_slider.setPaintTicks(true);
 		sl_playcontr_slider.setMajorTickSpacing(DynamicWPTLoader.STANDARDBUFFERSIZE);
 		sl_playcontr_slider.setMinorTickSpacing(DynamicWPTLoader.STANDARDBUFFERSIZE/10);
-		//sl_playcontr_slider.setMinorTickSpacing(10);
-		//sl_playcontr_slider.setMajorTickSpacing(100);
 		sl_playcontr_slider.setBackground(Color.white);
 		pa_vis_contr_bottom_row2.add(sl_playcontr_slider);
 				
@@ -204,8 +193,6 @@ public class TabVisualisationControls extends JPanel {
 		pa_vis_contr_bottom_row3.add(b_playcontr_end);
 		
 		pa_vis_contr_bottom_row4 = new JPanel(new GridLayout());
-		//pa_vis_contr_bottom_row4.add(b_colorch_grid);
-		//pa_vis_contr_bottom_row4.add(b_colorch_speedvec);
 		pa_vis_contr_bottom_row4.add(b_resetoffset);
 		
 		pa_vis_contr_bottom.add(pa_vis_contr_bottom_row1);
@@ -269,7 +256,6 @@ public class TabVisualisationControls extends JPanel {
 		if(dCurTime == 0)
 			time = dMaxTime;
 
-		// TODO complete!
 		//if(dCurTime < 1000.0*12.0*4.0*7.0*24.0*60.0*60.0*1000.0)
 		unit = myXMLParser.getText(478);
 		if(time >= 100.0*365.25*24.0*3600.0) {
@@ -360,10 +346,7 @@ public class TabVisualisationControls extends JPanel {
 			//time = time % factor;
 		}
 		else
-			la_mscounter.setText(df.format(0)+" "+unit);
-		
-		//la_timecounter.setText("Time: "+df.format(dCurTime/factor)+" "+unit+" of "+df.format(dMaxTime/factor)+" "+unit);
-		
+			la_mscounter.setText(df.format(0)+" "+unit);		
 	}
 
 	public void enableCounter(boolean b) {
@@ -379,6 +362,4 @@ public class TabVisualisationControls extends JPanel {
 		la_mscounter.setVisible(b);
 		la_framecounter.setVisible(b);		
 	}	
-
-
 }

@@ -25,13 +25,7 @@ public class TabComputeAdvanced extends JPanel {
 					JTextField tf_Coordx;
 					JTextField tf_Coordy;
 					JTextField tf_Coordz;
-	
-			//JPanel pa_comp_speed_direction;
-			//	JLabel la_speed_direction;
-			//	JPanel pa_comp_coord_direction_tf;
-			//		JTextField tf_Speedx_direction;
-			//		JTextField tf_Speedy_direction;
-			//		JTextField tf_Speedz_direction;	
+
 			JPanel pa_comp_speed_abs;
 				JTextField tf_Speedabs;
 			JPanel pa_comp_speed_exact;
@@ -61,8 +55,6 @@ public class TabComputeAdvanced extends JPanel {
 			//* Mittlere Buttons - Data *//
 			pa_comp_topdata = new JPanel();
 			pa_comp_topdata.setLayout(new BoxLayout(pa_comp_topdata, BoxLayout.Y_AXIS));
-			//pa_comp_middledata.setPreferredSize( new Dimension(2*this.getHeight(), this.getHeight()/2));
-			//pa_comp_topdata.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),"Daten"));
 			pa_comp_topdata.add(new JPanel());
 			
 			b_edit = new JButton(myXMLParser.getText(207));	
@@ -101,43 +93,10 @@ public class TabComputeAdvanced extends JPanel {
 			tf_Mass = new JTextField("0.0");
 			tf_Mass.setHorizontalAlignment(JTextField.CENTER);
 			tf_Mass.setEditable(false);
-//			tf_Mass.setMinimumSize(dSizeMass);
 			tf_Mass.setPreferredSize(dSizeMass);	
-//			tf_Mass.setBorder( new BevelBorder(BevelBorder.RAISED) );
 			tf_Mass.setFont(new Font("Sans Serif", Font.BOLD, 12));
-//***				tf_Mass.setEditable(true);
 			tf_Mass.setText(myXMLParser.getText(246)+" in kg");
 
-//			JLabel lMassUnit = new JLabel(sunitmass);
-//			lMassUnit.setFont(new Font("Sans Serif", Font.BOLD, 12));			
-
-			//Speed Eingabefelder	
-			/*la_speed_direction = new JLabel("Geschw.: ");
-			la_speed_direction.setFont(new Font("Sans Serif", Font.BOLD, 12));
-
-			tf_Speedx_direction = new JTextField("0.0");
-			tf_Speedx_direction.setHorizontalAlignment(JTextField.CENTER);
-			tf_Speedx_direction.setEditable(false);
-			tf_Speedx_direction.setPreferredSize(dSizeSpeed);
-			tf_Speedx_direction.setFont(new Font("Sans Serif", Font.BOLD, 12));
-			tf_Speedx_direction.setText("x-Geschwindigkeit in m/s");
-			
-			tf_Speedy_direction = new JTextField("0.0");
-			tf_Speedy_direction.setHorizontalAlignment(JTextField.CENTER);
-			tf_Speedy_direction.setEditable(false);
-			tf_Speedy_direction.setPreferredSize(dSizeSpeed);
-			tf_Speedy_direction.setFont(new Font("Sans Serif", Font.BOLD, 12));
-			tf_Speedy_direction.setText("y-Geschwindigkeit in m/s");
-		    
-			
-			tf_Speedz_direction = new JTextField("0.0");
-			tf_Speedz_direction.setHorizontalAlignment(JTextField.CENTER);
-			tf_Speedz_direction.setEditable(false);
-			tf_Speedz_direction.setPreferredSize(dSizeSpeed);
-			tf_Speedz_direction.setFont(new Font("Sans Serif", Font.BOLD, 12));
-			tf_Speedz_direction.setText("z-Geschwindigkeit in m/s");
-			*/
-			
 			//Speed Slider
 			JLabel la_speed_abs = new JLabel(myXMLParser.getText(243)+" ");
 			la_speed_abs.setFont(new Font("Sans Serif", Font.BOLD, 12));
@@ -187,9 +146,7 @@ public class TabComputeAdvanced extends JPanel {
 			tf_Radius.setText(myXMLParser.getText(247)+" in km");
 
 
-			//Dense Slider + Checkbox + Textfield	
-				//chb_Dense = new JCheckBox("feste Dichte:");
-				//chb_Dense.setFont(new Font("Sans Serif", Font.BOLD, 12));
+			//Dense Slider + Checkbox + Textfield
 				JLabel la_dense = new JLabel(myXMLParser.getText(245)+": ");
 				
 				tf_Dense = new JTextField("0.0");
@@ -222,14 +179,6 @@ public class TabComputeAdvanced extends JPanel {
 			pa_comp_coords.add(la_Coord);
 			pa_comp_coords.add(pa_comp_coord_tf);
 			
-			/*pa_comp_speed_direction = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			pa_comp_coord_direction_tf = new JPanel(new GridLayout(2,2));
-			pa_comp_coord_direction_tf.add(tf_Speedx_direction);
-			pa_comp_coord_direction_tf.add(tf_Speedy_direction);
-			pa_comp_coord_direction_tf.add(tf_Speedz_direction);
-			pa_comp_speed_direction.add(la_speed_direction);
-			pa_comp_speed_direction.add(pa_comp_coord_direction_tf);
-			*/
 			
 			pa_comp_speed_abs = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			pa_comp_speed_abs.add(la_speed_abs);
@@ -253,20 +202,17 @@ public class TabComputeAdvanced extends JPanel {
 			pa_comp_radius.add(tf_Radius);
 
 			pa_comp_dense = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			//pa_comp_dense.add(chb_Dense);
 			pa_comp_dense.add(la_dense);
 			pa_comp_dense.add(tf_Dense);
 			pa_comp_dense.add(la_Blackhole);
 
 			pa_comp_topdata.add(b_edit);
 			pa_comp_topdata.add(pa_comp_coords);
-			//pa_comp_topdata.add(pa_comp_speed_direction);
 			pa_comp_topdata.add(pa_comp_speed_abs);
 			pa_comp_topdata.add(pa_comp_speed_exact);
 			pa_comp_topdata.add(pa_comp_mass);
 			pa_comp_topdata.add(pa_comp_radius);
 			pa_comp_topdata.add(pa_comp_dense);
-			//pa_comp_middledata.add(la_Blackhole);
 			
 			add(pa_comp_topdata);
 	}

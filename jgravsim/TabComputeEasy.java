@@ -59,8 +59,6 @@ public class TabComputeEasy extends JPanel {
 			//* Mittlere Buttons - Data *//
 			pa_comp_middledata = new JPanel();
 			pa_comp_middledata.setLayout(new BoxLayout(pa_comp_middledata,BoxLayout.Y_AXIS));
-			//pa_comp_middledata.setLayout(new BoxLayout(pa_comp_middledata, BoxLayout.Y_AXIS));
-			//pa_comp_middledata.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),"Daten"));
 			pa_comp_middledata.add(new JPanel());
 		//Coordinates
 			la_Coord = new JLabel(myXMLParser.getText(241)+":");
@@ -85,12 +83,7 @@ public class TabComputeEasy extends JPanel {
 			tf_Coordz.setEditable(false);
 			tf_Coordz.setPreferredSize(dSizeCoord);	
 			tf_Coordz.setFont(new Font("Sans Serif", Font.BOLD, 12));
-			tf_Coordz.setText("z "+myXMLParser.getText(5)+" cm");
-			
-	
-
-//			JLabel lMassUnit = new JLabel(sunitmass);
-//			lMassUnit.setFont(new Font("Sans Serif", Font.BOLD, 12));			
+			tf_Coordz.setText("z "+myXMLParser.getText(5)+" cm");	
 
 		//Speed Eingabefelder	
 			la_speed_exact = new JLabel(myXMLParser.getText(242)+":");
@@ -128,8 +121,6 @@ public class TabComputeEasy extends JPanel {
 			sl_Speed.setMajorTickSpacing(10);
 			sl_Speed.setPaintLabels(true);
 			Hashtable<Integer, JLabel> tableSpeed = new Hashtable<Integer, JLabel>();
-			//tableSpeed.put( new Integer( 0 ), new JLabel("null") );
-			//tableSpeed.put( new Integer( 12 ), new JLabel("ICE") );
 			tableSpeed.put( new Integer( 40 ), new JLabel(myXMLParser.getText(504)) );
 			tableSpeed.put( new Integer( 100 ), new JLabel(myXMLParser.getText(7)) );
 			sl_Speed.setLabelTable(tableSpeed);
@@ -157,7 +148,6 @@ public class TabComputeEasy extends JPanel {
 			//integer = e^(ln(mass)/SMASSCONST)
 			tableMass.put( new Integer((int) Math.exp(Math.log(CalcCode.EM)/CalcCode.SMASSCONST) ), new JLabel(myXMLParser.getText(504)) );	//==6*10^24 kg
 			tableMass.put( new Integer((int) Math.exp(Math.log(CalcCode.SM)/CalcCode.SMASSCONST)  ), new JLabel(myXMLParser.getText(501)) );		//==2*10^30kg
-			//tableMass.put( new Integer( 100 ), new JLabel("Galaxie") ); 	//==10^42kg
 			sl_Mass.setLabelTable(tableMass);
 			sl_Mass.setValue(1);
 			sl_Mass.setPreferredSize(dSizeSlider);
@@ -182,9 +172,6 @@ public class TabComputeEasy extends JPanel {
 			//integer = e^(ln(radius)/SRADIUSCONST)
 			tableRadius.put( new Integer((int) Math.exp(Math.log(CalcCode.ER)/CalcCode.SRADIUSCONST) ), new JLabel(myXMLParser.getText(504)) );	//==6*10^24 kg
 			tableRadius.put( new Integer((int) Math.exp(Math.log(CalcCode.SR)/CalcCode.SRADIUSCONST)  ), new JLabel(myXMLParser.getText(501)) );		//==2*10^30kg
-			//tableRadius.put( new Integer( 12 ), new JLabel("Sonne") );
-			//tableRadius.put( new Integer( 59 ), new JLabel("Jupiter-Orbit") );	//9.461E20 km
-			//tableRadius.put( new Integer( 100 ), new JLabel("Galaxie") );	//long limit
 			sl_Radius.setLabelTable(tableRadius);
 			sl_Radius.setValue(1);
 			sl_Radius.setPreferredSize(dSizeSlider);
@@ -197,11 +184,8 @@ public class TabComputeEasy extends JPanel {
 			tf_Radius.setText(myXMLParser.getText(247)+" "+myXMLParser.getText(5)+" km");
 
 
-			//Dense Slider + Checkbox + Textfield	
-				//chb_Dense = new JCheckBox(myXMLParser.getText(244)+":");
-				//chb_Dense.setFont(new Font("Sans Serif", Font.BOLD, 12));
+			//Dense Slider + Checkbox + Textfield
 				JLabel la_dense = new JLabel(myXMLParser.getText(245)+": ");
-				
 				
 				tf_Dense = new JTextField("0.0");
 				tf_Dense.setHorizontalAlignment(JTextField.CENTER);
@@ -227,7 +211,6 @@ public class TabComputeEasy extends JPanel {
 			
 			pa_comp_speed_exact = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			pa_comp_speed_exact_tf = new JPanel(new GridLayout(1,0));
-			//pa_comp_speed_exact_tf.setBorder(new BevelBorder(BevelBorder.RAISED));
 			pa_comp_speed_exact_tf.add(tf_Speedx_exact);
 			pa_comp_speed_exact_tf.add(tf_Speedy_exact);
 			pa_comp_speed_exact_tf.add(tf_Speedz_exact);
@@ -254,7 +237,6 @@ public class TabComputeEasy extends JPanel {
 			pa_comp_dense = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			pa_comp_dense_sub = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			pa_comp_dense_sub.add(la_dense);
-			//pa_comp_dense.add(sl_Dense);
 			pa_comp_dense_sub.add(tf_Dense);
 			pa_comp_dense.add(pa_comp_dense_sub);	
 			pa_comp_dense.add(la_Blackhole);	
