@@ -40,6 +40,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static final boolean DEBUG = true;
 	static final float ZOOMLEVEL = 10.0f;
 	static final double VERSION = 1.8;
+	static final long WPT_VERSION = 1;
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
 	static final String EMAIL = "jgravsim@gmail.com";
@@ -277,8 +278,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				fc = new JFileChooser(getCurrentFolder());
 			else
 				fc = new JFileChooser(strlastfolder);
-
-			fc.setSelectedFile(new File( Model.Defaultname ));
+			
+			fc.setFileFilter(new WPTFilter(this));
+			fc.setSelectedFile(new File( Model.FILE_TEMP ));
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				 fpInputFile = fc.getSelectedFile().getAbsoluteFile();
@@ -323,7 +325,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_loadlast) {
 			 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
-			 fpInputFile = new File( Model.Defaultname ); 
+			 fpInputFile = new File( Model.FILE_TEMP ); 
 			 int errorline = myModel.loadInputFile(fpInputFile);
 			 if(errorline != Model.INFILE_NOERROR) {
 				 if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -471,7 +473,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
 			}
 			else if(a == 1){
-				fpInputFile = new File( Model.Defaultname ); 
+				fpInputFile = new File( Model.FILE_TEMP ); 
 				int errorline = myModel.loadDataset(fpInputFile);
 				if(errorline != Model.INFILE_NOERROR) {
 					if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -535,9 +537,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	   	if(myCalcProgress != null) {
 	   		myCalcProgress.halt();
 	   		debugout("Halted myCalcProgress "+ myCalcProgress.pcalculation.toString());
-	   		int laststep = myModel.findlaststep(new File(Model.Defaultname));
+	   		int laststep = myModel.findlaststep(new File(Model.FILE_TEMP));
 	   		if(laststep > 0)
-	   			myModel.correctHeader(new File(Model.Defaultname), laststep);
+	   			myModel.correctHeader(new File(Model.FILE_TEMP), laststep);
 	   		
 	   		myCalcProgress = null;
 	   		CalculationFinished(CalcCode.NOERROR);
@@ -554,8 +556,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				fc = new JFileChooser(strlastfolder);
 				debugout("Loading last file - "+strlastfolder);
 			}
+			
 			myView.pa_computetab.ButtonsDeactive(false);
-			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+".wpt"));
+			fc.setFileFilter(new WPTFilter(this));
+			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+"."+Model.FILE_ENDING));
 			int ret = fc.showSaveDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
@@ -572,6 +576,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			else
 				fc = new JFileChooser(strlastfolder);
 			
+			fc.setFileFilter(new WPTFilter(this));
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
@@ -1089,7 +1094,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(source == myView) {
 			debugout("Controller() - Closing...");
 			if(!CURRENTBUILD)
-				myModel.deleteFile(Model.Defaultname);		
+				myModel.deleteFile(Model.FILE_TEMP);		
 		}
 		System.exit(0);
 	}
@@ -1405,7 +1410,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
 		
 			//Get the latest step of the c++ temp file and show it
-			int errorline = myModel.loadDataset(new File( Model.Defaultname ), -1);
+			int errorline = myModel.loadDataset(new File( Model.FILE_TEMP ), -1);
 			if(errorline != Model.INFILE_NOERROR) {
 				if(errorline == Model.INFILE_EOFSTARTERROR) {
 					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);

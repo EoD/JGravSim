@@ -235,7 +235,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						command[0] = exedir+File.separator+filename;
 						command[1] = "-t";
 						command[2] = Double.toString(myController.calc_timestep);
-						command[3] = exedir+File.separator+"temp.wpt";
+						command[3] = exedir+File.separator+Model.FILE_TEMP;
 						
 						if(System.getProperty("os.name").contains("Windows"))
 							command[0] += ".exe";

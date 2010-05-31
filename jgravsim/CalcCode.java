@@ -200,7 +200,7 @@ public class CalcCode extends Thread {
 			debugout("calcMain() -f currentsize="+vmps_current.size()+", tempsize="+vmps_temp.size());  	
 		}
 		if(myController.flagcalc == false) {
-			myModel.correctHeader(new File(Model.Defaultname), (int)(dtsum/timecount));
+			myModel.correctHeader(new File(Model.FILE_TEMP), (int)(dtsum/timecount));
 		}
 		debugout("calcMain - Quit - Roger and out");
 		if(b_console == false) {

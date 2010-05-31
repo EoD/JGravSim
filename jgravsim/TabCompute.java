@@ -491,7 +491,7 @@ public class TabCompute extends JPanel {
 		b_clone.setEnabled(true);
 		b_compute.setEnabled(true);
 		b_stop.setEnabled(false);
-	    File f = new File(Model.Defaultname);
+	    File f = new File(Model.FILE_TEMP);
 	    if (!f.exists()) {
 	    	//debugout("ButtonsStd() - no such file or directory: "+Model.Defaultname);
 			//tf_filename.setEnabled(false);

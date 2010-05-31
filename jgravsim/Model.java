@@ -9,7 +9,8 @@ public class Model {
 	public static final long serialVersionUID = 42 ;
 	
 	public static boolean DEBUG = false;
-	public static final String Defaultname = "temp.wpt";
+	public static final String FILE_ENDING = "wpt";
+	public static final String FILE_TEMP = "temp."+FILE_ENDING;
 	public static final String FILE_PERCENT = "percent.tmp";
 	
 	Vector<Masspoint> stDataset = null;
@@ -42,7 +43,7 @@ public class Model {
 		//file = new File(Defaultname);
 		
 		//check if file is really deleted
-		int idelete = deleteFile(Defaultname);
+		int idelete = deleteFile(FILE_TEMP);
 		if(idelete == 1)
 			debugout("writeHeader() - file has been deleted");
 		else if(idelete == -1)
@@ -50,8 +51,8 @@ public class Model {
 		else 
 			debugout("writeHeader() - WARNING file couldn't be deleted. ID "+idelete);
 		
-		filename = Defaultname;
-		String version = String.valueOf(Controller.VERSION);
+		filename = FILE_TEMP;
+		String version = String.valueOf(Controller.WPT_VERSION);
 		String steps = String.valueOf((long)(datacount/timecount)+1);
 		String steptime = String.valueOf(timecount);
 		writetempout(version+DELIMDATA+steps+DELIMDATA+steptime+DELIMLINE, filename);
@@ -376,7 +377,7 @@ public class Model {
 		FileOutputStream fos = null; 
 	 
 	    try { 
-	    	fis = new FileInputStream( Defaultname ); 
+	    	fis = new FileInputStream( FILE_TEMP ); 
 	    	fos = new FileOutputStream( file ); 
 	 
 	    	copydata( fis, fos ); 
