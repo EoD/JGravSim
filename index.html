@@ -51,70 +51,26 @@ a:active {
 <br />
 
 <div align="left">
-<?php
-$dirpath = getcwd() . "/";
-$dir = opendir($dirpath);
-$files_main = array();
-$files_scenario = array();
-$files_docs = array();
-while ($file = readdir($dir)) {
-   $localpath = $dirpath.$file;
-   
-   if (is_file($localpath) && !( strpos($file, ".php")) 
-		&& !($file == "background.jpg")
-		&&  (strpos($file, ".jpg") == false)
-		&& !($file == "favicon.png")
-		&& !($file == "robots.txt")) {
-	if(strpos($file, ".wpt") != false) {
-		$files_scenario[] = $file;
-	}
-	else if(strpos($file, ".pdf") != false) {
-		$files_docs[] = $file;
-	}
-	else if($file == "README" ||
-		$file == "COPYING" ) {
-		array_unshift($files_docs, $file);
-	}
-	else {
-#		$key = $file.filemtime($localpath).md5($file);
-#		$files_main[$key] = $file;
-		$files_main[] = $file;
-	}
-   }
-}
-natcasesort($files_main);
-echo "<u>Main stuff:</u><br />";
-foreach ($files_main as $file) {
-	if(strpos($file, "_old") == false)
-		echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$file</a><br />";
-}
 
-
-$outdated = false;
-echo "<br />&nbsp;<u><i>Outdated stuff:</i></u><br />";
-foreach ($files_main as $file) {
-	if(strpos($file, "_old") != false) {
-		$outdated = true;
-		echo "&nbsp;&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<i><a href=\"$file\" target=\"_blank\">$file</a></i><br />";
-	}
-}
-if(!$outdated) {
-	echo "&nbsp;&nbsp;<i>everything is up to date</i>";
-}
-
-echo "<br />";
-echo "<br /><u>Documents:</u><br />";
-foreach ($files_docs as $file) {
-	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$file</a><br />";
-}
-
-echo "<br /><u>Scenarios:</u><br />";
-foreach ($files_scenario as $file) {
-	$showname = explode (".wpt", $file);
-	$showname = str_replace("_", " ", $showname);
-	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$showname[0]</a><br />";
-}
-?>
-</div>
+<u>Main stuff:</u><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="cgravsim_amd64" target="_blank">cgravsim_amd64</a><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="cgravsim_sparc" target="_blank">cgravsim_sparc</a><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="cgravsim_sparc64" target="_blank">cgravsim_sparc64</a><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="cgravsim_x86" target="_blank">cgravsim_x86</a><br />
+&nbsp;<small>2010/06/16</small>&nbsp;&nbsp;<a href="index.html" target="_blank">index.html</a><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="JGravSim_beta.jar" target="_blank">JGravSim_beta.jar</a><br />
+&nbsp;<small>2010/06/03</small>&nbsp;&nbsp;<a href="JGravSim_text.xml" target="_blank">JGravSim_text.xml</a><br />
+<br /><u>Documents:</u><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="README" target="_blank">README</a><br />
+<br /><u>Scenarios:</u><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="3+1body_unstable.wpt" target="_blank">3+1body unstable</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="3body_stable.wpt" target="_blank">3body stable</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="Earth - Moon.wpt" target="_blank">Earth - Moon</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="ring1d_100.wpt" target="_blank">ring1d 100</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="ring1d_10000.wpt" target="_blank">ring1d 10000</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="solarsystem.wpt" target="_blank">solarsystem</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="1187140464950.wpt" target="_blank">1187140464950</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="collision_nice.wpt" target="_blank">collision nice</a><br />
+&nbsp;<small>2010/06/01</small>&nbsp;&nbsp;<a href="collision_relativistic.wpt" target="_blank">collision relativistic</a><br /></div>
 </body>
 </html>
