@@ -1534,6 +1534,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		id++;
 		//debugout("Controller() - Adding data for object "+id);
 		
+		for(int i=0; i<vmasspoints.size(); i++) {
+			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
+			if(mptemp.id >= id)
+				id = mptemp.id++;
+		}
+		
 		long lx = pxtomm(x, 'x');
 		long ly = pxtomm(y, 'y');
 		long lz = pxtomm(z, 'z');
