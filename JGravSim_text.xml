@@ -108,6 +108,8 @@
 		<text id="251">Erweitert</text>
 		<text id="252">Infos</text>
 		<text id="253">Klonen</text>
+		<text id="254">Speichern</text>
+		<text id="255">Sie wollen den Massenpunkt %1d als Vorlage speichern.\nBitte geben Sie einen Name ein:</text>
 
 		<text id="3">Darstellung</text>
 		<text id="30">Steuerung</text>
@@ -337,6 +339,8 @@
 		<text id="251">Advanced</text>
 		<text id="252">Infos</text>
 		<text id="253">Clone</text>
+		<text id="254">Save</text>
+		<text id="255">You want to save masspoint %1d as a template.\nPlease specify a name:</text>
 
 		<text id="3">Visualisation</text>
 		<text id="30">Controls</text>

@@ -43,13 +43,14 @@ public class TabCompute extends JPanel {
 
 					JPanel pa_comp_mpdefault;
 						JComboBox cb_mpdefaults;
-						JButton b_setdefaults;	/* Button um MP zu l�schen */
-						JButton b_add;	/* Button um MP zu l�schen */
+						JButton b_setdefaults;
+						JButton b_add;
 				
 			JPanel pa_comp_remove;
 				JComboBox cb_Objects;
-				JButton b_Remove;	/* Button um MP zu l�schen */
-				JButton b_clone;	/* Button um MP zu l�schen */
+				JButton b_Remove;	/* Button to delete mp */
+				JButton b_clone;	/* Button to clone mp */
+				JButton b_savepreset;	/* Button to save mp */
 				
 			TabComputeEasy pa_compute_dataeasy;		
 			TabComputeAdvanced pa_compute_dataadvanced;
@@ -221,11 +222,13 @@ public class TabCompute extends JPanel {
 				cb_Objects.addItem(myXMLParser.getText(240));
 			    b_Remove = new JButton(myXMLParser.getText(206));
 			    b_clone = new JButton(myXMLParser.getText(253));
+			    b_savepreset = new JButton(myXMLParser.getText(254));
 
 			    pa_comp_remove_sub.add(la_ObjectList);	
 			    pa_comp_remove_sub.add(cb_Objects);	
 			    pa_comp_remove_sub.add(b_Remove);
 			    pa_comp_remove_sub.add(b_clone);
+			    pa_comp_remove_sub.add(b_savepreset);
 			    pa_comp_remove.add(pa_comp_remove_sub);
 				
 				//pa_comp_remove.add(new JPanel());
@@ -318,6 +321,7 @@ public class TabCompute extends JPanel {
 		b_reset.setEnabled(false);
 		b_Remove.setEnabled(false);
 		b_clone.setEnabled(false);
+		b_savepreset.setEnabled(false);
 		b_compute.setEnabled(false);
 		b_stop.setEnabled(false);
 		//tf_filename.setEnabled(false);
@@ -379,6 +383,7 @@ public class TabCompute extends JPanel {
 		b_reset.setEnabled(false);
 		b_Remove.setEnabled(false);
 		b_clone.setEnabled(false);
+		b_savepreset.setEnabled(false);
 		b_compute.setEnabled(false);
 		b_stop.setEnabled(false);
 		//tf_filename.setEnabled(false);
@@ -420,6 +425,7 @@ public class TabCompute extends JPanel {
 		b_reset.setEnabled(false);
 		b_Remove.setEnabled(false);
 		b_clone.setEnabled(false);
+		b_savepreset.setEnabled(false);
 		b_compute.setEnabled(false);
 		b_stop.setEnabled(true);
 		//tf_filename.setEnabled(false);
@@ -489,6 +495,8 @@ public class TabCompute extends JPanel {
 		b_reset.setEnabled(true);
 		b_Remove.setEnabled(true);
 		b_clone.setEnabled(true);
+		b_savepreset.setEnabled(true);
+		
 		b_compute.setEnabled(true);
 		b_stop.setEnabled(false);
 	    File f = new File(Model.FILE_TEMP);
@@ -546,6 +554,7 @@ public class TabCompute extends JPanel {
 		b_reset.setEnabled(b);
 		b_Remove.setEnabled(b);
 		b_clone.setEnabled(b);
+		b_savepreset.setEnabled(b);
 		b_compute.setEnabled(b);
 		b_stop.setEnabled(b);
 		b_savefile.setEnabled(b);

@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 64L;
+	public static final long serialVersionUID = 65L;
 	
 	//manual version control
 	public static final long BUILD = 
@@ -175,6 +175,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.b_resetoffset.addActionListener(this);		
 		myView.pa_computetab.b_Remove.addActionListener(this);
 		myView.pa_computetab.b_clone.addActionListener(this);
+		myView.pa_computetab.b_savepreset.addActionListener(this);
 		myView.pa_computetab.b_edit.addActionListener(this);
 		myView.pa_computetab.b_reset.addActionListener(this);
 		myView.pa_computetab.b_stop.addActionListener(this);
@@ -628,7 +629,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			RemoveMp(mp);
 		}
 	}
-	else if(source == myView.pa_computetab.b_clone)  {
+	else if(source == myView.pa_computetab.b_clone) {
 		Masspoint mp_old = GetSelectedMasspoint();
 		Masspoint mp_clone = addMasspoint(0, 0, 0, mp_old);
 		int clone_id = mp_clone.id;
@@ -641,7 +642,13 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)),
 				MVMath.ConvertToL(mp_clone.getAbsRadius()*1.5 *(randomizer.nextInt(2)>0?1:-1)) ));
 		updateComputePanels(mp_clone, source);
-	}  
+	}
+	else if(source == myView.pa_computetab.b_savepreset) {
+		Masspoint mp_old = GetSelectedMasspoint();
+		Masspoint mp_clone = new Masspoint(-1, 0, 0, 0, mp_old);
+		mp_clone.name = JOptionPane.showInputDialog(myView, String.format(myView.myXMLParser.getText(255), mp_old.id),myView.myXMLParser.getText(215), JOptionPane.QUESTION_MESSAGE);
+		myView.pa_computetab.cb_mpdefaults.addItem(mp_clone);
+	}
 	else if(source == myView.pa_computetab.b_edit) {
 		if(flagedit == false) {
 			myView.pa_computetab.b_edit.setText(myView.myXMLParser.getText(208));
