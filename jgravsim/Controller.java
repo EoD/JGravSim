@@ -1537,7 +1537,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		for(int i=0; i<vmasspoints.size(); i++) {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
 			if(mptemp.id >= id)
-				id = mptemp.id++;
+				id = mptemp.id + 1;
 		}
 		
 		long lx = pxtomm(x, 'x');
