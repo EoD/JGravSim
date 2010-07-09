@@ -110,6 +110,7 @@
 		<text id="253">Klonen</text>
 		<text id="254">Speichern</text>
 		<text id="255">Sie wollen den Massenpunkt %1d als Vorlage speichern.\nBitte geben Sie einen Name ein:</text>
+		<text id="256">Objekt</text>
 
 		<text id="3">Darstellung</text>
 		<text id="30">Steuerung</text>
@@ -314,7 +315,7 @@
 		<text id="223">How large should the timesteps for calculationbe? (smaller values means longer calculation)</text>
 		<text id="224">Use new C/C++-calculation (not recommended)</text>
 		<text id="225">Your backend version (v%1.1f) doesn't match with the expected version (v%2.1f). Do you want to continue?</text>
-		<text id="226">Startwerte eines neuen Massenpunktes</text>
+		<text id="226">Initial values of new masspoints</text>
 		<text id="227">Add</text>
 		<text id="228">Speedvector</text>
 		<text id="229">for Obj#</text>
@@ -341,6 +342,7 @@
 		<text id="253">Clone</text>
 		<text id="254">Save</text>
 		<text id="255">You want to save masspoint %1d as a template.\nPlease specify a name:</text>
+		<text id="256">Object</text>
 
 		<text id="3">Visualisation</text>
 		<text id="30">Controls</text>
