@@ -81,7 +81,7 @@
 		<text id="221">Wie lange soll voraus berechnet werden? (Größere Werte, längere Berechnung)</text>
 		<text id="222">In welchen Zeitabstaenden soll die Berechnung gespeichert werden? (Größere Werte, größere Ausgabedatei)</text>
 		<text id="223">Mit welchen Zeitabständen soll gerechnet werden? (Kleine Werte, längere Berechnung)</text>
-		<text id="224">Benutze neue C/C++-Berechnung (nicht empfohlen)</text>
+		<text id="224">Benutze neue C/C++-Berechnung (empfohlen)</text>
 		<text id="225">Die Version des Backends (v%1.1f) stimmt nicht mit der erwarteteten Version (v%2.1f) überein. Wollen sie fortfahren?</text>
 		<text id="226">Startwerte eines neuen Massenpunktes</text>
 		<text id="227">Hinzufügen</text>
@@ -313,7 +313,7 @@
 		<text id="221">How much time should we calculate ahead? (larger values means longer calculation)</text>
 		<text id="222">How large should the timesteps for saving be? (larger values means output file)</text>
 		<text id="223">How large should the timesteps for calculationbe? (smaller values means longer calculation)</text>
-		<text id="224">Use new C/C++-calculation (not recommended)</text>
+		<text id="224">Use new C/C++-calculation (recommended)</text>
 		<text id="225">Your backend version (v%1.1f) doesn't match with the expected version (v%2.1f). Do you want to continue?</text>
 		<text id="226">Initial values of new masspoints</text>
 		<text id="227">Add</text>

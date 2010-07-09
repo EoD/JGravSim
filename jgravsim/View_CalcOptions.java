@@ -131,7 +131,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 		pan_options = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		cb_oldcalculation = new JCheckBox(myXMLParser.getText(224), false);
+		cb_oldcalculation = new JCheckBox(myXMLParser.getText(224), true);
 		if(Controller.CPP == true) {
 			pan_options.add(cb_oldcalculation);
 		}
