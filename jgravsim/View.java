@@ -17,6 +17,10 @@ public class View extends JFrame  {
 		super();
 		myXMLParser = new XMLParser(textfile,lang);
 		setTitle(myXMLParser.getText(0));
+		
+		Masspoint.myXMLParser = myXMLParser;
+		Masspoint_Sim.myXMLParser = myXMLParser;
+		
 		int answer = 1;
 		if(Controller.CURRENTBUILD)
 			answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);

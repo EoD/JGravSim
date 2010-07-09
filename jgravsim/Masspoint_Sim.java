@@ -15,6 +15,7 @@ public class Masspoint_Sim {
 	private long dPosY;
 	private long dPosZ;
 	private int highlighted;
+	public static XMLParser myXMLParser;
 
 	public Masspoint_Sim(int iid, double mass, double radius, double speed, double speedX, double speedY, double speedZ, double accX, double accY, double accZ, long posX, long posY, long posZ) {
 		iID = iid;
@@ -42,7 +43,7 @@ public class Masspoint_Sim {
 	
 	@Override
 	public String toString() {
-		return ("Objekt "+iID);
+		return myXMLParser.getText(256)+" "+iID;
 	}
 
 	public void setDrawStatus(int a) {

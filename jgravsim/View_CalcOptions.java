@@ -259,7 +259,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							if(answer == 0) {
 								if(!fcalc.setReadable(true)) {
 									JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
-									throw new IOException("EoD - Could not make file readable!");
+									throw new IOException("EoD - Could not set read permission for cgravsim!");
 								}
 							}
 							else
@@ -267,18 +267,16 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						}
 
 						if(!fcalc.canExecute()) {
-						String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(177) + "\n" + myController.myView.myXMLParser.getText(178), command[0]);
-						int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(176),JOptionPane.YES_NO_OPTION);
-						if(answer == 0) {
-							if(!fcalc.setExecutable(true)) {
-							JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
-								throw new IOException("EoD - Could not make file executeable!");
+							String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(177) + "\n" + myController.myView.myXMLParser.getText(178), command[0]);
+							int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(176),JOptionPane.YES_NO_OPTION);
+							if(answer == 0) {
+								if(!fcalc.setExecutable(true)) {
+									JOptionPane.showMessageDialog(myController.myView, myController.myView.myXMLParser.getText(172), myController.myView.myXMLParser.getText(173), JOptionPane.INFORMATION_MESSAGE);
+									throw new IOException("EoD - Could not set execute permission for cgravsim!");
+								}
 							}
 							else
 								throw new IOException("EoD - File not executeable!");
-						}
-						else
-							throw new IOException("EoD - File not executeable!");
 						}
 
 						//getVersion Number and compare it to Frontend version

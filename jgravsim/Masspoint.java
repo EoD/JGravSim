@@ -5,6 +5,7 @@ public class Masspoint {
 	public static boolean DEBUG = false;
 	static final double DFTRADIUS = 6371010;	//Earth Radius (m)
 	static final double DFTMASS = CalcCode.EM;	//Earth Mass (kg)
+	public static XMLParser myXMLParser;
 	
 	int id;
 	String name;
@@ -43,7 +44,7 @@ public class Masspoint {
 	@Override
 	public String toString() {
 		if(name == null || name.isEmpty() || name == "")
-			return ("Objekt "+id);
+			return myXMLParser.getText(256)+" "+id;
 		else
 			return name;
 	}
