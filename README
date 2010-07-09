@@ -22,6 +22,14 @@ REQUIREMENTS
   It is recommended to use IcedTea 6 or newer.
 
 
+TROUBLESHOOTING
+
+  If you get an error message saying that the text file is missing although it's
+  there, try to launch the program in the console
+	
+	java -jar JGravSim.jar
+
+
 For more information visit the homepage:
 
 	http://jgravsim.eod.xmw.de/
