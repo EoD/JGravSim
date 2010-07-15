@@ -405,4 +405,21 @@ public class Masspoint {
 			angles[1] = (float)Math.toDegrees(phi);
 		return angles;
 	}
+	
+	/**
+	 * Returns the relativistic impulse for the masspoint
+	 */
+	public MDVector getImpulse() {
+		return MVMath.ProMVNum(getMDVSpeed(), getSRTMass());	//momentum = gamma*absmass*speed
+	}
+
+	/**
+	 * Returns the relativistic energy for the masspoint
+	 */
+	public double getEnergy() {
+		double Energy = mass* CalcCode.LIGHTSPEED * CalcCode.LIGHTSPEED;
+		Energy *= Energy;
+		Energy += CalcCode.LIGHTSPEED * CalcCode.LIGHTSPEED + MVMath.ProScaMV(getImpulse(), getImpulse());
+		return Math.sqrt(Energy);
+	}
 }

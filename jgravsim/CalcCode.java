@@ -460,7 +460,6 @@ public class CalcCode extends Thread {
 			mpkill = temp;
 		}*/
 		MDVector mpsecspeed = new MDVector(0,0,0);
-		double dmass = mpsurvive.getAbsMass() + mpkill.getAbsMass();	//die massen werden addiert
 		double dvolume = mpsurvive.getAbsVolume() + mpkill.getAbsVolume();	//die volumina (nicht die radien!) werden addiert
 		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getAbsVolume()+") and Object "+mpkill.id+"/kill ("+mpkill.getAbsVolume()+") collided. New volume: "+dvolume);
 		//Berechnung des neuen radiuses aus dem Volumen
@@ -471,10 +470,17 @@ public class CalcCode extends Thread {
 		
 		//new momentum (=impuls)
 		// TODO a lot to do ;)
-		MDVector mdvmoment1 = MVMath.ProMVNum(mpsurvive.getMDVSpeed(), mpsurvive.getSRTMass());	//momentum = gamma*absmass*speed
-		MDVector mdvmoment2 = MVMath.ProMVNum(mpkill.getMDVSpeed(), mpkill.getSRTMass());	//momentum = gamma*absmass*speed
-		MDVector mdvmoment = MVMath.AddMV(mdvmoment1, mdvmoment2);
+		MDVector mdvmoment = MVMath.AddMV(mpsurvive.getImpulse(), mpkill.getImpulse());
 		double dfactora = MVMath.ProScaMV(mdvmoment, mdvmoment);	//(momentum1+momentum2)^2
+		
+		/*
+		 * The resulting mass of a total inelastic collision between relastivic
+		 * objects is m = sqrt( ( E1 + E2 )^2 / c^2 - (p1 + p2)^2 ) / c
+		 */
+		double E1 = mpsurvive.getEnergy(), E2 = mpkill.getEnergy();
+		
+		double dmass = Math.sqrt( (E1+E2)*(E1+E2) / (LIGHTSPEED*LIGHTSPEED) - dfactora) / LIGHTSPEED;
+		
 		double dgamma3;
 		dgamma3 = LIGHTSPEED*LIGHTSPEED*Math.pow(dmass, 2.0);
 		dgamma3 = dgamma3 + dfactora;
