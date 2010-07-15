@@ -203,8 +203,8 @@ public class Masspoint {
 	//als die Differenz dieser Radien).
 	//de.wikipedia.org/wiki/Ereignishorizont#Schwarzschild-Radius_und_Gravitationsradius
 	public double getSchwarzschildRadius() {
-		//r = 2Gm / c^2
-		return ((2.0*CalcCode.GRAVCONST*this.getSRTMass())/Math.pow(CalcCode.LIGHTSPEED, 2.0));
+		//r = 2Gm_0 / c^2
+		return ((2.0*CalcCode.GRAVCONST*mass)/Math.pow(CalcCode.LIGHTSPEED, 2.0));
 	}
 	
 	//Unit [m]

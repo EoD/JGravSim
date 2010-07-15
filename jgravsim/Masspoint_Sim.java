@@ -176,8 +176,8 @@ public class Masspoint_Sim {
 	
 	//Unit [m]
 	public double getSchwarzschildRadius() {
-		//r = 2Gm / c^2
-		return ((2.0*CalcCode.GRAVCONST*this.getSRTMass())/Math.pow(CalcCode.LIGHTSPEED, 2.0));
+		//r = 2Gm_0 / c^2
+		return ((2.0*CalcCode.GRAVCONST*dMass)/Math.pow(CalcCode.LIGHTSPEED, 2.0));
 	}
 	
 	public boolean isBlackHole() {
