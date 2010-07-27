@@ -782,7 +782,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			myView.pa_visualtab.changeOffsetX(e.getX()-source.iLastMouseX);
-			myView.pa_visualtab.changeOffsetY(e.getY()-source.iLastMouseY);
+			myView.pa_visualtab.changeOffsetY(-(e.getY()-source.iLastMouseY));
 			source.iLastMouseX = e.getX();
 			source.iLastMouseY = e.getY();
 		}

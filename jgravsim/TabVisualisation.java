@@ -224,7 +224,7 @@ public class TabVisualisation extends JPanel  {
 	public void changeOffsetY(int deltaYpx) {
 		//Controller.debugout("YOffset += "+deltaYpx+" (= "+pxtomm(deltaYpx)+"mm)");
 		double deltaY = pxtomm(deltaYpx);
-		ov_vis_top.addCoordOffsetY(-deltaY);
+		ov_vis_top.addCoordOffsetY(deltaY);
 		ov_vis_right.addCoordOffsetY(deltaY);
 		updateCurFrame();
 	}
