@@ -26,6 +26,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	
 	static final boolean DEBUG = true;
 	static final String exe = "cgravsim";
+	static Color defaultColor = null;
 	
 	Controller myController;
 	XMLParser myXMLParser;
@@ -151,7 +152,9 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		add(pan_main);
 		adjustWindow(this);
 		setSize(pan_main.getSize());
+		defaultColor = tf_datacount.getBackground();
 		setVisible(true);
+		setAlwaysOnTop(true);
 	}	
 	
 	void adjustWindow(Component frame) {
@@ -171,10 +174,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			this.dispose();
 		}
 		else if(source == b_calculate) {
-			tf_datacount.setBackground(null);
-			tf_timecount.setBackground(null);
-			tf_timestep.setBackground(null);
-			b_calculate.setBackground(null);
+			tf_datacount.setBackground(defaultColor);
+			tf_timecount.setBackground(defaultColor);
+			tf_timestep.setBackground(defaultColor);
+			b_calculate.setBackground(defaultColor);
 
 			String[] sadata = {tf_datacount.getText(),tf_timecount.getText(),tf_timestep.getText()};
 			boolean[] bacheck = CheckInput(sadata);
@@ -191,17 +194,15 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 				}
 			}
 			if(flagcheck) {
-				myController.flagcalc = true;
-				myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
-				myModel.AddStep(myController.getVMasspoints());
 				if(myController.calc_datacount/myController.calc_timecount > DynamicWPTLoader.STANDARDBUFFERSIZE) {
 					String question = String.format(Locale.getDefault(),myController.myView.myXMLParser.getText(174), (int)Math.ceil(myController.calc_datacount/myController.calc_timecount/DynamicWPTLoader.STANDARDBUFFERSIZE));
 					int answer = JOptionPane.showConfirmDialog(myController.myView, question,myController.myView.myXMLParser.getText(173),JOptionPane.YES_NO_OPTION);
-					if(answer != 0) {
-						myController.ThreadFinished(null, 0);
+					if(answer != 0)
 						return;
-					}
 				}
+				myController.flagcalc = true;
+				myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
+				myModel.AddStep(myController.getVMasspoints());
 
 				this.dispose();
 
