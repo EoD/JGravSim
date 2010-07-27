@@ -623,7 +623,7 @@ public class TabCompute extends JPanel {
 	public void changeOffsetX(int deltaXpx) {
 		//debugout("XOffset += "+deltaXpx+" (= "+pxtomm(deltaXpx)+"mm)");
 		double deltaX = pxtomm(deltaXpx);
-		ov_front.addCoordOffsetY(deltaX);
+		ov_front.addCoordOffsetX(deltaX);
 		ov_top.addCoordOffsetX(deltaX);
 		repaintViews();
 	}
