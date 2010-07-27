@@ -37,7 +37,7 @@ public class ObjectView3D extends ObjectView {
 	
 	ObjectView3D(Step current) {
 		super();
-		
+
 		cAxes = new char[2];
 		cAxes[0] = 'x';
 		cAxes[1] = 'y';
@@ -84,7 +84,7 @@ public class ObjectView3D extends ObjectView {
 		ImageComponent2D image_bh = loader_bh.getImage();
 
 		if (image_earth == null || image_bh == null) {
-			System.out.println("load failed for texture: " + texturefile_earth);
+			debugout("load failed for texture: " + texturefile_earth);
 		}
 
 		// can't use parameterless constuctor

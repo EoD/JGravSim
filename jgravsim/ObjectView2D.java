@@ -236,7 +236,7 @@ public class ObjectView2D extends ObjectView {
 				svPosY =  mpPosY + (int)dRadius - (int)(Math.cos(dSpeedTheta) * factor);
 			}
 			else {
-				System.out.println("cAxes="+String.copyValueOf(cAxes));
+				debugout("cAxes="+String.copyValueOf(cAxes));
 				System.exit(0);
 			}
 			if( mpPosX+2.0*dRadius > 0 && mpPosY+2.0*dRadius > 0 

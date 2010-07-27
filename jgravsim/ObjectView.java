@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 public class ObjectView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	public static final boolean DEBUG = true;
 	public static final double LIGHTSPEED = CalcCode.LIGHTSPEED;
 	public static final Color BLACKHOLE = Color.BLACK;
 	public static final Color BLACKHOLE_SELECTED = new Color(0, 0, 128);
@@ -201,4 +202,8 @@ public class ObjectView extends JPanel {
 		stCurrent = next;
 	}
 
+	protected static void debugout(String a) {
+		if(Controller.CURRENTBUILD && DEBUG)
+			System.out.println(a);
+	}
 }

@@ -33,7 +33,8 @@ public class TabAbout extends JPanel {
 										(Masspoint.DEBUG?"- Masspoint ":"")+
 										(Model.DEBUG?"- File I/O ":"")+
 										(MVMath.DEBUG?"- MVector Math ":"")+
-										(View_CalcOptions.DEBUG?"- CalcOption":"")
+										(View_CalcOptions.DEBUG?"- CalcOption ":"")+
+										(ObjectView.DEBUG?"- ObjectView ":"")
 									:"")
 							+"\n\n":"")
 							+myXMLParser.getText(401)+"\n"+myXMLParser.getText(402); //+"\n\n";
