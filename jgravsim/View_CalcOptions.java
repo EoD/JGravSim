@@ -20,13 +20,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class View_CalcOptions extends JFrame implements ActionListener, WindowListener{
+public class View_CalcOptions extends JFrame implements ActionListener, WindowListener, ChangeListener{
 	private static final long serialVersionUID = 1L;
 	
 	static final boolean DEBUG = true;
 	static final String exe = "cgravsim";
 	static Color defaultColor = null;
+	static boolean bcpp = true; 
 	
 	Controller myController;
 	XMLParser myXMLParser;
@@ -52,7 +55,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 			JButton b_cancel ;
 			
 		JPanel pan_options;
-			JCheckBox cb_oldcalculation;
+			JCheckBox chb_oldcalculation;
 			
 	private	static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
@@ -132,9 +135,10 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 		pan_options = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		cb_oldcalculation = new JCheckBox(myXMLParser.getText(224), true);
+		chb_oldcalculation = new JCheckBox(myXMLParser.getText(224), bcpp);
 		if(Controller.CPP == true) {
-			pan_options.add(cb_oldcalculation);
+			pan_options.add(chb_oldcalculation);
+			chb_oldcalculation.addChangeListener(this);
 		}
 		
 		pan_main = new JPanel(new GridLayout(0,1));
@@ -206,7 +210,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 				this.dispose();
 
-				if(cb_oldcalculation.isSelected() == false) {
+				if(chb_oldcalculation.isSelected() == false) {
 					debugout("actionPerformed - Java - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
 					myController.myCalculation = new CalcCode(myController,myModel,myController.calc_datacount,myController.calc_timecount,myController.calc_timestep, false);
 					myController.myView.pa_computetab.b_stop.setEnabled(true);
@@ -416,5 +420,12 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	}
 
 	public void windowOpened(WindowEvent arg0) {
+	}
+
+	public void stateChanged(ChangeEvent e) {
+		Object source = e.getSource();
+		
+		if(source == chb_oldcalculation)
+			bcpp = chb_oldcalculation.isSelected();
 	}
 }
