@@ -1,6 +1,6 @@
 package jgravsim;
 
-public class Masspoint_Sim {
+public class Masspoint_Sim implements Comparable<Masspoint_Sim> {
 	private int iID;
 	private double dMass;
 	private double dRadius;
@@ -204,5 +204,14 @@ public class Masspoint_Sim {
 			return true;
 		else 
 			return false;
+	}
+	
+	public int compareTo(Masspoint_Sim mp2) {
+		if(mp2.getID() < iID)
+			return -1;
+		else if(mp2.getID() > iID)
+			return 1;
+		else
+			return 0;
 	}
 }
