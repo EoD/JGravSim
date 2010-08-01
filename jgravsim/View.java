@@ -22,7 +22,7 @@ public class View extends JFrame  {
 		Masspoint_Sim.myXMLParser = myXMLParser;
 		
 		int answer = 1;
-		if(Controller.CURRENTBUILD)
+		if(Controller.CURRENTBUILD && hasJ3D())
 			answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);
 		
 		tp_tabs = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
@@ -35,9 +35,25 @@ public class View extends JFrame  {
 		tp_tabs.addTab(myXMLParser.getText(3), pa_visualtab);
 		tp_tabs.addTab(myXMLParser.getText(4), pa_abouttab);
 
-		
 		add(tp_tabs);
 		setSize(975,740);
 		setVisible(true);
+	}
+
+	private boolean hasJ3D() {
+		try {
+			//Check for (one of the) Java3D classes
+			Class.forName("com.sun.j3d.utils.universe.SimpleUniverse");
+			Controller.debugout("Java3D found");
+		}
+		catch(ClassNotFoundException e) {
+			Controller.debugout("Java3D not found!");
+			return false;
+		}
+		catch(UnsatisfiedLinkError e) {
+			Controller.debugout("Java3D binary problems!");
+			return false;	
+		}
+		return true;
 	}
 }

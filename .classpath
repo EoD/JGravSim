@@ -4,7 +4,7 @@
 	<classpathentry kind="lib" path="lib/ext/j3dcore.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://download.java.net/media/java3d/javadoc/1.5.2/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jgravsim_frontend/lib/amd64"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jgravsim/lib/amd64"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ext/j3dutils.jar">
