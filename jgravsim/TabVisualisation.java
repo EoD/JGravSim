@@ -127,16 +127,31 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_top.repaint();
 		ov_vis_front.repaint();
 		ov_vis_right.repaint();
+		
+		int id = -1;
+		try {
+			Masspoint_Sim mp = (Masspoint_Sim) pa_visual_datatab.cb_Objects.getSelectedItem();
+			if(mp != null)
+				id = mp.getID();
+		}
+		catch (RuntimeException e) {
+			//Controller.debugout("updateCurFrame() - cb_Objects is empty");
+		}
+		
 		pa_visual_datatab.cb_Objects.removeAllItems();
 		
 		if(ov_vis_top.getCurrentStep() != null 
 				&& ov_vis_top.getCurrentStep().getMasspoints() != null
 				&& ov_vis_top.getCurrentStep().getMasspoints().length > 0) {
-			for(int i=0;i<ov_vis_top.getCurrentStep().getMasspoints().length;i++)
-				pa_visual_datatab.cb_Objects.addItem(ov_vis_top.getCurrentStep().getMasspoints()[i]);
-			
-			pa_visual_datatab.cb_Objects.setSelectedIndex(0);
+			for(int i=0;i<ov_vis_top.getCurrentStep().getMasspoints().length;i++) {
+				Masspoint_Sim mp_temp = ov_vis_top.getCurrentStep().getMasspoints()[i];
+				pa_visual_datatab.cb_Objects.addItem(mp_temp);
+				if(mp_temp.getID() == id)
+					pa_visual_datatab.cb_Objects.setSelectedItem(mp_temp);
+			}
 		}
+		else
+			pa_visual_datatab.cb_Objects.addItem(myXMLParser.getText(309));
 	}
 	
 	public void setCurFrame(int frame) {

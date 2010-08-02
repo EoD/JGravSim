@@ -1017,10 +1017,15 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			myView.pa_computetab.pa_compute_dataadvanced.chb_Dense.setSelected(e.getStateChange() == ItemEvent.SELECTED);
 		}	
 		else if(source == myView.pa_visualtab.pa_visual_datatab.cb_Objects && myView.pa_visualtab.pa_visual_datatab.cb_Objects.getItemCount() > 0) {
-		Masspoint_Sim mp = (Masspoint_Sim)myView.pa_visualtab.pa_visual_datatab.cb_Objects.getSelectedItem();
-		if(mp != null) {
-			myView.pa_visualtab.pa_visual_datatab.UpdatePanels(mp);
-		   	//debugout("Object "+(int)mp.getID()+" selected");
+			try {
+				Masspoint_Sim mp = (Masspoint_Sim)myView.pa_visualtab.pa_visual_datatab.cb_Objects.getSelectedItem();
+				if(mp != null) {
+					myView.pa_visualtab.pa_visual_datatab.UpdatePanels(mp);
+				   	//debugout("Object "+(int)mp.getID()+" selected");
+				}
+			}
+			catch (RuntimeException exception) {
+				//debugout("itemStateChanged() - Illegal Masspoint_Sim cast from cb_Objects");
 			}
 		}	
 		else if(source == myView.pa_computetab.chb_mpids) {
