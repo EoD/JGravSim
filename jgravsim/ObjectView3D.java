@@ -24,6 +24,7 @@ import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.image.ImageException;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
@@ -35,6 +36,8 @@ public class ObjectView3D extends ObjectView {
 	private Canvas3D canvas_main;
 	private SimpleUniverse simpleU;
 	private TransformGroup[] tg_masspoints;
+	private static Texture2D texture_earth;
+	private static Texture2D texture_bh;
 	
 	
 	ObjectView3D(Step current) {
@@ -55,6 +58,16 @@ public class ObjectView3D extends ObjectView {
 		// SimpleUniverse is a Convenience Utility class
 		simpleU = new SimpleUniverse(canvas_main);
 
+		///TEXTURE////
+		if(texture_earth == null) {
+			String texturefile_earth = "earth.jpg";
+			texture_earth = loadTexture(texturefile_earth);
+		}
+		if(texture_bh == null) {
+			String texturefile_bh = "bh.jpg";
+			texture_bh = loadTexture(texturefile_bh);
+		}
+		
 		// str_clickme = "";
 		//repaint();
 	}
@@ -72,25 +85,6 @@ public class ObjectView3D extends ObjectView {
 		vpTrans = su.getViewingPlatform().getViewPlatformTransform();
 		vpTrans.getTransform(T3D);
 
-		///TEXTURE////
-		String texturefile_earth = "earth.jpg";
-		String texturefile_bh = "bh.jpg";
-		TextureLoader loader_earth = new TextureLoader(texturefile_earth, this);
-		TextureLoader loader_bh = new TextureLoader(texturefile_bh, this);
-		ImageComponent2D image_earth = loader_earth.getImage();
-		ImageComponent2D image_bh = loader_bh.getImage();
-
-		if (image_earth == null || image_bh == null) {
-			debugout("load failed for texture: " + texturefile_earth);
-		}
-
-		// can't use parameterless constuctor
-		Texture2D texture_earth = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image_earth.getWidth(), image_earth.getHeight());
-		texture_earth.setImage(0, image_earth);
-		
-		Texture2D texture_bh = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, image_bh.getWidth(), image_bh.getHeight());
-		texture_bh.setImage(0, image_bh);
-		
 		
 		///TRANSFORMATION I
 		TransformGroup objRotate = new TransformGroup();
@@ -116,8 +110,8 @@ public class ObjectView3D extends ObjectView {
 				if(radius/CONVERT3D < 0.05f)
 					radius = 0.05f*CONVERT3D;
 				
-				
 				Appearance appear = new Appearance();
+				appear.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 				if(masspoint.isBlackHole())
 					appear.setTexture(texture_bh);
 				else
@@ -251,10 +245,36 @@ public class ObjectView3D extends ObjectView {
 		Sphere sphere = (Sphere) tg_masspoint.getChild(0);
 		Appearance appear = sphere.getAppearance();
 		TransparencyAttributes transparency = appear.getTransparencyAttributes();
-		if(visible)
+		if(visible) {
+			//FIXME: set texture according to object state and NOT manually
+			if(transparency.getTransparency() > 0.0f)				
+				appear.setTexture(texture_earth);
 			transparency.setTransparency(0.0f);
-		else
+		}
+		else {
+			if(transparency.getTransparency() < 1.0f)
+				appear.setTexture(null);
 			transparency.setTransparency(1.0f);
+		}
+	}
+	
+	private Texture2D loadTexture(String texture_file) {
+		Texture2D texture = null;
+		try {
+			TextureLoader texture_loader = new TextureLoader(texture_file, this);
+			ImageComponent2D texture_image = texture_loader.getImage();
+			if (texture_image == null) {
+				debugout("Loading failed for texture "+texture_file);
+			}
+			
+			texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA, texture_image.getWidth(), texture_image.getHeight());
+			texture.setImage(0, texture_image);
+		}
+		catch(ImageException e) {
+			debugout("loadtexture() - Loading of texture "+texture_file+" failed: " + e.toString());
+			return null;
+		}
+		return texture;
 	}
 	/*
 	 * void drawClickmeOverlay(Graphics g, int centerX, int centerY) { // int
