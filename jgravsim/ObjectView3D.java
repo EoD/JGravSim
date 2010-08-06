@@ -76,23 +76,24 @@ public class ObjectView3D extends ObjectView {
 		debugout("createSceneGraph() - "+su.toString());
 		
 		// Create the root of the branch graph
-		BranchGroup objRoot = new BranchGroup();
-		objRoot.setCapability( BranchGroup.ALLOW_DETACH);
-		TransformGroup vpTrans = null;
-		BoundingSphere mouseBounds = null;
+		BranchGroup bg_root = new BranchGroup();
+		bg_root.setCapability(BranchGroup.ALLOW_DETACH);
 
-        Transform3D T3D = new Transform3D();
-		vpTrans = su.getViewingPlatform().getViewPlatformTransform();
-		vpTrans.getTransform(T3D);
+		///TRANSFORMATION - VP
+		Transform3D t3d_vp = new Transform3D();
+		TransformGroup tg_vp = su.getViewingPlatform().getViewPlatformTransform();
+		tg_vp.getTransform(t3d_vp);
 
+		///TRANSFORMATION - ROTATE
+		TransformGroup tg_rotate = new TransformGroup();
+		tg_rotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		tg_rotate.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+
+		//add coordinate axis
+		tg_rotate.addChild(new Axis());
 		
-		///TRANSFORMATION I
-		TransformGroup objRotate = new TransformGroup();
-		objRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		objRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-
-		///TRANSOFMRATION II - TRANSLATION
 		if (stCurrent != null && stCurrent.getMasspoints() != null && stCurrent.getMasspoints().length > 0) {
+			///TRANSOFMRATION - SCENE
 			Masspoint_Sim[] masspoints = stCurrent.getMasspoints();
 			int num_masspoints = masspoints.length;
 			tg_masspoints = new TransformGroup[num_masspoints];
@@ -121,70 +122,64 @@ public class ObjectView3D extends ObjectView {
 				transparency.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
 				appear.setTransparencyAttributes(transparency);
 				
-				//TransformGroup objTranslationSub = new TransformGroup();
-				Transform3D TranslationSub = new Transform3D();
-
-				Vector3d vector = postovector3d(masspoint);
+				///TRANSOFMRATION I - MP TRANSLATION
+				Transform3D t3d_mptrans = new Transform3D();
+				Vector3d v3d_mptrans = postovector3d(masspoint);
 				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
+				t3d_mptrans.setTranslation(v3d_mptrans);
+				tg_masspoints[i].setTransform(t3d_mptrans);
 				
-				TranslationSub.setTranslation(vector);
-				tg_masspoints[i].setTransform(TranslationSub);
-				objRotate.addChild(tg_masspoints[i]);
+				tg_rotate.addChild(tg_masspoints[i]);
 				
-				Sphere sphere = new Sphere((float)(radius/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);
-				//sphere.setCapability( BranchGroup.ALLOW_DETACH);
-				
-				//objTranslationSub.setTransform(TranslationSub);
-				//objTranslationSub.addChild(sphere);		    
+				//finally create the sphere itself
+				Sphere sphere = new Sphere((float)(radius/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);		    
 				sphere.setAppearance(appear);
 				tg_masspoints[i].addChild(sphere);
 			}
 		}
-	    ///TRANSFORMATION III - ROTATION
-
-	    //bjRotate.addChild(translate);
-		//objRotate.addChild(new Sphere(sphere_size, Primitive.GENERATE_TEXTURE_COORDS, appear));
 		
-		objRotate.addChild(new Axis());
-
-		mouseBounds = new BoundingSphere(new Point3d(0,0,0), 1000.0);
+		// Create BoundingSphere for Mouse
+		BoundingSphere mouseBounds = new BoundingSphere(new Point3d(0,0,0), 1000.0);
 		
-		objRoot.addChild(objRotate);		
-		
+	    ///TRANSFORMATION II - SCENE ROTATION
 		MouseRotate myMouseRotate = new MouseRotate(MouseBehavior.INVERT_INPUT);
-		myMouseRotate.setTransformGroup(objRotate);
-		//myMouseRotate.set
+		myMouseRotate.setTransformGroup(tg_rotate);
 		myMouseRotate.setSchedulingBounds(mouseBounds);
 		myMouseRotate.setBoundsAutoCompute(true);
-		objRoot.addChild(myMouseRotate);
+		bg_root.addChild(myMouseRotate);
+		
+		bg_root.addChild(tg_rotate);	
 
+	    ///TRANSFORMATION III - VP TRANSLATION
 		MouseTranslate myMouseTranslate = new MouseTranslate(MouseBehavior.INVERT_INPUT);
-		myMouseTranslate.setTransformGroup(vpTrans);
+		myMouseTranslate.setTransformGroup(tg_vp);
 		myMouseTranslate.setSchedulingBounds(mouseBounds);
-		objRoot.addChild(myMouseTranslate);
+		bg_root.addChild(myMouseTranslate);
 
+	    ///TRANSFORMATION IV - VP ZOOM
 		MouseWheelZoom myMouseZoom = new MouseWheelZoom();
-		myMouseZoom.setTransformGroup(vpTrans);
+		myMouseZoom.setTransformGroup(tg_vp);
 		myMouseZoom.setSchedulingBounds(mouseBounds);
-		objRoot.addChild(myMouseZoom);
+		bg_root.addChild(myMouseZoom);
 
+		//move ViewingPlatform a little bit above
+		Vector3f v3f_initial = new Vector3f();
+		v3f_initial.set( 0.0f, 0.03f, 0.0f);
+		Transform3D t3d_initial = new Transform3D();
+		t3d_initial.setTranslation(v3f_initial);
+		t3d_vp.mul(t3d_initial);
 
-        Vector3f translate = new Vector3f();
-        translate.set( 0.0f, 0.03f, 0.0f);
-        Transform3D translation = new Transform3D();
-        translation.setTranslation(translate);
-        
-        T3D.mul(translation);
-      
-        vpTrans.setTransform(T3D);
-        KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(vpTrans);
-        keyNavBeh.setSchedulingBounds(new BoundingSphere(new Point3d(),1000.0));
-        objRoot.addChild(keyNavBeh);
+		tg_vp.setTransform(t3d_vp);
+
+		//add also support for keyboard transformations
+		KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(tg_vp);
+		keyNavBeh.setSchedulingBounds(new BoundingSphere(new Point3d(),1000.0));
+		bg_root.addChild(keyNavBeh);
 
 		// Let Java 3D perform optimizations on this scene graph.
-		objRoot.compile();
+		bg_root.compile();
 
-		return objRoot;
+		return bg_root;
 	}
 	
 	@Override
