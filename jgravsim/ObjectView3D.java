@@ -38,7 +38,7 @@ public class ObjectView3D extends ObjectView {
 	private TransformGroup[] tg_masspoints;
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
-	
+	private static Texture2D texture_sun;
 	
 	ObjectView3D(Step current) {
 		super();
@@ -66,6 +66,10 @@ public class ObjectView3D extends ObjectView {
 		if(texture_bh == null) {
 			String texturefile_bh = "bh.jpg";
 			texture_bh = loadTexture(texturefile_bh);
+		}
+		if(texture_sun == null) {
+			String texturefile_sun = "sun.jpg";
+			texture_sun = loadTexture(texturefile_sun);
 		}
 		
 		// str_clickme = "";
