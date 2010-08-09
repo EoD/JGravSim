@@ -222,7 +222,8 @@ public class ObjectView3D extends ObjectView {
 		stCurrent = next;
 		if(stCurrent == null) {
 			tg_masspoints = null;
-			simpleU.getLocale().removeBranchGraph(bg_main);
+			if(bg_main != null)
+				simpleU.getLocale().removeBranchGraph(bg_main);
 		}
 		else {
 			stCurrent.sort();
