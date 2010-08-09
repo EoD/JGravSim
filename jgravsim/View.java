@@ -23,7 +23,7 @@ public class View extends JFrame  {
 		
 		int answer = 1;
 		if(Controller.CURRENTBUILD && hasJ3D())
-			answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);
+			answer = 0;
 		
 		tp_tabs = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
 		pa_computetab = new TabCompute(myXMLParser); /* Berechnung und Ausgabe der Daten */
