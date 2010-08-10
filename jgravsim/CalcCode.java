@@ -91,18 +91,18 @@ public class CalcCode extends Thread {
 		
 		for(int i = vmps_current.size()-1 ;i >= 0; i--) {
 			Masspoint mpi= (Masspoint)vmps_current.get(i);
-			debugout( "  ID: " + mpi.id + ", "+" "
-					+"  Mass: " + mpi.mass + ", "
-					+"  Radius: " + mpi.radius + ", "
+			debugout( "  ID: " + mpi.getID() + ", "+" "
+					+"  Mass: " + mpi.getAbsMass() + ", "
+					+"  Radius: " + mpi.getRadius() + ", "
 					+"  velx: " + mpi.getMDVSpeed().x1 + ", "
 					+"  vely: " + mpi.getMDVSpeed().x2 + ", "
 					+"  velz: " + mpi.getMDVSpeed().x3 + ", "
 					//std::cout << "  accx: " << mpi.accx << "\n";	//deprecated
 					//std::cout << "  accy: " << mpi.accy << "\n";	//deprecated
 					//std::cout << "  accz: " << mpi.accz << "\n";	//deprecated
-					+"  posx: " + mpi.getCoordMLV().x1 + ", "
-					+"  posy: " + mpi.getCoordMLV().x2 + ", "
-					+"  posz: " + mpi.getCoordMLV().x3);
+					+"  posx: " + mpi.getPos().x1 + ", "
+					+"  posy: " + mpi.getPos().x2 + ", "
+					+"  posz: " + mpi.getPos().x3);
 			}
 		//vmps_current.addAll(myController.getVMasspoints());	//hole Start-daten aus dem Controller
 	
@@ -215,8 +215,7 @@ public class CalcCode extends Thread {
 	public Vector<Masspoint> calcAcc(double dstep, Vector<Masspoint> vmpsinsert) {
 		Vector<Masspoint> vmpsout = new Vector<Masspoint>();
 		vmpsout.addAll(vmpsinsert);
-		//debugout("ID 0: Old Coords(x1,x2,x3): "+((Masspoint)masspoints.get(0)).mlvpos.x1+","+((Masspoint)masspoints.get(0)).mlvpos.x2+","+((Masspoint)masspoints.get(0)).mlvpos.x3);
-		//debugout("ID 1: Old Coords(x1,x2,x3): "+((Masspoint)masspoints.get(1)).mlvpos.x1+","+((Masspoint)masspoints.get(1)).mlvpos.x2+","+((Masspoint)masspoints.get(1)).mlvpos.x3);
+	
 		//Berechnung der neuen Position f�r alle Objekte von ID 0 bis ID i
 		debugout("calcAcc() - Start() - dstep="+dstep+" - size="+vmpsinsert.size());
 		for(int i=0; i<vmpsinsert.size(); i++) {
@@ -224,7 +223,7 @@ public class CalcCode extends Thread {
 			Masspoint mpold = (Masspoint)vmpsinsert.get(i);
 			Masspoint mpnew = (Masspoint)vmpsout.get(i);
 			
-			debugout("calcAcc() - ID "+mpold.id+": Old Coords(x1,x2,x3): "+mpold.mlvpos.x1+","+mpold.mlvpos.x2+","+mpold.mlvpos.x3);		
+			debugout("calcAcc() - ID "+mpold.getID()+": Old Coords(x1,x2,x3): "+mpold.getPosX()+","+mpold.getPosY()+","+mpold.getPosZ());		
 			MDVector mdvforce = new MDVector(0,0,0);		
 			//Calculation of the whole force on object i
 			mdvforce = calcForce(mpold, vmpsinsert);
@@ -294,35 +293,35 @@ public class CalcCode extends Thread {
 					
 			//new position = ds + old position
 			long limit;
-			if(mpold.getCoordMLV().x1 < 0)
-				limit = Long.MIN_VALUE - mpold.getCoordMLV().x1;
+			if(mpold.getPos().x1 < 0)
+				limit = Long.MIN_VALUE - mpold.getPos().x1;
 			else
-				limit = Long.MAX_VALUE - mpold.getCoordMLV().x1;
+				limit = Long.MAX_VALUE - mpold.getPos().x1;
 			if(Math.abs(limit) - Math.abs(mlvds.x1) < 0) {
 				myController.flagcalc = false;
-				Controller.debugout("calcAcc - Obj"+mpold.id+" Long Limit1 reached, break");
+				Controller.debugout("calcAcc - Obj"+mpold.getID()+" Long Limit1 reached, break");
 				error = LONGLIMIT;
 				return vmpsout;
 			}
 			
-			if(mpold.getCoordMLV().x2 < 0)
-				limit = Long.MIN_VALUE - mpold.getCoordMLV().x2;
+			if(mpold.getPos().x2 < 0)
+				limit = Long.MIN_VALUE - mpold.getPos().x2;
 			else
-				limit = Long.MAX_VALUE - mpold.getCoordMLV().x2;
+				limit = Long.MAX_VALUE - mpold.getPos().x2;
 			if(Math.abs(limit) - Math.abs(mlvds.x2) < 0) {
 				myController.flagcalc = false;
-				Controller.debugout("calcAcc - Obj"+mpold.id+" Long Limit1 reached, break");
+				Controller.debugout("calcAcc - Obj"+mpold.getID()+" Long Limit2 reached, break");
 				error = LONGLIMIT;
 				return vmpsout;
 			}
 
-			if(mpold.getCoordMLV().x3 < 0)
-				limit = Long.MIN_VALUE - mpold.getCoordMLV().x3;
+			if(mpold.getPos().x3 < 0)
+				limit = Long.MIN_VALUE - mpold.getPos().x3;
 			else
-				limit = Long.MAX_VALUE - mpold.getCoordMLV().x3;
+				limit = Long.MAX_VALUE - mpold.getPos().x3;
 			if(Math.abs(limit) - Math.abs(mlvds.x3) < 0) {
 				myController.flagcalc = false;
-				Controller.debugout("calcAcc - Obj"+mpold.id+" Long Limit1 reached, break");
+				Controller.debugout("calcAcc - Obj"+mpold.getID()+" Long Limit3 reached, break");
 				error = LONGLIMIT;
 				return vmpsout;
 			}
@@ -330,7 +329,7 @@ public class CalcCode extends Thread {
 				
 			mpnew.addMLVCoord(mlvds);
 			//mp.mlvpos = MVMath.AddMV(mlvds, mp.mlvpos);
-			debugout("calcAcc() - ID "+mpnew.id+": New Coords(x1,x2,x3): "+mpnew.mlvpos.x1+" , "+mpnew.mlvpos.x2+" , "+mpnew.mlvpos.x3);	
+			debugout("calcAcc() - ID "+mpnew.getID()+": New Coords(x1,x2,x3): "+mpnew.getPosX()+" , "+mpnew.getPosY()+" , "+mpnew.getPosZ());	
 		}
 		debugout("calcAcc() - Finish, size="+vmpsout.size());	
 		return vmpsout;
@@ -341,24 +340,24 @@ public class CalcCode extends Thread {
 	//Kraft entsteht durch grav-wirkung aller anderen
 	public MDVector calcForce(Masspoint mpmain, Vector<Masspoint> vmpsinsert) {
 		MDVector mdvforcetotal = new MDVector(0,0,0);
-		debugout("calcForce() - START ID: "+mpmain.id+"; size="+vmpsinsert.size());
+		debugout("calcForce() - START ID: "+mpmain.getID()+"; size="+vmpsinsert.size());
 		for(int i=0; i<vmpsinsert.size(); i++) {
 			Masspoint mpsec = (Masspoint)vmpsinsert.get(i);
-			debugout("calcForce() - START secID: "+mpsec.id+":START");
+			debugout("calcForce() - START secID: "+mpsec.getID()+":START");
 			
 			//Objekt wechselwirkt nicht mit sich selbst (nicht hier!)
-			if(mpmain.id == mpsec.id) 
+			if(mpmain.getID() == mpsec.getID()) 
 			{	continue;	}
 			
 			//veraltet: ehem. �berpr�fung von oben
 			if(mpmain == mpsec)  {	
-				debugout("calcForce() - MoveSteps - WARNING Objects ("+mpmain.id+","+mpsec.id+" had different ids,but are the same object");
+				debugout("calcForce() - MoveSteps - WARNING Objects ("+mpmain.getID()+","+mpsec.getID()+" had different ids,but are the same object");
 				continue;	
 			}			
 
 			//distance between objects
 			MLVector mlvdist = new MLVector(0,0,0);
-			mlvdist = MVMath.SubMV(mpsec.mlvpos,mpmain.mlvpos);
+			mlvdist = MVMath.SubMV(mpsec.getPos(),mpmain.getPos());
 			debugout("calcForce() - mlvdist.x1="+mlvdist.x1);
 			debugout("calcForce() - mlvdist.x2="+mlvdist.x2);
 			debugout("calcForce() - mlvdist.x3="+mlvdist.x3);
@@ -432,7 +431,7 @@ public class CalcCode extends Thread {
 				}
 						
 				if(mpi.drange(mpj) < (iradius+jradius)) {
-					debugout("collisionCheck() - Object "+mpi.id+" collided with Object"+mpj.id);
+					debugout("collisionCheck() - Object "+mpi.getID()+" collided with Object"+mpj.getID());
 					collision(mpj,mpi);
 					breakflag = true;
 					break;
@@ -461,10 +460,10 @@ public class CalcCode extends Thread {
 		}*/
 		MDVector mpsecspeed = new MDVector(0,0,0);
 		double dvolume = mpsurvive.getAbsVolume() + mpkill.getAbsVolume();	//die volumina (nicht die radien!) werden addiert
-		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getAbsVolume()+") and Object "+mpkill.id+"/kill ("+mpkill.getAbsVolume()+") collided. New volume: "+dvolume);
+		debugout("Collision! Object "+mpsurvive.getID()+" ("+mpsurvive.getAbsVolume()+") and Object "+mpkill.getID()+"/kill ("+mpkill.getAbsVolume()+") collided. New volume: "+dvolume);
 		//Berechnung des neuen radiuses aus dem Volumen
 		double dradius = Math.pow((3*dvolume)/(4*Math.PI), 1.0/3.0);	//V=4/3*r^3*PI --> r = 3.sqrt(3*V/PI/4)
-		debugout("Collision! Object "+mpsurvive.id+" ("+mpsurvive.getAbsRadius()+") and Object "+mpkill.id+"/kill ("+mpkill.getAbsRadius()+") collided. New radius: "+dradius);
+		debugout("Collision! Object "+mpsurvive.getID()+" ("+mpsurvive.getAbsRadius()+") and Object "+mpkill.getID()+"/kill ("+mpkill.getAbsRadius()+") collided. New radius: "+dradius);
 		//double dradius = mp1.getRadius() + mp2.getRadius();  //DEBUG - has to be replaced by following line:
 		//Math.pow( (3*dvolume)/(4*Math.PI), 1/3);	//V=4/3*r^3*PI --> r = 3.sqrt(3*V/PI/4)
 		
@@ -501,8 +500,8 @@ public class CalcCode extends Thread {
 		
 		double dconst = (dvolumesurvive+dvolumekill) / 2.0;
 		
-		MLVector mlvcoordsur = MVMath.ProMVNum(mpsurvive.getCoordMLV(), dvolumesurvive/dconst);
-		MLVector mlvcoordkil = MVMath.ProMVNum(mpkill.getCoordMLV(), dvolumekill/dconst);
+		MLVector mlvcoordsur = MVMath.ProMVNum(mpsurvive.getPos(), dvolumesurvive/dconst);
+		MLVector mlvcoordkil = MVMath.ProMVNum(mpkill.getPos(), dvolumekill/dconst);
 		MLVector mlvnewcoord = MVMath.AddMV(mlvcoordsur, mlvcoordkil);
 		mlvnewcoord = MVMath.DivMVNum(mlvnewcoord, (dvolumesurvive+dvolumekill)/dconst);
 
@@ -529,7 +528,7 @@ public class CalcCode extends Thread {
 			//debugout("checkSpeedBorder() - Object Nr."+i+"/"+mp.id+" (vx,vy,vz): "+mp.getMDVSpeed().x1+","+mp.getMDVSpeed().x2+","+mp.getMDVSpeed().x3);
 			//debugout("checkSpeedBorder() - Object Nr."+i+"/"+mp.id+" has a speed of "+mp.getSpeed()+" m/s (<"+dpercentage+"*Lightspeed="+dpercentage*LIGHTSPEED+")");
     		if(mp.getSpeed() >= (dpercentage*LIGHTSPEED)) {
-    			debugout("checkSpeedBorder() - Object Nr."+i+"/"+mp.id+" has a speed larger "+dpercentage*100.0+"% lightspeed");
+    			debugout("checkSpeedBorder() - Object Nr."+i+"/"+mp.getID()+" has a speed larger "+dpercentage*100.0+"% lightspeed");
     			return true;
     		}
     	}

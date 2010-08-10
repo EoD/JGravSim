@@ -52,7 +52,7 @@ public class View_SpeedVector extends JFrame implements ChangeListener {
 		adjustWindow(this);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setUndecorated(false);
-		setTitle(myXMLParser.getText(228)+" "+myXMLParser.getText(229)+masspoint.id);
+		setTitle(myXMLParser.getText(228)+" "+myXMLParser.getText(229)+masspoint.getID());
 		
 	///////Panel Top
 		pa_top = new JPanel();

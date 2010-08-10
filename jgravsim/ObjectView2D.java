@@ -46,7 +46,7 @@ public class ObjectView2D extends ObjectView {
 				double factor = ((speedvecmax * mpSpeed / LIGHTSPEED) +5);
 					
 				boolean bselected = false;
-				if(mp_selected != null && mp_selected.id == masspoint.getID())
+				if(mp_selected != null && mp_selected.getID() == masspoint.getID())
 					bselected = true;
 				
 			

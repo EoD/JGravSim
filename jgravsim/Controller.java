@@ -508,7 +508,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 						myView.pa_computetab.cb_Objects.addItem(vmasspoints.get(i));
 					}
 					myView.pa_computetab.ButtonsStd();
-					id = vmasspoints.get(vmasspoints.size()-1).id;
+					id = vmasspoints.get(vmasspoints.size()-1).getID();
 					
 					Masspoint mp = vmasspoints.get(0);
 					updateComputePanels(mp, source);
@@ -615,7 +615,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 						myView.pa_computetab.cb_Objects.addItem(vmasspoints.get(i));
 					}
 					myView.pa_computetab.ButtonsStd();
-					id = vmasspoints.get(vmasspoints.size()-1).id;
+					id = vmasspoints.get(vmasspoints.size()-1).getID();
 					
 					Masspoint mp = vmasspoints.get(0);
 					updateComputePanels(mp, source);
@@ -623,7 +623,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}
 	}
 	else if(source == myView.pa_computetab.b_Remove)  {
-		int a = JOptionPane.showConfirmDialog(myView, String.format(myView.myXMLParser.getText(217), GetSelectedMasspoint().id),myView.myXMLParser.getText(215),JOptionPane.YES_NO_OPTION);
+		int a = JOptionPane.showConfirmDialog(myView, String.format(myView.myXMLParser.getText(217), GetSelectedMasspoint().getID()),myView.myXMLParser.getText(215),JOptionPane.YES_NO_OPTION);
 		if(a == 0) {
 			Masspoint mp = GetSelectedMasspoint();
 			RemoveMp(mp);
@@ -632,9 +632,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	else if(source == myView.pa_computetab.b_clone) {
 		Masspoint mp_old = GetSelectedMasspoint();
 		Masspoint mp_clone = addMasspoint(0, 0, 0, mp_old);
-		int clone_id = mp_clone.id;
+		int clone_id = mp_clone.getID();
 		mp_clone.setData(mp_old);
-		mp_clone.id = clone_id;
+		mp_clone.setID(clone_id);
 		Random randomizer = new Random();
 		//don't randomize x-coordinate in order to improve visibility
 		mp_clone.addMLVCoord(new MLVector(
@@ -646,7 +646,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	else if(source == myView.pa_computetab.b_savepreset) {
 		Masspoint mp_old = GetSelectedMasspoint();
 		Masspoint mp_clone = new Masspoint(-1, 0, 0, 0, mp_old);
-		mp_clone.name = JOptionPane.showInputDialog(myView, String.format(myView.myXMLParser.getText(255), mp_old.id),myView.myXMLParser.getText(215), JOptionPane.QUESTION_MESSAGE);
+		mp_clone.setName( JOptionPane.showInputDialog(myView, String.format(myView.myXMLParser.getText(255), mp_old.getID()),myView.myXMLParser.getText(215), JOptionPane.QUESTION_MESSAGE) );
 		myView.pa_computetab.cb_mpdefaults.addItem(mp_clone);
 	}
 	else if(source == myView.pa_computetab.b_edit) {
@@ -759,7 +759,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		else if(source == myView.pa_computetab.pa_compute_dataeasy.sl_Speed) {
 			double dspeed = myView.pa_computetab.pa_compute_dataeasy.sl_Speed.getValue();
 			Masspoint mp = GetSelectedMasspoint();
-			if(dspeed > 0 && mp.mdvunitspeed.abs() == 0) {
+			if(dspeed > 0 && mp.getSpeed() == 0) {
 				mp.setSpeed(new MDVector(1.0,1.0,1.0));
 			}
 
@@ -847,7 +847,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			if(GetSelectedMasspoint() != null) {
 				if(mySpeedVector == null ) {
 					mySpeedVector = new View_SpeedVector(GetSelectedMasspoint(), this);
-				} else if(mySpeedVector.masspoint.id != GetSelectedMasspoint().id) {
+				} else if(mySpeedVector.masspoint.getID() != GetSelectedMasspoint().getID()) {
 					mySpeedVector.dispose();
 					mySpeedVector = new View_SpeedVector(GetSelectedMasspoint(), this);
 				} else if(!mySpeedVector.isVisible())
@@ -1146,7 +1146,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		//debugout("UpdatePanels() - Object:"+String.valueOf(object));
 		//debugout("speed,mass: "+mp.getSpeed()+","+mp.getAbsMass());
 		MDVector mvspeed = mp.getMDVSpeed();
-		MLVector mvcoord = mp.getCoordMLV();
+		MLVector mvcoord = mp.getPos();
 		
 		myView.pa_computetab.sl_zoomlevel.removeChangeListener(this);		
 		myView.pa_computetab.pa_compute_dataeasy.sl_Mass.removeChangeListener(this);
@@ -1182,10 +1182,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			else 
 				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.setText(df_s.format(mvspeed.x3)+" m/s");
 		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs) {
-			if(mp.dabsspeed >= 0.1*CalcCode.LIGHTSPEED)
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_c.format(mp.dabsspeed/CalcCode.LIGHTSPEED)+" c");
+			if(mp.getSpeed() >= 0.1*CalcCode.LIGHTSPEED)
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_c.format(mp.getSpeed()/CalcCode.LIGHTSPEED)+" c");
 			else
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_s.format(mp.dabsspeed)+" m/s");
+				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_s.format(mp.getSpeed())+" m/s");
 		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Mass) 
 			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, df_s));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Radius) 
@@ -1354,7 +1354,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.cb_Objects.addItem(vmasspoints.get(i));
 			}
 			myView.pa_computetab.ButtonsStd();
-			id = vmasspoints.get(vmasspoints.size()-1).id;
+			id = vmasspoints.get(vmasspoints.size()-1).getID();
 			Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
 			myView.pa_computetab.cb_Objects.setSelectedItem(mp);
 			updateComputePanels(mp, null);
@@ -1465,7 +1465,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				}
 				
 				myView.pa_computetab.ButtonsStd();
-				id = vmasspoints.get(vmasspoints.size()-1).id;
+				id = vmasspoints.get(vmasspoints.size()-1).getID();
 				Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
 				myView.pa_computetab.cb_Objects.setSelectedItem(mp);
 				updateComputePanels(mp, null);
@@ -1484,7 +1484,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		else {		
 			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(167), myView.myXMLParser.getText(172),JOptionPane.INFORMATION_MESSAGE);
 			myView.pa_computetab.ButtonsStd();
-			id = vmasspoints.get(vmasspoints.size()-1).id;
+			id = vmasspoints.get(vmasspoints.size()-1).getID();
 			Masspoint mp = vmasspoints.get(vmasspoints.size()-1);
 			myView.pa_computetab.cb_Objects.setSelectedItem(mp);
 			updateComputePanels(mp, null);
@@ -1508,7 +1508,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
     		myView.pa_computetab.ButtonsStart();
     		id = 0;
     	}
-    	if(mySpeedVector != null && mySpeedVector.masspoint.id == mp.id) {
+    	if(mySpeedVector != null && mySpeedVector.masspoint.getID() == mp.getID()) {
     		mySpeedVector.dispose();
     		mySpeedVector = null;
     	}
@@ -1519,7 +1519,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
     	myView.pa_computetab.cb_Objects.repaint();
     	
     	if(vmasspoints.size() > 0) {
-    		id = vmasspoints.get(vmasspoints.size()-1).id;
+    		id = vmasspoints.get(vmasspoints.size()-1).getID();
 			//vmasspoints ist der (Start)Vector mit allen Massenpunkte
 			Vector<Masspoint_Sim> vmpsim = new Vector<Masspoint_Sim>();
 			for(int i=0;i<vmasspoints.size();i++) {
@@ -1548,8 +1548,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		
 		for(int i=0; i<vmasspoints.size(); i++) {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
-			if(mptemp.id >= id)
-				id = mptemp.id + 1;
+			if(mptemp.getID() >= id)
+				id = mptemp.getID() + 1;
 		}
 		
 		long lx = pxtomm(x, 'x');
@@ -1588,12 +1588,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		
 		for(int i=0;i<vmasspoints.size();i++) {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
-			MLVector mlvcoord = mptemp.getCoordMLV();
+			MLVector mlvcoord = mptemp.getPos();
 			long relradius = MVMath.ConvertToL(mptemp.getRadius());
 						
 			if(axe == myView.myXMLParser.getText(111)) {
 				//debugout("CheckForHit() - Checking for hit at x="+lx+"; y="+ly+"; radius="+relradius);
-				debugout("CheckForHit() - Checking for object "+mptemp.id+" at "+lx+"<"+(mlvcoord.x1+relradius)+"; "+lx+">"+(mlvcoord.x1-relradius));
+				debugout("CheckForHit() - Checking for object "+mptemp.getID()+" at "+lx+"<"+(mlvcoord.x1+relradius)+"; "+lx+">"+(mlvcoord.x1-relradius));
 				if(lx < (mlvcoord.x1+relradius) && lx > (mlvcoord.x1-relradius)) {
 					debugout("CheckForHit() - Checking for object at "+ly+"<"+(mlvcoord.x2+relradius)+"; "+ly+">"+(mlvcoord.x2-relradius));
 					if(ly < (mlvcoord.x2+relradius) && ly > (mlvcoord.x2-relradius)) {

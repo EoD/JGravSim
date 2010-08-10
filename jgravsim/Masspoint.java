@@ -2,56 +2,79 @@ package jgravsim;
 
 public class Masspoint {
 	
-	public static boolean DEBUG = false;
-	static final double DFTRADIUS = 6371010;	//Earth Radius (m)
-	static final double DFTMASS = CalcCode.EM;	//Earth Mass (kg)
+	public static final boolean DEBUG = false;
+	public static final double DFTRADIUS = 6371010;	//Earth Radius (m)
+	public static final double DFTMASS = CalcCode.EM;	//Earth Mass (kg)
 	public static XMLParser myXMLParser;
 	
-	int id;
-	String name;
-	MLVector mlvpos;	//position in mm
-	double mass;
-	double radius;
-	MDVector mdvunitspeed;
-	double dabsspeed;
-	//direction
+	private int iID;
+	private String sName;
+	private double dMass;
+	private double dRadius;
+	private double dSpeed;	
+	private double dSpeedVecX = 0.0;
+	private double dSpeedVecY = 0.0;
+	private double dSpeedVecZ = 0.0;
+	private long dPosX;
+	private long dPosY;
+	private long dPosZ;
 	
 	public Masspoint(int kid, long lx, long ly ,long lz) {
-		id = kid;
-		mlvpos = new MLVector(lx,ly,lz);
-		mdvunitspeed = new MDVector(Math.sqrt(3.0)/3,Math.sqrt(3.0)/3,Math.sqrt(3.0)/3);
-		dabsspeed = 0.0;
-		mass = DFTMASS; 		//eg: sun = 1.99E30 kg
-		radius = DFTRADIUS;
+		iID = kid;
+		dPosX = lx;
+		dPosY = ly;
+		dPosZ = lz;
+		dSpeedVecX = dSpeedVecY = dSpeedVecZ = Math.sqrt(3.0)/3;
+		dSpeed = 0.0;
+		dMass = DFTMASS; 		//eg: sun = 1.99E30 kg
+		dRadius = DFTRADIUS;
 	}	
 	public Masspoint(int kid, long lx, long ly ,long lz, Masspoint mp_clone) {
-		id = kid;
-		mlvpos = new MLVector(lx, ly, lz);
-		mdvunitspeed = new MDVector(mp_clone.mdvunitspeed.x1, mp_clone.mdvunitspeed.x2, mp_clone.mdvunitspeed.x3);
-		dabsspeed = mp_clone.dabsspeed;
-		mass = mp_clone.mass; 		//eg: sun = 1.99E30 kg
-		radius = mp_clone.radius;
+		iID = kid;
+		dPosX = lx;
+		dPosY = ly;
+		dPosZ = lz;
+		dSpeedVecX = mp_clone.getSpeedVecX();
+		dSpeedVecY = mp_clone.getSpeedVecY();
+		dSpeedVecZ = mp_clone.getSpeedVecZ();
+		dSpeed = mp_clone.dSpeed;
+		dMass = mp_clone.dMass; 		//eg: sun = 1.99E30 kg
+		dRadius = mp_clone.dRadius;
 	}	
 	public Masspoint(double dmass, double dradius) {
-		id = -1;
-		mlvpos = new MLVector(0, 0, 0);
-		mdvunitspeed = new MDVector(0, 0, 0);
-		dabsspeed = 0;
-		mass = dmass; 		//eg: sun = 1.99E30 kg
-		radius = dradius;
+		iID = -1;
+		dPosX = dPosY = dPosZ = 0;
+		dSpeedVecX = dSpeedVecY = dSpeedVecZ = 0;
+		dSpeed = 0;
+		dMass = dmass; 		//eg: sun = 1.99E30 kg
+		dRadius = dradius;
 	}
 
 	@Override
 	public String toString() {
-		if(name == null || name.isEmpty() || name == "")
-			return myXMLParser.getText(256)+" "+id;
+		if(sName == null || sName.isEmpty() || sName == "")
+			return myXMLParser.getText(256)+" "+iID;
 		else
-			return name;
+			return sName;
 	}
 	
 	private static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
+	}
+
+	public void setID(int id) {
+		iID = id;		
+	}
+	public int getID() {
+		return iID;
+	}
+	
+	public void setName(String name) {
+		sName = name;
+	}
+	public String getName() {
+		return sName;
 	}
 	
 	public static boolean SpeedBarrierCheck(String name,double speed) {
@@ -61,153 +84,196 @@ public class Masspoint {
 		}
 		return false;
 	}
-	
 	public boolean addSpeed(double dvx, double dvy, double dvz) {
-		MDVector mdvspeed = MVMath.ProMVNum(mdvunitspeed, dabsspeed);
+		MDVector mdvspeed = getMDVSpeed();
 		mdvspeed.x1 += dvx;
 		mdvspeed.x2 += dvy;
 		mdvspeed.x3 += dvz;
+		
 		if(SpeedBarrierCheck("addSpeedxyz",mdvspeed.abs()))
-			return false;		
-		dabsspeed = mdvspeed.abs();
-		mdvunitspeed = mdvspeed.UnitVec();		
+			return false;
+		
+		setSpeed(mdvspeed);
 		return true;
 	}	
-
 	public boolean addSpeed(MDVector a) {
-		MDVector mdvspeed = MVMath.ProMVNum(mdvunitspeed, dabsspeed);
-		if(SpeedBarrierCheck("addSpeedmdv2",dabsspeed))
-			return false;
+		MDVector mdvspeed = getMDVSpeed();
 		mdvspeed = MVMath.AddMV(a, mdvspeed);
-		dabsspeed = mdvspeed.abs();
-		mdvunitspeed = mdvspeed.UnitVec();
+		
+		if(SpeedBarrierCheck("addSpeedmdv2",mdvspeed.abs()))
+			return false;
+		
+		setSpeed(mdvspeed);
 		return true;
 	}
-	
 	public boolean setSpeed(MDVector a) {
 		if(SpeedBarrierCheck("setSpeed",a.abs()))
 			return false;
-		dabsspeed = a.abs();
-		mdvunitspeed = a.UnitVec();
+
+		dSpeed = a.abs();
+		MDVector unita = a.UnitVec();
+		dSpeedVecX = unita.x1;
+		dSpeedVecY = unita.x2;
+		dSpeedVecZ = unita.x3;
 		return true;
 	}	
-	
 	public boolean setAbsSpeed(double a) {
 		if(SpeedBarrierCheck("setSpeed",a))
 			return false;
-		dabsspeed = a;
+		dSpeed = a;
 		return true;
 	}
-	
 	public boolean setSpeedx(double a) {
 		//debugout("Updating speed for "+id);
-		MDVector mdvspeed = MVMath.ProMVNum(mdvunitspeed, dabsspeed);
+		MDVector mdvspeed = getMDVSpeed();
 		mdvspeed.x1 = a;
 		if(SpeedBarrierCheck("setSpeedx",mdvspeed.abs()))
 			return false;
-		dabsspeed = mdvspeed.abs();
-		mdvunitspeed = mdvspeed.UnitVec();
+		
+		setSpeed(mdvspeed);
 		return true;
 	}	
-	
 	public boolean setSpeedy(double a) {
 		//debugout("Updating speed for "+id);
-		MDVector mdvspeed = MVMath.ProMVNum(mdvunitspeed, dabsspeed);
+		MDVector mdvspeed = getMDVSpeed();
 		mdvspeed.x2 = a;		
 		if(SpeedBarrierCheck("setSpeedy",mdvspeed.abs()))
 			return false;
-		dabsspeed = mdvspeed.abs();
-		mdvunitspeed = mdvspeed.UnitVec();
+		
+		setSpeed(mdvspeed);
 		return true;
 	}	
-
 	public boolean setSpeedz(double a) {
 		//debugout("Updating speed for "+id);
-		MDVector mdvspeed = MVMath.ProMVNum(mdvunitspeed, dabsspeed);
+		MDVector mdvspeed = getMDVSpeed();
 		mdvspeed.x3 = a;
 		if(SpeedBarrierCheck("setSpeedz",mdvspeed.abs()))
 			return false;
-		dabsspeed = mdvspeed.abs();
-		mdvunitspeed = mdvspeed.UnitVec();	
+		
+		setSpeed(mdvspeed);
 		return true;
 	}	
 	
 	public double getSpeed() {
-		return dabsspeed;
+		return dSpeed;
+	}
+	public double getSpeedX() {
+		if(dSpeed <= 0 || dSpeedVecX == 0.0)
+			return 0.0;
+		return dSpeedVecX*dSpeed;
+	}
+	public double getSpeedY() {
+		if(dSpeed <= 0 || dSpeedVecY == 0.0)
+			return 0.0;
+		return dSpeedVecY*dSpeed;
+	}
+	public double getSpeedZ() {
+		if(dSpeed <= 0 || dSpeedVecZ == 0.0)
+			return 0.0;
+		return dSpeedVecZ*dSpeed;
+	}
+	public double getSpeedVecX() {
+		return dSpeedVecX;
+	}
+	public double getSpeedVecY() {
+		return dSpeedVecY;
+	}
+	public double getSpeedVecZ() {
+		return dSpeedVecZ;
 	}
 	public MDVector getMDVSpeed() {
-		return MVMath.ProMVNum(mdvunitspeed, dabsspeed);
+		return new MDVector(dSpeedVecX * dSpeed, dSpeedVecY * dSpeed, dSpeedVecZ * dSpeed);
 	}
 	
 	public void setMass(double a) {
 		//debugout("Updating mass for "+id);
-		mass = a;
+		dMass = a;
 	}
 	public double getAbsMass() {
-		return mass;
+		return dMass;
 	}
 	public double getSRTMass() {
 		//falls der v-vektor (0|0|0) ist, ist auch v=0
-		if(mdvunitspeed.abs() <= 0) 
-			return mass;
+		if(dSpeed == 0 || (dSpeedVecX == 0 && dSpeedVecY == 0 && dSpeedVecZ == 0) ) 
+			return dMass;
 			
-		return ( mass*gamma(dabsspeed));
+		return ( dMass*gamma(dSpeed));
 	}
 	
 	public void addMLVCoord(MLVector ds) {
-		mlvpos = MVMath.AddMV(mlvpos, ds);
+		dPosX += ds.x1;
+		dPosY += ds.x2;
+		dPosZ += ds.x3;
 	}	
 	public void setCoordx(long a) {
-		//debugout("Updating speed for "+id);
-		mlvpos.x1 = a;
+		dPosX = a;
 	}	
 	public void setCoordy(long a) {
-		//debugout("Updating speed for "+id);
-		mlvpos.x2 = a;
+		dPosY = a;
 	}	
 	public void setCoordz(long a) {
-		//debugout("Updating speed for "+id);
-		mlvpos.x3 = a;
+		dPosZ = a;
 	}	
 	public void setCoordMLV(MLVector mlvl) {
-		mlvpos = mlvl;
+		dPosX = mlvl.x1;
+		dPosY = mlvl.x2;
+		dPosZ = mlvl.x3;
 	}
-	public MLVector getCoordMLV() {
-		return mlvpos;
+	
+	public MLVector getPos() {
+		return new MLVector(dPosX, dPosY, dPosZ);
+	}
+	public long getPosX() {
+		return dPosX;
+	}
+	public long getPosY() {
+		return dPosY;
+	}
+	public long getPosZ() {
+		return dPosZ;
 	}
 
+	
 	public void setAbsRadius(double a) {
 		debugout("Masspoint - new Radius="+a);
-		radius = a;
+		dRadius = a;
 	}
-	//Unit [m]
+	/** Absolute radius of masspoint in [m]
+	 * 
+	 * @return absolute radius
+	 */
 	public double getAbsRadius() {
-		return radius;
+		return dRadius;
 	}
-	
 	public double getDensity() {
-		return (mass / getAbsVolume());
+		return (dMass / getAbsVolume());
 	}
-	
 	public double getAbsVolume() {
-		return (4.0/3.0*Math.pow(radius, 3.0)*Math.PI);
+		return (4.0/3.0*Math.pow(dRadius, 3.0)*Math.PI);
 	}
 	
-	//Zu beachten ist hierbei, dass der Schwarzschildradius in der Allgemeinen 
-	//Relativit�tstheorie nicht den Abstand vom Mittelpunkt angibt, sondern �ber 
-	//die Oberfl�che von Kugeln definiert ist. Ein kugelf�rmiger Ereignishorizont 
-	//mit Radius rS hat dieselbe Fl�che wie eine Sph�re gleichen Radius im euklidischen 
-	//Raum, n�mlich A=4\,\pi\,r^2. Aufgrund der Raumzeitkr�mmung sind die radialen 
-	//Abst�nde im Gravitationsfeld vergr��ert (sprich: der Abstand zweier Kugelschalen 
-	//mit � �ber die Kugelfl�che definierten � Radialkoordinaten r1 und r2 ist gr��er 
-	//als die Differenz dieser Radien).
-	//de.wikipedia.org/wiki/Ereignishorizont#Schwarzschild-Radius_und_Gravitationsradius
+	/** Calculates the schwarzschild radius of the masspoint
+	 * <p>
+	 * Zu beachten ist ferner, dass der Schwarzschildradius in der allgemeinen
+	 * Relativitätstheorie nicht den Abstand vom Mittelpunkt angibt, sondern
+	 * über die Oberfläche von Kugeln definiert ist. Ein kugelförmiger
+	 * Ereignishorizont mit Radius rS hat dieselbe Fläche wie eine Sphäre
+	 * gleichen Radius im euklidischen Raum, nämlich A = 4πr2. Aufgrund der
+	 * Raumzeitkrümmung sind die radialen Abstände im Gravitationsfeld
+	 * vergrößert (sprich: der Abstand zweier Kugelschalen mit – über die
+	 * Kugelfläche definierten – Radialkoordinaten r1 und r2 ist größer als die
+	 * Differenz dieser Radien).<p>
+	 * http://de.wikipedia.org/wiki/Ereignishorizont#Schwarzschild-Radius_und_Gravitationsradius
+	 * 
+	 * @return schwarzschild radius (2 * G*m0 / c^2)
+	 */
 	public double getSchwarzschildRadius() {
-		//r = 2Gm_0 / c^2
-		return ((2.0*CalcCode.GRAVCONST*mass)/Math.pow(CalcCode.LIGHTSPEED, 2.0));
+		return (2.0*CalcCode.GRAVCONST*dMass)/Math.pow(CalcCode.LIGHTSPEED, 2.0);
 	}
-	
-	//Unit [m]
+	/** Calculates the schwarzschild volume in [m]
+	 * 
+	 * @return schwarzschild volume
+	 */
 	public double getSchwarzschildVolume() {
 		return (4.0/3.0*Math.pow(getSchwarzschildRadius(), 3.0)*Math.PI);
 	}
@@ -233,26 +299,26 @@ public class Masspoint {
 			return getAbsVolume();
 	}
 	
+	
 	//setData v2
 	public void setData(Masspoint mpdata) {
-		id = mpdata.id;
-		mass = mpdata.mass;
-		radius = mpdata.radius;
-		mlvpos.x1 = mpdata.mlvpos.x1;
-		mlvpos.x2 = mpdata.mlvpos.x2;
-		mlvpos.x3 = mpdata.mlvpos.x3;
-		dabsspeed = mpdata.dabsspeed;
-		mdvunitspeed.x1 = mpdata.mdvunitspeed.x1;
-		mdvunitspeed.x2 = mpdata.mdvunitspeed.x2;
-		mdvunitspeed.x3 = mpdata.mdvunitspeed.x3;
+		iID = mpdata.iID;
+		dMass = mpdata.dMass;
+		dRadius = mpdata.dRadius;
+		dPosX = mpdata.getPosX();
+		dPosY = mpdata.getPosY();
+		dPosZ = mpdata.getPosZ();
+		dSpeed = mpdata.dSpeed;
+		dSpeedVecX = mpdata.getSpeedVecX();
+		dSpeedVecY = mpdata.getSpeedVecY();
+		dSpeedVecZ = mpdata.getSpeedVecZ();
 	}
 	
 	public void remove() {
-		mass = 0;
-		radius = 0;
-		dabsspeed = 0;
-		mdvunitspeed = new MDVector(0,0,0);
-		mlvpos = new MLVector(0,0,0);
+		dMass =	dRadius = 0;
+		dSpeed = 0;
+		dSpeedVecX = dSpeedVecY = dSpeedVecZ = 0;
+		dPosX = dPosY = dPosZ = 0;
 	}
 	
 	//Lorentz factor (SRT)
@@ -266,20 +332,28 @@ public class Masspoint {
 	}
 	
 	public double drange(Masspoint mp2) {
-		MLVector mlvrange = MVMath.SubMV(this.getCoordMLV(), mp2.getCoordMLV());	
+		MLVector mlvrange = MVMath.SubMV(this.getPos(), mp2.getPos());	
 		return (MVMath.ConvertToD(mlvrange)).abs();
 	}
 	
 	public Masspoint_Sim toMasspoint_Sim() {
-		return new Masspoint_Sim(id, mass, radius, dabsspeed, mdvunitspeed.x1, mdvunitspeed.x2, mdvunitspeed.x3, 0, 0, 0, mlvpos.x1, mlvpos.x2, mlvpos.x3);
-	}
-	public String getName() {
-		return name;
+		return new Masspoint_Sim(iID, dMass, dRadius, dSpeed, dSpeedVecX, dSpeedVecY, dSpeedVecZ, 0, 0, 0, dPosX, dPosY, dPosZ);
 	}
 	public void setUnitSpeed(double x, double y, double z) {
-		mdvunitspeed = new MDVector(x,y,z);
-		mdvunitspeed = mdvunitspeed.UnitVec();
+		MDVector mdvUnitSpeed = new MDVector(x,y,z);
+		if(mdvUnitSpeed.abs() != 1.0) {
+			debugout("setUnitSpeed() - WARNING - you are adding (x,y,z) which is no unit vector");
+			dSpeedVecX = mdvUnitSpeed.UnitVec().x1;
+			dSpeedVecY = mdvUnitSpeed.UnitVec().x2;
+			dSpeedVecZ = mdvUnitSpeed.UnitVec().x3;
+		}
+		else {
+			dSpeedVecX = x;
+			dSpeedVecY = y;
+			dSpeedVecZ = z;
+		}
 	}
+	
 	/*public void setUnitSpeedxyAngle(double a) {
 		double factor = 1.0 - mdvunitspeed.x3 * mdvunitspeed.x3;
 		double dx1 = Math.cos(Math.toRadians(a) * factor);
@@ -372,9 +446,10 @@ public class Masspoint {
 			dx2 = Math.sin(dtheta) * Math.sin(dphi);
 			dx3 = Math.cos(dtheta);
 		}
-		mdvunitspeed = new MDVector(dx1, dx2, dx3);
+		dSpeedVecX = dx1;
+		dSpeedVecY = dx2;
+		dSpeedVecZ = dx3;
 	}
-	
 	public float[] getUnitSpeedAngle() {
 		float[] angles = new float[2];
 		double theta = 0.0;
@@ -394,8 +469,8 @@ public class Masspoint {
 		} else {
 			phi = Math.acos(mdvunitspeed.x1 / temp);
 		}*/
-		theta = Math.acos(mdvunitspeed.x3 / temp);
-		phi = Math.atan2(mdvunitspeed.x2, mdvunitspeed.x1);
+		theta = Math.acos(dSpeedVecZ / temp);
+		phi = Math.atan2(dSpeedVecY, dSpeedVecX);
 
 			
 		angles[0] = (float)Math.toDegrees(theta);
@@ -417,7 +492,7 @@ public class Masspoint {
 	 * Returns the relativistic energy for the masspoint
 	 */
 	public double getEnergy() {
-		double Energy = mass* CalcCode.LIGHTSPEED * CalcCode.LIGHTSPEED;
+		double Energy = dMass* CalcCode.LIGHTSPEED * CalcCode.LIGHTSPEED;
 		Energy *= Energy;
 		Energy += CalcCode.LIGHTSPEED * CalcCode.LIGHTSPEED + MVMath.ProScaMV(getImpulse(), getImpulse());
 		return Math.sqrt(Energy);

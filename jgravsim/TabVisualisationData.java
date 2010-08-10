@@ -287,7 +287,7 @@ public class TabVisualisationData extends JPanel {
 		}
 		
 		MDVector mvspeed = mp.getMDVSpeed();
-		MLVector mvcoord = mp.getCoordMLV();
+		MLVector mvcoord = mp.getPos();
 		tf_Coordx.setText(InterpretInput.niceInput_Length(mvcoord.x1, myXMLParser));
 		tf_Coordy.setText(InterpretInput.niceInput_Length(mvcoord.x2, myXMLParser));
 		tf_Coordz.setText(InterpretInput.niceInput_Length(mvcoord.x3, myXMLParser));

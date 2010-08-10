@@ -204,19 +204,19 @@ public class Model {
         	//[Beschl.Vektor x];[Beschl.Vektor y];[Beschl.Vektor z];[Position x];[Position y];[Position z]
     		//debugout("Model - AddStep() - Adding data to file No"+i);
     		Masspoint mp = OneData.get(i);
-			String id = String.valueOf(mp.id);
-			String mass = String.valueOf(mp.mass); 
-			String radius = String.valueOf(mp.radius); 
-			String vx = String.valueOf(mp.mdvunitspeed.x1 * mp.dabsspeed); 
-			String vy = String.valueOf(mp.mdvunitspeed.x2 * mp.dabsspeed); 
-			String vz = String.valueOf(mp.mdvunitspeed.x3 * mp.dabsspeed);  
+			String id = String.valueOf(mp.getID());
+			String mass = String.valueOf(mp.getAbsMass()); 
+			String radius = String.valueOf(mp.getRadius()); 
+			String vx = String.valueOf(mp.getSpeedX()); 
+			String vy = String.valueOf(mp.getSpeedY()); 
+			String vz = String.valueOf(mp.getSpeedZ());  
 			String ax = String.valueOf(0); //TODO not implemented yet
 			String ay = String.valueOf(0); //TODO not implemented yet
 			String az = String.valueOf(0); //TODO not implemented yet  
-			String px = String.valueOf(mp.mlvpos.x1);   
-			String py = String.valueOf(mp.mlvpos.x2);
-			String pz = String.valueOf(mp.mlvpos.x3);
-			debugout("px="+px+" / originally="+mp.mlvpos.x1);
+			String px = String.valueOf(mp.getPosX());   
+			String py = String.valueOf(mp.getPosY());
+			String pz = String.valueOf(mp.getPosZ());
+			debugout("px="+px+" / originally="+mp.getPosX());
 			debugout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+ax+DELIMDATA+ay+DELIMDATA+az+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz);	                                                                                                                                                                    
 			writetempout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+ax+DELIMDATA+ay+DELIMDATA+az+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz+DELIMLINE, filename);	                                                                                                                                                                    
     	}
