@@ -62,9 +62,21 @@ public class DynamicWPTLoader {
 			}
 			
 			saCurLine = sCurLine.split(";");
-			if(saCurLine.length != 3) {
+			if(saCurLine.length != Model.VALUES_HEADER) {
 				br.close();
 				return iCurLine;
+			}
+			
+			try {
+				int iwpt = Integer.parseInt(saCurLine[0]);
+				if(iwpt != Controller.WPT_VERSION) {
+					debugout("init() - Found WPT version "+iwpt+", but should be "+Controller.WPT_VERSION);
+					return Model.INFILE_WPTERROR;
+				}
+			}
+			catch(NumberFormatException e) {
+				debugout("init() - Found WPT version "+saCurLine[0]+"! NumberFormatException!");
+				return Model.INFILE_WPTERROR;
 			}
 			
 			int numSteps = Integer.parseInt(saCurLine[1]);
@@ -85,7 +97,7 @@ public class DynamicWPTLoader {
 				}
 				
 				saCurLine = sCurLine.split(";");
-				if(saCurLine.length != 2) {
+				if(saCurLine.length != Model.VALUES_STEP) {
 					br.close();
 					return iCurLine;
 				}
@@ -105,7 +117,7 @@ public class DynamicWPTLoader {
 					}
 					
 					saCurLine = sCurLine.split(";");
-					if(saCurLine.length != 12) {
+					if(saCurLine.length != Model.VALUES_DATA) {
 						br.close();
 						return iCurLine;
 					}
@@ -117,13 +129,10 @@ public class DynamicWPTLoader {
 						double SpeedX = Double.parseDouble(saCurLine[3]);
 						double SpeedY = Double.parseDouble(saCurLine[4]);
 						double SpeedZ = Double.parseDouble(saCurLine[5]);
-						double AccX = Double.parseDouble(saCurLine[6]);	//TODO not implemented yet
-						double AccY = Double.parseDouble(saCurLine[7]); //TODO not implemented yet
-						double AccZ = Double.parseDouble(saCurLine[8]); //TODO not implemented yet
-						long PosX = Long.parseLong(saCurLine[9]);
-						long PosY = Long.parseLong(saCurLine[10]);
-						long PosZ = Long.parseLong(saCurLine[11]);
-						//tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,SpeedX,SpeedY,SpeedZ,AccX,AccY,AccZ,PosX,PosY,PosZ);
+						long PosX = Long.parseLong(saCurLine[6]);
+						long PosY = Long.parseLong(saCurLine[7]);
+						long PosZ = Long.parseLong(saCurLine[8]);
+						//tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,SpeedX,SpeedY,SpeedZ,PosX,PosY,PosZ);
 						*/
 					}
 					iCurLine++;
@@ -173,7 +182,7 @@ public class DynamicWPTLoader {
 			}
 			
 			saCurLine = sCurLine.split(";");
-			if(saCurLine.length != 2) {
+			if(saCurLine.length != Model.VALUES_STEP) {
 				br.close();
 				throw new IOException();
 			}
@@ -192,7 +201,7 @@ public class DynamicWPTLoader {
 				if(!steps[i].isLoaded()) { /* if its not loaded ... load it! */
 				
 					saCurLine = sCurLine.split(";");
-					if(saCurLine.length != 12) {
+					if(saCurLine.length != Model.VALUES_DATA) {
 						br.close();
 						throw new IOException();
 					}

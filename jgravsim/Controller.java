@@ -119,6 +119,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				else if(errorline == Model.INFILE_READERROR) {
 					System.out.println(myXMLParser.getText(150)+":\n"+myXMLParser.getText(157));
 				}
+				else if(errorline == Model.INFILE_WPTERROR) {
+					System.out.println(myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION));
+				}
 				else {
 					System.out.println(myXMLParser.getText(150)+String.format(myXMLParser.getText(149),errorline));
 				}
@@ -304,6 +307,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					 else if(errorline == Model.INFILE_READERROR) {
 						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
 					 }
+					 else if(errorline == Model.INFILE_WPTERROR) {
+						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
+					 }
 					 else {
 						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
 					 }
@@ -343,6 +349,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				 }
 				 else if(errorline == Model.INFILE_READERROR) {
 					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
+				 }
+				 else if(errorline == Model.INFILE_WPTERROR) {
+					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
 				 }
 				 else {
 					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
@@ -492,6 +501,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					else if(errorline == Model.INFILE_READERROR) {
 						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
 					}
+					else if(errorline == Model.INFILE_WPTERROR) {
+						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
+					}
 					else {
 						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
 					}
@@ -597,6 +609,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					 }
 					 else if(errorline == Model.INFILE_READERROR) {
 						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
+					 }
+					 else if(errorline == Model.INFILE_WPTERROR) {
+						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
 					 }
 					 else {
 						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
@@ -1438,6 +1453,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				}
 				else if(errorline == Model.INFILE_READERROR) {
 					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
+				}
+				else if(errorline == Model.INFILE_WPTERROR) {
+					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);

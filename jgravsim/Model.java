@@ -19,6 +19,9 @@ public class Model {
 	public static final String DELIMSTEP = "#";
 	public static final String DELIMLINE = "\r\n";
 	public static final String DELIMDATA = ";";
+	public static final int VALUES_HEADER = 3;			//number of values on the main header
+	public static final int VALUES_STEP = 2;			//number of values on each step header
+	public static final int VALUES_DATA = 9;			//number of values on each masspoint line
 	public static final int DATAPRECISION = 20;
 	
 	public static final int INFILE_NOERROR = -1;
@@ -27,6 +30,9 @@ public class Model {
 	public static final int INFILE_EOFSTARTERROR = -4;
 	public static final int INFILE_EOFSTEPERROR = -5;
 	public static final int INFILE_EOFOBJERROR = -6;
+	public static final int INFILE_WPTERROR = -7;
+
+
 	String filename;
 
 	int istep;
@@ -78,7 +84,7 @@ public class Model {
 			}
 			
 			saCurLine = sCurLine.split(DELIMDATA);
-			if(saCurLine.length != 3) {
+			if(saCurLine.length != VALUES_HEADER) {
 				br.close();
 				return INFILE_EOFSTARTERROR;
 			}
@@ -209,16 +215,13 @@ public class Model {
 			String radius = String.valueOf(mp.getRadius()); 
 			String vx = String.valueOf(mp.getSpeedX()); 
 			String vy = String.valueOf(mp.getSpeedY()); 
-			String vz = String.valueOf(mp.getSpeedZ());  
-			String ax = String.valueOf(0); //TODO not implemented yet
-			String ay = String.valueOf(0); //TODO not implemented yet
-			String az = String.valueOf(0); //TODO not implemented yet  
+			String vz = String.valueOf(mp.getSpeedZ());
 			String px = String.valueOf(mp.getPosX());   
 			String py = String.valueOf(mp.getPosY());
 			String pz = String.valueOf(mp.getPosZ());
 			debugout("px="+px+" / originally="+mp.getPosX());
-			debugout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+ax+DELIMDATA+ay+DELIMDATA+az+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz);	                                                                                                                                                                    
-			writetempout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+ax+DELIMDATA+ay+DELIMDATA+az+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz+DELIMLINE, filename);	                                                                                                                                                                    
+			debugout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz);	                                                                                                                                                                    
+			writetempout(id+DELIMDATA+mass+DELIMDATA+radius+DELIMDATA+vx+DELIMDATA+vy+DELIMDATA+vz+DELIMDATA+px+DELIMDATA+py+DELIMDATA+pz+DELIMLINE, filename);	                                                                                                                                                                    
     	}
 	}
 	
@@ -274,9 +277,21 @@ public class Model {
 			}
 			
 			saCurLine = sCurLine.split(DELIMDATA);
-			if(saCurLine.length != 3) {
+			if(saCurLine.length != Model.VALUES_HEADER) {
 				br.close();
 				return iCurLine;
+			}
+
+			try {
+				int iwpt = Integer.parseInt(saCurLine[0]);
+				if(iwpt != Controller.WPT_VERSION) {
+					debugout("init() - Found WPT version "+iwpt+", but should be "+Controller.WPT_VERSION);
+					return INFILE_WPTERROR;
+				}
+			}
+			catch(NumberFormatException e) {
+				debugout("init() - Found WPT version "+saCurLine[0]+"! NumberFormatException!");
+				return INFILE_WPTERROR;
 			}
 			
 			int numSteps = Integer.parseInt(saCurLine[1]);
@@ -323,7 +338,7 @@ public class Model {
 					}
 					
 					saCurLine = sCurLine.split(DELIMDATA);
-					if(saCurLine.length != 12) {
+					if(saCurLine.length != VALUES_DATA) {
 						br.close();
 						return iCurLine;
 					}
@@ -398,7 +413,7 @@ public class Model {
 				return null;
 			istepid = Integer.valueOf(String.valueOf(sCurLine.toCharArray(), 1, sCurLine.indexOf(DELIMDATA)-1));
 			String[] saCurLine = sCurLine.split(DELIMDATA);
-			if(saCurLine.length != 2)
+			if(saCurLine.length != VALUES_STEP)
 				return null;
 			numObjects = Integer.parseInt(saCurLine[1]);
 			debugout("parseStep() - We found Step #"+istepid+" (of #"+istep+") and we found "+numObjects+" number of objects");

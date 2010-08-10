@@ -55,6 +55,7 @@
 		<text id="177">Die Datei %1s konnte nicht ausgeführt werden.</text>
 		<text id="178">Soll ich versuchen das Problem zu beheben?</text>
 		<text id="179" name="wpt">Wegpunkte-Tabelle</text>
+		<text id="180" name="WPTERROR">WPT Version ist nicht gleich der erwarteten Version %1d.</text>
 
 		<text id="2">Berechnung</text>
 		<!-- text id="20">Buttons</text -->
@@ -287,6 +288,7 @@
 		<text id="177">The file %1s could not be executed.</text>
 		<text id="178">Should i try to fix the problem?</text>
 		<text id="179" name="wpt">Waypoint-table</text>
+		<text id="180" name="WPTERROR">WPT version isn't equal to expected version %1d.</text>
 
 		<text id="2">Calculation</text>
 		<!-- text id="20">Buttons</text -->
