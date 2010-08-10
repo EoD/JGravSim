@@ -203,17 +203,14 @@ public class DynamicWPTLoader {
 						double SpeedX = Double.parseDouble(saCurLine[3]);
 						double SpeedY = Double.parseDouble(saCurLine[4]);
 						double SpeedZ = Double.parseDouble(saCurLine[5]);
-						double AccX = Double.parseDouble(saCurLine[6]);	//TODO not implemented yet
-						double AccY = Double.parseDouble(saCurLine[7]); //TODO not implemented yet
-						double AccZ = Double.parseDouble(saCurLine[8]); //TODO not implemented yet
-						long PosX = Long.parseLong(saCurLine[9]);
-						long PosY = Long.parseLong(saCurLine[10]);
-						long PosZ = Long.parseLong(saCurLine[11]);
+						long PosX = Long.parseLong(saCurLine[6]);
+						long PosY = Long.parseLong(saCurLine[7]);
+						long PosZ = Long.parseLong(saCurLine[8]);
 						double Speed = Math.sqrt(SpeedX*SpeedX + SpeedY*SpeedY + SpeedZ*SpeedZ);
 						if(Speed <= 0.0)
-							tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,0,0,0,0,AccX,AccY,AccZ,PosX,PosY,PosZ);
+							tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,0,0,0,0,PosX,PosY,PosZ);
 						else
-							tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,Speed,SpeedX/Speed,SpeedY/Speed,SpeedZ/Speed,AccX,AccY,AccZ,PosX,PosY,PosZ);
+							tempMassP[j] = new Masspoint_Sim(ID,Mass,Radius,Speed,SpeedX/Speed,SpeedY/Speed,SpeedZ/Speed,PosX,PosY,PosZ);
 						
 					}
 					

@@ -334,12 +334,9 @@ public class Model {
 						double SpeedX = Double.parseDouble(saCurLine[3]);
 						double SpeedY = Double.parseDouble(saCurLine[4]);
 						double SpeedZ = Double.parseDouble(saCurLine[5]);
-						//double AccX = Double.parseDouble(saCurLine[6]);
-						//double AccY = Double.parseDouble(saCurLine[7]);
-						//double AccZ = Double.parseDouble(saCurLine[8]);
-						long PosX = Long.parseLong(saCurLine[9]);
-						long PosY = Long.parseLong(saCurLine[10]);
-						long PosZ = Long.parseLong(saCurLine[11]);
+						long PosX = Long.parseLong(saCurLine[6]);
+						long PosY = Long.parseLong(saCurLine[7]);
+						long PosZ = Long.parseLong(saCurLine[8]);
 						Masspoint mptemp = new Masspoint(ID, PosX, PosY, PosZ);
 						mptemp.setSpeedx(SpeedX);
 						mptemp.setSpeedy(SpeedY);

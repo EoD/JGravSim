@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 65L;
+	public static final long serialVersionUID = 66L;
 	
 	//manual version control
 	public static final long BUILD = 
@@ -40,7 +40,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static final boolean DEBUG = true;
 	static final float ZOOMLEVEL = 10.0f;
 	static final double VERSION = 1.8;
-	static final long WPT_VERSION = 1;
+	static final int WPT_VERSION = 2;
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
 	static final String EMAIL = "jgravsim@gmail.com";

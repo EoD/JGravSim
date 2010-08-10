@@ -97,9 +97,6 @@ public class CalcCode extends Thread {
 					+"  velx: " + mpi.getMDVSpeed().x1 + ", "
 					+"  vely: " + mpi.getMDVSpeed().x2 + ", "
 					+"  velz: " + mpi.getMDVSpeed().x3 + ", "
-					//std::cout << "  accx: " << mpi.accx << "\n";	//deprecated
-					//std::cout << "  accy: " << mpi.accy << "\n";	//deprecated
-					//std::cout << "  accz: " << mpi.accz << "\n";	//deprecated
 					+"  posx: " + mpi.getPos().x1 + ", "
 					+"  posy: " + mpi.getPos().x2 + ", "
 					+"  posz: " + mpi.getPos().x3);

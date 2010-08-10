@@ -366,7 +366,7 @@ public class Masspoint {
 	}
 	
 	public Masspoint_Sim toMasspoint_Sim() {
-		return new Masspoint_Sim(iID, dMass, dRadius, dSpeed, dSpeedVecX, dSpeedVecY, dSpeedVecZ, 0, 0, 0, dPosX, dPosY, dPosZ);
+		return new Masspoint_Sim(iID, dMass, dRadius, dSpeed, dSpeedVecX, dSpeedVecY, dSpeedVecZ, dPosX, dPosY, dPosZ);
 	}
 	public void setUnitSpeed(double x, double y, double z) {
 		MDVector mdvUnitSpeed = new MDVector(x,y,z);

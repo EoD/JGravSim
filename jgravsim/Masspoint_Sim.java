@@ -3,7 +3,7 @@ package jgravsim;
 public class Masspoint_Sim extends Masspoint {
 	private int highlighted;
 
-	public Masspoint_Sim(int iid, double mass, double radius, double speed, double speedX, double speedY, double speedZ, double accX, double accY, double accZ, long posX, long posY, long posZ) {
+	public Masspoint_Sim(int iid, double mass, double radius, double speed, double speedX, double speedY, double speedZ, long posX, long posY, long posZ) {
 		super(iid, mass, radius, speed, speedX, speedY, speedZ, posX, posY, posZ);
 		iID = iid;
 		dMass = mass;
