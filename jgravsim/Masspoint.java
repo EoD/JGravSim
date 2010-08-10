@@ -7,18 +7,37 @@ public class Masspoint {
 	public static final double DFTMASS = CalcCode.EM;	//Earth Mass (kg)
 	public static XMLParser myXMLParser;
 	
-	private int iID;
-	private String sName;
-	private double dMass;
-	private double dRadius;
-	private double dSpeed;	
-	private double dSpeedVecX = 0.0;
-	private double dSpeedVecY = 0.0;
-	private double dSpeedVecZ = 0.0;
-	private long dPosX;
-	private long dPosY;
-	private long dPosZ;
+	protected int iID;
+	protected String sName;
+	protected double dMass;
+	protected double dRadius;
+	protected double dSpeed;	
+	protected double dSpeedVecX = 0.0;
+	protected double dSpeedVecY = 0.0;
+	protected double dSpeedVecZ = 0.0;
+	protected long dPosX;
+	protected long dPosY;
+	protected long dPosZ;
 	
+	public Masspoint(int iid, double mass, double radius, double speed, double speedX, double speedY, double speedZ, long posX, long posY, long posZ) {
+		iID = iid;
+		dMass = mass;
+		dRadius = radius;
+		
+		if(!Double.isNaN(speedX))
+			dSpeedVecX = speedX;
+		
+		if(!Double.isNaN(speedY))
+			dSpeedVecY = speedY;
+		
+		if(!Double.isNaN(speedZ))
+			dSpeedVecZ = speedZ;
+
+		dSpeed = speed;
+		dPosX = posX;
+		dPosY = posY;
+		dPosZ = posZ;
+	}
 	public Masspoint(int kid, long lx, long ly ,long lz) {
 		iID = kid;
 		dPosX = lx;
@@ -58,7 +77,7 @@ public class Masspoint {
 			return sName;
 	}
 	
-	private static void debugout(String a) {
+	protected static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
@@ -189,7 +208,17 @@ public class Masspoint {
 		//debugout("Updating mass for "+id);
 		dMass = a;
 	}
+	/**
+	 * @return absolute mass
+	 */
 	public double getAbsMass() {
+		return dMass;
+	}
+	/**
+	 * @deprecated As of build 66, replaced by {@link #getAbsMass()}
+	 * @return absolute mass
+	 */
+	@Deprecated public double getMass() {
 		return dMass;
 	}
 	public double getSRTMass() {
