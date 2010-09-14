@@ -10,8 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+@SuppressWarnings("serial")
 public class View_PlotOption extends JPanel implements ItemListener {
-	private static final long serialVersionUID = 1L;
+	public static int revision = 1;
 	public static boolean DEBUG = true;
 	
 	Masspoint_Sim mp_reference;

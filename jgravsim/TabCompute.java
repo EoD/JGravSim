@@ -18,8 +18,9 @@ import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 
 
+@SuppressWarnings("serial")
 public class TabCompute extends JPanel {
-	public static final long serialVersionUID = 42L;
+	public static final int revision = 5;
 	
 	JButton b_edit;
 	JPanel pa_comp_middle;

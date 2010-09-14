@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 public class CalcProgress extends Thread {
 
+	public static final int revision = 1;
 	private static final boolean DEBUG = false;
 	boolean loop;
 	Controller myController;

@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+@SuppressWarnings("serial")
 public class TabVisualisationPlot extends JPanel {
-	private static final long serialVersionUID = 1L;
-
+	public static final int revision = 1;
 	private static final boolean DEBUG = true;
 	
 	XMLParser myXMLParser;

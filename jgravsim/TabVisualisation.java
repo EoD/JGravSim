@@ -5,8 +5,9 @@ import java.text.DecimalFormat;
 import javax.swing.*;
 
 
+@SuppressWarnings("serial")
 public class TabVisualisation extends JPanel  {
-	public static final long serialVersionUID = 42L;
+	public static final int revision = 5;
 
 	public static final int ZOOM_MAX = 162;
 	public static final int ZOOM_MIN = CalcCode.SZOOMCONST;

@@ -2,8 +2,9 @@ package jgravsim;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class View extends JFrame  {
-	public static final long serialVersionUID = 42L;
+	public static final int revision = 5;
 	
 	static final String textfile = "JGravSim_text.xml";
 	

@@ -2,6 +2,7 @@ package jgravsim;
 
 public class Masspoint {
 	
+	public static final int revision = 1;
 	public static final boolean DEBUG = false;
 	public static final double DFTRADIUS = 6371010;	//Earth Radius (m)
 	public static final double DFTMASS = CalcCode.EM;	//Earth Mass (kg)

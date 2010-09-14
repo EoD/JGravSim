@@ -10,6 +10,7 @@ import javax.xml.stream.events.*;
 
 public class XMLParser {
 
+	public static final int revision = 1;
 	static private final boolean DEBUG = true;
 
 	String text[];

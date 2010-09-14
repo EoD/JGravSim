@@ -16,8 +16,9 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+@SuppressWarnings("serial")
 public class View_SpeedVector extends JFrame implements ChangeListener {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 
 	XMLParser myXMLParser;
 	Controller myController;

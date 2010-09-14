@@ -12,9 +12,10 @@ import java.awt.font.TextLayout;
 import java.text.AttributedString;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class ObjectView extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 	public static final boolean DEBUG = true;
 	public static final double LIGHTSPEED = CalcCode.LIGHTSPEED;
 	public static final Color BLACKHOLE = Color.BLACK;

@@ -3,11 +3,9 @@ package jgravsim;
 import java.io.*;
 import java.util.Vector;
 
-
 public class Model {
-
-	public static final long serialVersionUID = 42 ;
 	
+	public static final int revision = 5;
 	public static boolean DEBUG = false;
 	public static final String FILE_ENDING = "wpt";
 	public static final String FILE_TEMP = "temp."+FILE_ENDING;

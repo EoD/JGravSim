@@ -23,8 +23,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+@SuppressWarnings("serial")
 public class View_CalcOptions extends JFrame implements ActionListener, WindowListener, ChangeListener{
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 	
 	static final boolean DEBUG = true;
 	static final String exe = "cgravsim";

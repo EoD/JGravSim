@@ -6,8 +6,9 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class TabAbout extends JPanel {
-	public static final long serialVersionUID = 63L;
+	public static final int revision = 5;
 	
 	public JTextArea jHomepage;
 	public JTextArea jContact;

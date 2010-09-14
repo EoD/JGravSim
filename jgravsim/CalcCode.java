@@ -4,9 +4,8 @@ import java.io.File;
 import java.util.Vector;
 
 public class CalcCode extends Thread {
-
-	public static final long serialVersionUID = 42 ;
 	
+	public static final int revision = 6;
 	static public boolean DEBUG = false;
 	static final double LIGHTSPEED = 299792458.0; 	//Lichtgeschwindigkeit in m/s
 	static final double GRAVCONST = 6.673E-11;		//Gravitationskonstante

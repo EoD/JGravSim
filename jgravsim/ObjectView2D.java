@@ -3,8 +3,9 @@ package jgravsim;
 import java.awt.Color;
 import java.awt.Graphics;
 
+@SuppressWarnings("serial")
 public class ObjectView2D extends ObjectView {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 	
 	ObjectView2D(String axes) {
 		super();

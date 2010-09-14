@@ -19,19 +19,35 @@ import javax.swing.event.ChangeListener;
 public class Controller /*extends Applet*/ implements ActionListener, ChangeListener, MouseMotionListener, MouseListener, 
 MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
-	public static final long serialVersionUID = 66L;
-	
-	//manual version control
-	public static final long BUILD = 
-		Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(
-				Controller.serialVersionUID, 
-				Model.serialVersionUID),
-				CalcCode.serialVersionUID),
-				View.serialVersionUID),
-				TabAbout.serialVersionUID),
-				TabCompute.serialVersionUID),
-				TabVisualisation.serialVersionUID),
-				LanguageSelection.serialVersionUID);
+	public static final int revision = 10;
+	/* manual version control - if someone knows something nice, I would be pleased */
+	public static final int BUILD =	Controller.revision + 
+									CalcCode.revision +
+									CalcProgress.revision +
+									DynamicWPTLoader.revision +
+									InterpretInput.revision +
+									LanguageSelection.revision +
+									MVMath.revision +
+									Masspoint.revision +
+									Masspoint_Sim.revision +
+									Model.revision +
+									ObjectView.revision +
+									ObjectView2D.revision +
+									ObjectView3D.revision +
+									TabAbout.revision +
+									TabCompute.revision +
+									TabComputeAdvanced.revision +
+									TabVisualisation.revision +
+									TabVisualisationControls.revision +
+									TabVisualisationData.revision +
+									TabVisualisationOptions.revision +
+									TabVisualisationPlot.revision +
+									View.revision +
+									View_CalcOptions.revision +
+									View_CalcProgress.revision +
+									View_PlotOption.revision +
+									View_SpeedVector.revision +
+									XMLParser.revision;
 
 	static boolean CURRENTBUILD = true;
 	static boolean CPP = true;
@@ -1883,3 +1899,4 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		return true;
 	}
 }
+

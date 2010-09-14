@@ -6,6 +6,7 @@ import java.util.Locale;
 
 public class InterpretInput {
 
+	public static final int revision = 1;
 	private static final boolean DEBUG = false;
 
 	private static void debugout(String a) {

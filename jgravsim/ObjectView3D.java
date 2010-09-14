@@ -26,9 +26,10 @@ import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
+@SuppressWarnings("serial")
 public class ObjectView3D extends ObjectView {
 
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 5;
 
 	private BranchGroup bg_main;
 	private Canvas3D canvas_main;

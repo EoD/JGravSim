@@ -13,9 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
+@SuppressWarnings("serial")
 public class TabComputeAdvanced extends JPanel {
-
-	private static final long serialVersionUID = 1L;
+	
+	public static final int revision = 1;
 		
 		JPanel pa_comp_topdata; /* Oberes Panel für Buttons */
 			JButton b_edit;

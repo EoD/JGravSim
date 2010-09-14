@@ -4,10 +4,9 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import javax.swing.*;
 
-//import com.sun.java.util.jar.pack.Attribute.Layout;
-
+@SuppressWarnings("serial")
 public class TabVisualisationControls extends JPanel {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 
 	private int iCurFrame = 0;
 	private double dCurTime = 0;

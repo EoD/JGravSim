@@ -9,8 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class TabVisualisationOptions  extends JPanel {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 
 	XMLParser myXMLParser;
 

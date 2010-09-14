@@ -3,8 +3,9 @@ import java.awt.*;
 import javax.swing.*;
 
 
+@SuppressWarnings("serial")
 public class View_CalcProgress extends JFrame {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 
 	Controller myController;
 	JProgressBar myProgressBar;

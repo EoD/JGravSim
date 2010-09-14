@@ -15,8 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 
+@SuppressWarnings("serial")
 public class TabVisualisationData extends JPanel {
-	private static final long serialVersionUID = 1L;
+	public static final int revision = 1;
 	
 	XMLParser myXMLParser;
 	

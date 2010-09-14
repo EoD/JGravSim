@@ -4,6 +4,7 @@ import java.io.*;
 
 public class DynamicWPTLoader {
 
+	public static final int revision = 1;
 	private static final boolean DEBUG = true;	
 	/* ------- Prefetch Standard! ------------------- */
 	public static int STANDARDBUFFERSIZE = 10000; 

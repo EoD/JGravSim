@@ -16,8 +16,9 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 
+@SuppressWarnings("serial")
 public class LanguageSelection extends JFrame {
-	public static final long serialVersionUID = 64L;
+	public static final int revision = 2;
 	
 	static private final boolean DEBUG = true;
 
