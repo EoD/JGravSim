@@ -289,34 +289,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();
 				 strlastfolder = fpInputFile.getPath();
 				 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
-				 int errorline = myModel.loadInputFile(fpInputFile);
-				 if(errorline != Model.INFILE_NOERROR) {
-					 if(errorline == Model.INFILE_EOFSTARTERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_EOFSTEPERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_EOFOBJERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_FILENOTFOUND) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_READERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_WPTERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
+				 if( isError(myModel.loadInputFile(fpInputFile)) ) {
 					 myView.pa_visualtab.setPlayControlsEnabled(false);
 					 myView.pa_visualtab.displayStep(null);
 					 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(324));
 				 }
-				 else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+				 else {	/* no error detected ... continue */
 					myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 					myView.pa_visualtab.pa_visual_contrtab.setTimeStep(myModel.dtimeCount);
 					myView.pa_visualtab.pa_visual_contrtab.setMaxFrame(myModel.dynamicLoader.iLastStep);
@@ -331,35 +309,13 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_loadlast) {
 			 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
-			 File fpInputFile = new File( Model.FILE_TEMP ); 
-			 int errorline = myModel.loadInputFile(fpInputFile);
-			 if(errorline != Model.INFILE_NOERROR) {
-				 if(errorline == Model.INFILE_EOFSTARTERROR) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else if(errorline == Model.INFILE_EOFSTEPERROR) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else if(errorline == Model.INFILE_EOFOBJERROR) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else if(errorline == Model.INFILE_FILENOTFOUND) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else if(errorline == Model.INFILE_READERROR) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else if(errorline == Model.INFILE_WPTERROR) {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-				 }
-				 else {
-					 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				 }
+			 File fpInputFile = new File( Model.FILE_TEMP );
+			 if( isError(myModel.loadInputFile(fpInputFile)) ) {
 				 myView.pa_visualtab.setPlayControlsEnabled(false);
 				 myView.pa_visualtab.displayStep(null);
 				 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(324));
 			 }
-			 else if(errorline == Model.INFILE_NOERROR) { // no error detected ... continue //
+			 else {	/* no error detected ... continue */
 				myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(fpInputFile.getName());
 				myView.pa_visualtab.pa_visual_contrtab.setTimeStep(myModel.dtimeCount);
 				myView.pa_visualtab.pa_visual_contrtab.setMaxFrame(myModel.dynamicLoader.iLastStep);
@@ -482,32 +438,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
 			}
 			else if(a == 1){
-				File fpInputFile = new File( Model.FILE_TEMP ); 
-				int errorline = myModel.loadDataset(fpInputFile);
-				if(errorline != Model.INFILE_NOERROR) {
-					if(errorline == Model.INFILE_EOFSTARTERROR) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					}
-					else if(errorline == Model.INFILE_EOFSTEPERROR) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					}
-					else if(errorline == Model.INFILE_EOFOBJERROR) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					}
-					else if(errorline == Model.INFILE_FILENOTFOUND) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
-					}
-					else if(errorline == Model.INFILE_READERROR) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
-					}
-					else if(errorline == Model.INFILE_WPTERROR) {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-					}
-					else {
-						JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					}
-				}
-				else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+				File fpInputFile = new File( Model.FILE_TEMP );
+				if( !isError(myModel.loadDataset(fpInputFile)) ) {
 					vmasspoints.removeAllElements();
 					vmasspoints.addAll(myModel.stDataset);
 					calc_datacount = myModel.ddataCount;
@@ -592,32 +524,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();
-				int errorline = myModel.loadDataset(fpInputFile);
-				 if(errorline != Model.INFILE_NOERROR) {
-					 if(errorline == Model.INFILE_EOFSTARTERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_EOFSTEPERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_EOFOBJERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_FILENOTFOUND) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_READERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else if(errorline == Model.INFILE_WPTERROR) {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-					 }
-					 else {
-						 JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-					 }
+				if( isError(myModel.loadDataset(fpInputFile)) )
 					myView.pa_computetab.ButtonsStd();
-				}
-				else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+				else {	/* no error detected ... continue */
 					vmasspoints.removeAllElements();
 					vmasspoints.addAll(myModel.stDataset);
 					calc_datacount = myModel.ddataCount;
@@ -1436,30 +1345,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(169), myView.myXMLParser.getText(170),JOptionPane.INFORMATION_MESSAGE);
 		
 			//Get the latest step of the c++ temp file and show it
-			int errorline = myModel.loadDataset(new File( Model.FILE_TEMP ), -1);
-			if(errorline != Model.INFILE_NOERROR) {
-				if(errorline == Model.INFILE_EOFSTARTERROR) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(151), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				}
-				else if(errorline == Model.INFILE_EOFSTEPERROR) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(153), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				}
-				else if(errorline == Model.INFILE_EOFOBJERROR) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(152)+"\n"+myView.myXMLParser.getText(154), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				}
-				else if(errorline == Model.INFILE_FILENOTFOUND) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(155), myView.myXMLParser.getText(155), JOptionPane.ERROR_MESSAGE);
-				}
-				else if(errorline == Model.INFILE_READERROR) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+myView.myXMLParser.getText(157), myView.myXMLParser.getText(156), JOptionPane.ERROR_MESSAGE);
-				}
-				else if(errorline == Model.INFILE_WPTERROR) {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION), myView.myXMLParser.getText(158), JOptionPane.ERROR_MESSAGE);
-				}
-				else {
-					JOptionPane.showMessageDialog(myView, myView.myXMLParser.getText(150)+String.format(myView.myXMLParser.getText(149),errorline), myView.myXMLParser.getText(150), JOptionPane.ERROR_MESSAGE);
-				}
-				
+			if( isError(myModel.loadDataset(new File( Model.FILE_TEMP ), -1)) ) {
 				//Error, remove everything. Copied from b_reset
 				for(int i=vmasspoints.size()-1;i>=0;i--) {
 					RemoveMp(vmasspoints.get(i));
@@ -1469,7 +1355,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_visualtab.enableCounter(false);
 				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
 			}
-			else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+			else {	/* no error detected ... continue */
 				vmasspoints.removeAllElements();
 				vmasspoints.addAll(myModel.stDataset);
 				calc_datacount = myModel.ddataCount;
@@ -1958,5 +1844,42 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 	public void startCalcProgress(int i) {
 		myView_CalcProgress = new View_CalcProgress(i, this);
+	}
+	
+	private boolean isError(int error) {
+		if (error == Model.INFILE_NOERROR)
+			return false;
+		else if (error == Model.INFILE_EOFSTARTERROR) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n"	+ myView.myXMLParser.getText(151), 
+					myView.myXMLParser.getText(158),
+					JOptionPane.ERROR_MESSAGE);
+		} else if (error == Model.INFILE_EOFSTEPERROR) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n" + myView.myXMLParser.getText(152) + "\n" + myView.myXMLParser.getText(153),
+					myView.myXMLParser.getText(150),
+					JOptionPane.ERROR_MESSAGE);
+		} else if (error == Model.INFILE_EOFOBJERROR) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n"	+ myView.myXMLParser.getText(152) + "\n" + myView.myXMLParser.getText(154),
+					myView.myXMLParser.getText(150),
+					JOptionPane.ERROR_MESSAGE);
+		} else if (error == Model.INFILE_FILENOTFOUND) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n"	+ myView.myXMLParser.getText(155),
+					myView.myXMLParser.getText(155),
+					JOptionPane.ERROR_MESSAGE);
+		} else if (error == Model.INFILE_READERROR) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n"	+ myView.myXMLParser.getText(157),
+					myView.myXMLParser.getText(156),
+					JOptionPane.ERROR_MESSAGE);
+		} else if (error == Model.INFILE_WPTERROR) {
+			JOptionPane.showMessageDialog(myView,
+					myView.myXMLParser.getText(150) + ":\n"	+ String.format(myView.myXMLParser.getText(180), WPT_VERSION),
+					myView.myXMLParser.getText(158),
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return true;
 	}
 }
