@@ -95,7 +95,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 	Controller(int language, String filename) {	
 		/* Register Stuff from Visualisation */
-		if(filename != null && filename != "") {
 			fpInputFile = new File( filename ); 
 			
 			myModel = new Model();
@@ -120,23 +119,24 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					System.out.println(myXMLParser.getText(150)+":\n"+myXMLParser.getText(157));
 				}
 				else if(errorline == Model.INFILE_WPTERROR) {
-					System.out.println(myXMLParser.getText(150)+":\n"+String.format(myView.myXMLParser.getText(180), WPT_VERSION));
+					System.out.println(myXMLParser.getText(150)+":\n"+String.format(myXMLParser.getText(180), WPT_VERSION));
 				}
 				else {
 					System.out.println(myXMLParser.getText(150)+String.format(myXMLParser.getText(149),errorline));
 				}
 			}
-			else if(errorline == Model.INFILE_NOERROR) { /* no error detected ... continue */
+			else {	/* no error detected ... continue */
+				vmasspoints.addAll(myModel.stDataset);
+				flagcalc = true;
 				calc_datacount = myModel.ddataCount;
 				calc_timecount = myModel.dtimeCount;
 				calc_timestep = myModel.dtimeCount;
+				myModel.writetempHeader(calc_datacount,calc_timecount);
+				
+				debugout("Starting Java Calculation \""+fpInputFile+"\": datacount="+calc_datacount+", timecount="+calc_timecount+", timestep="+calc_timestep);
+				myCalculation = new CalcCode(this, myModel, calc_datacount, calc_timecount, calc_timestep, true);
+				myCalculation.start();
 			}
-			debugout("Starting Java Calculation \""+fpInputFile+"\": datacount="+calc_datacount+", timecount="+calc_timecount+", timestep="+calc_timestep);
-			myCalculation = new CalcCode(this,myModel,calc_datacount,calc_timecount,calc_timestep, true);
-			myCalculation.start();
-		}
-		else
-			new Controller(language);
 	}
 	
 	Controller(int language) {	
@@ -244,7 +244,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			
 			int language = -1;
 			
-			if(args.length > 0) {
+			if(args.length > 0 && args[0] != null && args[0] != "") {
 				debugout("main() - args.length > 0! file="+args[0]);
 				new Controller(language, args[0]);
 			} else {
