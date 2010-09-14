@@ -73,7 +73,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	CalcProgress myCalcProgress;
 	View_CalcOptions myView_CalcOptions;
 	View_CalcProgress myView_CalcProgress;
-	File fpInputFile = null;
 	
 	Vector<Masspoint> vmasspoints = new Vector<Masspoint>();
 	Masspoint mp_default;
@@ -95,7 +94,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 	Controller(int language, String filename) {	
 		/* Register Stuff from Visualisation */
-			fpInputFile = new File( filename ); 
+			File fpInputFile = new File( filename ); 
 			
 			myModel = new Model();
 			XMLParser myXMLParser = new XMLParser(View.textfile, language);
@@ -287,7 +286,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			fc.setSelectedFile(new File( Model.FILE_TEMP ));
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
-				 fpInputFile = fc.getSelectedFile().getAbsoluteFile();
+				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();
 				 strlastfolder = fpInputFile.getPath();
 				 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
 				 int errorline = myModel.loadInputFile(fpInputFile);
@@ -332,7 +331,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_loadlast) {
 			 myView.pa_visualtab.pa_visual_contrtab.la_curloaded.setText(myView.myXMLParser.getText(321));
-			 fpInputFile = new File( Model.FILE_TEMP ); 
+			 File fpInputFile = new File( Model.FILE_TEMP ); 
 			 int errorline = myModel.loadInputFile(fpInputFile);
 			 if(errorline != Model.INFILE_NOERROR) {
 				 if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -483,7 +482,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				myView.pa_computetab.cb_mpdefaults.setSelectedIndex(0);
 			}
 			else if(a == 1){
-				fpInputFile = new File( Model.FILE_TEMP ); 
+				File fpInputFile = new File( Model.FILE_TEMP ); 
 				int errorline = myModel.loadDataset(fpInputFile);
 				if(errorline != Model.INFILE_NOERROR) {
 					if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -575,7 +574,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+"."+Model.FILE_ENDING));
 			int ret = fc.showSaveDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
-				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
+				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();
 
 				myModel.saveOutputfile(fpInputFile);
 				JOptionPane.showMessageDialog(myView, String.format(myView.myXMLParser.getText(216),fpInputFile.getName()),myView.myXMLParser.getText(214),JOptionPane.INFORMATION_MESSAGE);			
@@ -592,7 +591,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			fc.setFileFilter(new WPTFilter(this));
 			int ret = fc.showOpenDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
-				fpInputFile = fc.getSelectedFile().getAbsoluteFile();
+				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();
 				int errorline = myModel.loadDataset(fpInputFile);
 				 if(errorline != Model.INFILE_NOERROR) {
 					 if(errorline == Model.INFILE_EOFSTARTERROR) {
@@ -1426,7 +1425,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			System.out.println(finish);
 		}
 		
-		myModel.saveOutputfile(fpInputFile);
+		myModel.saveOutputfile();
 	}
 	
 	public void CalculationFinished(int error) {

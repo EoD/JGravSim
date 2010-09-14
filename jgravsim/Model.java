@@ -33,7 +33,8 @@ public class Model {
 	public static final int INFILE_WPTERROR = -7;
 
 
-	String filename;
+	public String filename;
+	private File file_loaded;
 
 	int istep;
 	double dtimeCount;
@@ -257,6 +258,7 @@ public class Model {
 	public int loadDataset(File infile, int istep) {
 		//vSteps = new Vector<Step>();
 		//debugout("Parsing Inputfile: "+infile.getName());
+		file_loaded = infile;
 		
 		try {
 		
@@ -404,6 +406,11 @@ public class Model {
 	    		try { fos.close(); } catch ( IOException e ) { } 
 	    } 
 	}
+	
+	public void saveOutputfile() {
+		saveOutputfile(file_loaded);
+	}
+	
 	public int[] parseStep(String sCurLine) {
 		int numObjects = -1;
 		int istepid = -1;
