@@ -38,6 +38,7 @@ public class ObjectView3D extends ObjectView {
 	private TransformGroup[] tg_masspoints;
 
 	private static final float DEFAULT_RADIUS = 2.0f;
+	private static final float CONVERT3D = 2.0E8f;
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
 	private static Texture2D texture_sun;
@@ -110,10 +111,6 @@ public class ObjectView3D extends ObjectView {
 				
 				if(masspoint == null)
 					continue;
-
-				double radius = masspoint.getRadius();
-				if(radius/CONVERT3D < 0.05f)
-					radius = 0.05f*CONVERT3D;
 				
 				Appearance appear = new Appearance();
 				appear.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
@@ -131,7 +128,7 @@ public class ObjectView3D extends ObjectView {
 				Vector3d v3d_mptrans = postovector3d(masspoint);
 				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
 				t3d_mptrans.setTranslation(v3d_mptrans);
-				t3d_mptrans.setScale(radius/CONVERT3D/iZoomLevel/DEFAULT_RADIUS);
+				t3d_mptrans.setScale( radiusToScale(masspoint.getRadius()) );
 				tg_masspoints[i].setTransform(t3d_mptrans);
 				
 				tg_rotate.addChild(tg_masspoints[i]);
@@ -195,7 +192,7 @@ public class ObjectView3D extends ObjectView {
 			for(int i=0; i<masspoints.length && i<tg_masspoints.length; i++) {
 				Transform3D translation = new Transform3D();
 				translation.setTranslation( postovector3d(masspoints[i]) );
-				translation.setScale(masspoints[i].getRadius()/CONVERT3D/iZoomLevel/DEFAULT_RADIUS);
+				translation.setScale( radiusToScale(masspoints[i].getRadius()) );
 				tg_masspoints[i].setTransform(translation);
 				if(masspoints[i].isBlackHole())
 					changeAppearance(tg_masspoints[i], true, texture_bh);
@@ -231,9 +228,9 @@ public class ObjectView3D extends ObjectView {
 
 	private Vector3d postovector3d(Masspoint_Sim masspoint) {
 		Vector3d vector = new Vector3d(
-				MVMath.ConvertToD(masspoint.getPosX())/CONVERT3D/iZoomLevel, 
-				MVMath.ConvertToD(masspoint.getPosY())/CONVERT3D/iZoomLevel,  
-				MVMath.ConvertToD(masspoint.getPosZ())/CONVERT3D/iZoomLevel);
+				MVMath.ConvertToD(masspoint.getPosX())/CONVERT3D, 
+				MVMath.ConvertToD(masspoint.getPosY())/CONVERT3D,  
+				MVMath.ConvertToD(masspoint.getPosZ())/CONVERT3D);
 		
 		return vector;
 	}
@@ -328,5 +325,9 @@ public class ObjectView3D extends ObjectView {
 		/* reset x,y translation but keep z translation */
 		t3d_vp.setTranslation(new Vector3f(0.0f, 0.0f, v3f_trans.z));
 		tg.setTransform(t3d_vp);
+	}
+	
+	private double radiusToScale(double radius) {
+		return radius/CONVERT3D/DEFAULT_RADIUS;
 	}
 }

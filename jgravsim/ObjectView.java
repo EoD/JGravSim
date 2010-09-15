@@ -26,7 +26,6 @@ public class ObjectView extends JPanel {
 	public static final Color STRING = Color.BLACK;
 	public static final Color STRING_BRIGHT = new Color(220, 220, 220);
 	public static final Color CLICKME = Color.ORANGE; // gainsboro
-	public static final float CONVERT3D = 2.0E7f; // new
 	public static final int speedvecmax = 55;
 	protected int iGridOffset = 25;
 	protected int iLastMouseX = 0;
