@@ -202,12 +202,15 @@ public class ObjectView3D extends ObjectView {
 				Transform3D translation = new Transform3D();
 				translation.setTranslation( postovector3d(masspoints[i]) );
 				tg_masspoints[i].setTransform(translation);
-				makempvisibile(tg_masspoints[i], true);
+				if(masspoints[i].isBlackHole())
+					changeAppearance(tg_masspoints[i], true, texture_bh);
+				else
+					changeAppearance(tg_masspoints[i], true);
 			}
 			//If we have more transform groups than masspoints, hide all of them
 			if(tg_masspoints.length > masspoints.length) {
 				for(int i=masspoints.length; i<tg_masspoints.length; i++) {
-					makempvisibile(tg_masspoints[i], false);
+					changeAppearance(tg_masspoints[i], false);
 				}
 			}
 			//FIXME The following case should be fixed
@@ -239,22 +242,29 @@ public class ObjectView3D extends ObjectView {
 		
 		return vector;
 	}
+
+	private void changeAppearance(TransformGroup tg_masspoint, boolean visible) {
+		if(visible == false)
+			changeAppearance(tg_masspoint, false, null);
+		else
+			changeAppearance(tg_masspoint, true, texture_earth);
+	}
 	
-	private void makempvisibile(TransformGroup tg_masspoint, boolean visible) {
+	private void changeAppearance(TransformGroup tg_masspoint, boolean visible, Texture2D texture) {
 		//There is only one child at the moment
 		Sphere sphere = (Sphere) tg_masspoint.getChild(0);
 		Appearance appear = sphere.getAppearance();
+		
+		if(appear.getTexture() != texture)
+			appear.setTexture(texture);
+		
 		TransparencyAttributes transparency = appear.getTransparencyAttributes();
 		if(visible) {
-			//FIXME: set texture according to object state and NOT manually
-			if(transparency.getTransparency() > 0.0f)				
-				appear.setTexture(texture_earth);
-			transparency.setTransparency(0.0f);
-		}
-		else {
+			if(transparency.getTransparency() > 0.0f)
+				transparency.setTransparency(0.0f);
+		} else {
 			if(transparency.getTransparency() < 1.0f)
-				appear.setTexture(null);
-			transparency.setTransparency(1.0f);
+				transparency.setTransparency(1.0f);
 		}
 	}
 	
