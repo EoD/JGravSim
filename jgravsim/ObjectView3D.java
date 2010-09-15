@@ -196,6 +196,8 @@ public class ObjectView3D extends ObjectView {
 				tg_masspoints[i].setTransform(translation);
 				if(masspoints[i].isBlackHole())
 					changeAppearance(tg_masspoints[i], true, texture_bh);
+				else if(masspoints[i].isHighlighted())
+					changeAppearance(tg_masspoints[i], true, texture_sun);
 				else
 					changeAppearance(tg_masspoints[i], true);
 			}
@@ -222,6 +224,13 @@ public class ObjectView3D extends ObjectView {
 		}
 		else {
 			stCurrent.sort();
+			updateSceneGraph();
+		}
+	}
+	
+	@Override
+	public void repaint() {
+		if(stCurrent != null) {
 			updateSceneGraph();
 		}
 	}
