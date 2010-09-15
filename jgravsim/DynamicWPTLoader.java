@@ -5,7 +5,7 @@ import java.io.*;
 public class DynamicWPTLoader {
 
 	public static final int revision = 1;
-	private static final boolean DEBUG = true;	
+	private static final boolean DEBUG = false;	
 	/* ------- Prefetch Standard! ------------------- */
 	public static int STANDARDBUFFERSIZE = 10000; 
 	/* bounds are currentstep - buffersize until currentstep + buffersize */
@@ -285,6 +285,7 @@ public class DynamicWPTLoader {
 		return dtimeCount;
 	}
 	
+	@SuppressWarnings("unused")
 	private static void debugout(String a) {
 		if(DEBUG && Controller.CURRENTBUILD)
 			System.out.println(a);

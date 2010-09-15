@@ -20,9 +20,11 @@ public class TabAbout extends JPanel {
 		String sTitle = "JGravSim";
 			//+Controller.VERSION+(Controller.MAINDEBUG==true || (Controller.CPP==true && Controller.CPPDEBUG==true)?" current build":"");
 		
+		@SuppressWarnings("unused")
 		String sSubTitle = myXMLParser.getText(0) + "\nv" + Controller.VERSION +
 			(Controller.CURRENTBUILD || (Controller.CPP && Controller.CPPDEBUG)?" current build":"");
 		
+		@SuppressWarnings("unused")
 		String sAbouttext =	(Controller.CURRENTBUILD || (Controller.CPP && Controller.CPPDEBUG)? 
 								myXMLParser.getText(41)+": " + Controller.BUILD + "\n" +
 								myXMLParser.getText(400)+":\n"+

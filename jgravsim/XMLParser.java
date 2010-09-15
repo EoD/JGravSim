@@ -11,11 +11,12 @@ import javax.xml.stream.events.*;
 public class XMLParser {
 
 	public static final int revision = 1;
-	static private final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	String text[];
 	int size;
 	
+	@SuppressWarnings("unused")
 	private void debugout(String a){
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

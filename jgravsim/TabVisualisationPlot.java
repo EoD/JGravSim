@@ -85,6 +85,7 @@ public class TabVisualisationPlot extends JPanel {
 		updateVisualplotoptions(null);
 	}
 
+	@SuppressWarnings("unused")
 	private static void debugout(String a) {
 		if(DEBUG && Controller.CURRENTBUILD)
 			System.out.println(a);

@@ -9,6 +9,7 @@ public class InterpretInput {
 	public static final int revision = 1;
 	private static final boolean DEBUG = false;
 
+	@SuppressWarnings("unused")
 	private static void debugout(String a) {
 		if (Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

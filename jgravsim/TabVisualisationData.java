@@ -275,7 +275,7 @@ public class TabVisualisationData extends JPanel {
 		mp.setSpeedx(mpsim.getSpeedX());
 		mp.setSpeedy(mpsim.getSpeedY());
 		mp.setSpeedz(mpsim.getSpeedZ());
-		mp.setMass(mpsim.getMass());
+		mp.setMass(mpsim.getAbsMass());
 		mp.setAbsRadius(mpsim.getAbsRadius());
 		UpdatePanels(mp);
 	}

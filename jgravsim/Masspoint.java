@@ -78,6 +78,7 @@ public class Masspoint {
 			return sName;
 	}
 	
+	@SuppressWarnings("unused")
 	protected static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

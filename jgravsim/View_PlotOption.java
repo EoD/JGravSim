@@ -13,7 +13,7 @@ import javax.swing.JRadioButton;
 @SuppressWarnings("serial")
 public class View_PlotOption extends JPanel implements ItemListener {
 	public static int revision = 1;
-	public static boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	
 	Masspoint_Sim mp_reference;
 	String str_name;
@@ -67,6 +67,7 @@ public class View_PlotOption extends JPanel implements ItemListener {
 		setVisible(true);
 	}
 	
+	@SuppressWarnings("unused")
 	private static void debugout(String a) {
 		if(DEBUG && Controller.CURRENTBUILD)
 			System.out.println(a);

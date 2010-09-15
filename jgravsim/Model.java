@@ -6,7 +6,7 @@ import java.util.Vector;
 public class Model {
 	
 	public static final int revision = 5;
-	public static boolean DEBUG = false;
+	public static final boolean DEBUG = false;
 	public static final String FILE_ENDING = "wpt";
 	public static final String FILE_TEMP = "temp."+FILE_ENDING;
 	public static final String FILE_PERCENT = "percent.tmp";
@@ -164,6 +164,7 @@ public class Model {
      * #[Schrittnummer (int)];[Objektanzahl (int)]
      * [Objekt ID];[Masse];[Radius];[Geschw.Vektor x];[Geschw.Vektor y];[Geschw.Vektor z];[Beschl.Vektor x];[Beschl.Vektor y];[Beschl.Vektor z];[Position x];[Position y];[Position z]
      */
+	@SuppressWarnings("unused")
 	private	static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

@@ -16,6 +16,7 @@ public class CalcProgress extends Thread {
 	String percentfile;
 
 	
+	@SuppressWarnings("unused")
 	private	static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

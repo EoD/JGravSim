@@ -27,7 +27,7 @@ import javax.swing.event.ChangeListener;
 public class View_CalcOptions extends JFrame implements ActionListener, WindowListener, ChangeListener{
 	public static final int revision = 1;
 	
-	static final boolean DEBUG = true;
+	static final boolean DEBUG = false;
 	static final String exe = "cgravsim";
 	static Color defaultColor = null;
 	static boolean bcpp = true; 
@@ -58,6 +58,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 		JPanel pan_options;
 			JCheckBox chb_oldcalculation;
 			
+	@SuppressWarnings("unused")
 	private	static void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

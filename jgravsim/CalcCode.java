@@ -6,7 +6,7 @@ import java.util.Vector;
 public class CalcCode extends Thread {
 	
 	public static final int revision = 6;
-	static public boolean DEBUG = false;
+	static final boolean DEBUG = false;
 	static final double LIGHTSPEED = 299792458.0; 	//Lichtgeschwindigkeit in m/s
 	static final double GRAVCONST = 6.673E-11;		//Gravitationskonstante
 	static final double AE = 1.495979E11; 	//Astronomische Einheit (L�ngeneinheit) in m
@@ -75,6 +75,7 @@ public class CalcCode extends Thread {
 		calcMain();
 	}
 	
+	@SuppressWarnings("unused")
 	public void debugout(String a) {
 		if(Controller.CURRENTBUILD && DEBUG)
 			System.out.println(a);

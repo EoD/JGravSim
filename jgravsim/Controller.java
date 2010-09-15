@@ -49,9 +49,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 									View_SpeedVector.revision +
 									XMLParser.revision;
 
-	static boolean CURRENTBUILD = true;
-	static boolean CPP = true;
-	static boolean CPPDEBUG = false;
+	static final boolean CURRENTBUILD = true;
+	static final boolean CPP = true;
+	static final boolean CPPDEBUG = false;
 
 	static final boolean DEBUG = true;
 	static final float ZOOMLEVEL = 10.0f;
@@ -273,6 +273,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(CURRENTBUILD && DEBUG)
 			System.out.println(a);
 	}
+	
+	@SuppressWarnings("unused")
 	public static void cppdebugout(String a) {
 		if(CPP && CPPDEBUG)
 			System.out.println("c++: "+a);
