@@ -86,9 +86,7 @@ public class ObjectView3D extends ObjectView {
 		bg_root.setCapability(BranchGroup.ALLOW_DETACH);
 
 		///TRANSFORMATION - VP
-		Transform3D t3d_vp = new Transform3D();
 		TransformGroup tg_vp = su.getViewingPlatform().getViewPlatformTransform();
-		tg_vp.getTransform(t3d_vp);
 
 		///TRANSFORMATION - ROTATE
 		TransformGroup tg_rotate = new TransformGroup();
@@ -169,14 +167,7 @@ public class ObjectView3D extends ObjectView {
 		myMouseZoom.setSchedulingBounds(mouseBounds);
 		bg_root.addChild(myMouseZoom);
 
-		//move ViewingPlatform a little bit above
-		Vector3f v3f_initial = new Vector3f();
-		v3f_initial.set( 0.0f, 0.03f, 0.0f);
-		Transform3D t3d_initial = new Transform3D();
-		t3d_initial.setTranslation(v3f_initial);
-		t3d_vp.mul(t3d_initial);
-
-		tg_vp.setTransform(t3d_vp);
+		resetCoordOffset3D(tg_vp);
 
 		//add also support for keyboard transformations
 		KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(tg_vp);
@@ -312,4 +303,30 @@ public class ObjectView3D extends ObjectView {
 	 * g2.drawString(as_clickme.getIterator(), centerX - fwidth / 2, centerY +
 	 * fheight / 2); }
 	 */
+
+	@Override
+	public void resetCoordOffset() {
+		super.resetCoordOffset();
+		resetCoordOffset3D(simpleU.getViewingPlatform().getViewPlatformTransform());
+	}
+	
+	/**
+	 * Resets the TransformGroup to (0.0f, 0.0f, old z coordinate). The
+	 * coordinate center moves to the two dimensional center (usually center of
+	 * Canvas3D) without changing the zoom.
+	 * 
+	 * @param tg
+	 *            TransformGroup which should be reset
+	 */
+	private void resetCoordOffset3D(TransformGroup tg) {
+		Transform3D t3d_vp = new Transform3D();
+		tg.getTransform(t3d_vp);
+
+		Vector3f v3f_trans = new Vector3f();
+		t3d_vp.get(v3f_trans);
+
+		/* reset x,y translation but keep z translation */
+		t3d_vp.setTranslation(new Vector3f(0.0f, 0.0f, v3f_trans.z));
+		tg.setTransform(t3d_vp);
+	}
 }

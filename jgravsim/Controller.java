@@ -427,9 +427,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_resetoffset) {
 			myView.pa_visualtab.resetOffset();
 		}
-		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_resetoffset) {
-			myView.pa_visualtab.resetOffset();
-		}
 		else if(source == myView.pa_visualtab.pa_visual_plottab.b_plot_draw) {
 			if(myView.pa_visualtab.pa_visual_plottab.cb_plot_dense.getSelectedIndex() == 0) {
 				String data;
