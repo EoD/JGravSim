@@ -36,6 +36,8 @@ public class ObjectView3D extends ObjectView {
 	private Canvas3D canvas_main;
 	private SimpleUniverse simpleU;
 	private TransformGroup[] tg_masspoints;
+
+	private static final float DEFAULT_RADIUS = 2.0f;
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
 	private static Texture2D texture_sun;
@@ -131,12 +133,13 @@ public class ObjectView3D extends ObjectView {
 				Vector3d v3d_mptrans = postovector3d(masspoint);
 				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
 				t3d_mptrans.setTranslation(v3d_mptrans);
+				t3d_mptrans.setScale(radius/CONVERT3D/iZoomLevel/DEFAULT_RADIUS);
 				tg_masspoints[i].setTransform(t3d_mptrans);
 				
 				tg_rotate.addChild(tg_masspoints[i]);
 				
 				//finally create the sphere itself
-				Sphere sphere = new Sphere((float)(radius/CONVERT3D/iZoomLevel),Primitive.GENERATE_TEXTURE_COORDS, appear);		    
+				Sphere sphere = new Sphere(DEFAULT_RADIUS, Primitive.GENERATE_TEXTURE_COORDS, appear);		    
 				sphere.setAppearance(appear);
 				tg_masspoints[i].addChild(sphere);
 			}
@@ -201,6 +204,7 @@ public class ObjectView3D extends ObjectView {
 			for(int i=0; i<masspoints.length && i<tg_masspoints.length; i++) {
 				Transform3D translation = new Transform3D();
 				translation.setTranslation( postovector3d(masspoints[i]) );
+				translation.setScale(masspoints[i].getRadius()/CONVERT3D/iZoomLevel/DEFAULT_RADIUS);
 				tg_masspoints[i].setTransform(translation);
 				if(masspoints[i].isBlackHole())
 					changeAppearance(tg_masspoints[i], true, texture_bh);
