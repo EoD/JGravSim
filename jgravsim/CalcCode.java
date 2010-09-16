@@ -28,7 +28,6 @@ public class CalcCode extends Thread {
 	//static final double EXACTSTEP = TIMESTEP/Math.pow(10.0, 3.0); //default exactstep 10ms
 	static final double LACCURACY = 1.0E2; //Math.pow(10.0,3.0);	//Genauigkeit der longs: 0=m;2=cm;3=mm;6=nm;9=pm (yes it is 10^+3)
 	static final int SMASSCONST = 17;			//constant for mass-slider (nach belieben �nderbar)
-	static final int SZOOMCONST = 10;		//to avoid zoom=0
 	static final double SRADIUSCONST = 5.6;		//constant for radius-slider (nach belieben �nderbar)
 	static final double SSPEEDCONST = 8.0;		//constant for speed-slider
 	static final double SDENSITYCONST = 4.0;

@@ -12,6 +12,18 @@ public class View extends JFrame  {
 	TabVisualisation pa_visualtab; /* Visualisierung berechneter Daten */
 	TabAbout pa_abouttab; /* Über dieses Programm */
     XMLParser myXMLParser;
+
+	public static final float ZOOM_STEP = 0.1f;
+	public static final float ZOOM_DEFAULT = 7.5f;
+	public static final int ZOOM_MIN = 10;
+	public static final int ZOOM_MAX = 162;
+	
+	public static final int GRID_MIN = 15;
+	public static final int GRID_MAX = 200;
+	public static final int GRID_DEFAULT = 25;
+	
+	public static final int SL_MINTICK = 10;
+	public static final int SL_MAJTICK = 50;
 	
 	View(int lang) {
 		super();

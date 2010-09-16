@@ -8,9 +8,8 @@ import javax.swing.*;
 public class TabVisualisation extends JPanel  {
 	public static final long serialVersionUID = 42L;
 
-	public static final int ZOOM_MAX = 162;
-	public static final int ZOOM_MIN = CalcCode.SZOOMCONST;
 	public static final float ZOOM_THRESHOLD = 0.8f;
+
 	private int data_plot;
 	private int dynamic_iCurMax;
 	private DynamicWPTLoader loader_plot;
@@ -189,7 +188,7 @@ public class TabVisualisation extends JPanel  {
 		pa_visual_contrtab.la_zoomlevel.setText(myXMLParser.getText(101)+": "+zoomLevel+" (1 "+myXMLParser.getText(107)+" = "+ df.format(zoomUnit) + "km)");
 
 		if(bslider) {
-			int newzoom = ZOOM_MAX - Math.round(ov_vis_front.iZoomLevel*Controller.ZOOMLEVEL) + ZOOM_MIN;
+			int newzoom = View.ZOOM_MAX - Math.round(ov_vis_front.iZoomLevel / View.ZOOM_STEP) + View.ZOOM_MIN;
 			//Controller.debugout("setZoom() - Changed from "+	pa_visual_contrtab.sl_zoomlevel.getValue()+" to "+newzoom);
 			pa_visual_contrtab.sl_zoomlevel.setValue((newzoom));
 		}

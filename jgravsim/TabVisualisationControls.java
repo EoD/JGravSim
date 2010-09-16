@@ -132,10 +132,11 @@ public class TabVisualisationControls extends JPanel {
 		pa_vis_contr_center_panel2 = new JPanel(new GridLayout(2,0));
 		pa_vis_contr_center_panel2.setBackground(Color.white);
 		la_zoomlevel = new JLabel(myXMLParser.getText(101)+": ");
-		sl_zoomlevel = new JSlider(TabVisualisation.ZOOM_MIN,TabVisualisation.ZOOM_MAX,130);
+		/* default value will be set in Controller via setZoom (it changes JSlider anyway) */
+		sl_zoomlevel = new JSlider(View.ZOOM_MIN, View.ZOOM_MAX);
 		sl_zoomlevel.setPaintTicks(true);
-		sl_zoomlevel.setMinorTickSpacing(10);
-		sl_zoomlevel.setMajorTickSpacing(50);
+		sl_zoomlevel.setMinorTickSpacing(View.SL_MINTICK);
+		sl_zoomlevel.setMajorTickSpacing(View.SL_MAJTICK);
 		sl_zoomlevel.setBackground(Color.white);
 		
 		pa_vis_contr_center_panel2.add(la_zoomlevel);
@@ -144,10 +145,11 @@ public class TabVisualisationControls extends JPanel {
 		pa_vis_contr_center_panel3 = new JPanel(new GridLayout(2,0));
 		pa_vis_contr_center_panel3.setBackground(Color.white);
 		la_gridoffset = new JLabel(myXMLParser.getText(102)+": ");
-		sl_gridoffset = new JSlider(15,200,25);
+		/* default value has be set HERE, setGridOffset doesn't support changing JSlider (yet) */
+		sl_gridoffset = new JSlider(View.GRID_MIN, View.GRID_MAX, View.GRID_DEFAULT);
 		sl_gridoffset.setPaintTicks(true);
-		sl_gridoffset.setMinorTickSpacing(10);
-		sl_gridoffset.setMajorTickSpacing(50);
+		sl_gridoffset.setMinorTickSpacing(View.SL_MINTICK);
+		sl_gridoffset.setMajorTickSpacing(View.SL_MAJTICK);
 		sl_gridoffset.setBackground(Color.white);
 		pa_vis_contr_center_panel3.add(la_gridoffset);
 		pa_vis_contr_center_panel3.add(sl_gridoffset);
@@ -177,7 +179,7 @@ public class TabVisualisationControls extends JPanel {
 		
 		pa_vis_contr_bottom_row2 = new JPanel(new GridLayout());
 		pa_vis_contr_bottom_row2.setBackground(Color.white);
-		sl_playcontr_slider = new JSlider(0,749,0);
+		sl_playcontr_slider = new JSlider(0,0);
 		sl_playcontr_slider.setPaintTicks(true);
 		sl_playcontr_slider.setMajorTickSpacing(DynamicWPTLoader.STANDARDBUFFERSIZE);
 		sl_playcontr_slider.setMinorTickSpacing(DynamicWPTLoader.STANDARDBUFFERSIZE/10);

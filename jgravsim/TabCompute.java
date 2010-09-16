@@ -111,16 +111,18 @@ public class TabCompute extends JPanel {
 				pa_comp_middlecontrols.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(10)));
 				
 				la_zoomlevel = new JLabel(myXMLParser.getText(101)+":\t");
-				sl_zoomlevel = new JSlider(CalcCode.SZOOMCONST,158,130);
+				/* default value has to be set HERE, (TabCompute) setZoom doesn't support it yet */
+				sl_zoomlevel = new JSlider(View.ZOOM_MIN, View.ZOOM_MAX, View.ZOOM_MAX - Math.round(View.ZOOM_DEFAULT/View.ZOOM_STEP) + View.ZOOM_MIN);
 				sl_zoomlevel.setPaintTicks(true);
-				sl_zoomlevel.setMinorTickSpacing(10);
-				sl_zoomlevel.setMajorTickSpacing(50);
+				sl_zoomlevel.setMinorTickSpacing(View.SL_MINTICK);
+				sl_zoomlevel.setMajorTickSpacing(View.SL_MAJTICK);
 	
 				la_gridoffset = new JLabel(myXMLParser.getText(102)+":\t");
-				sl_gridoffset = new JSlider(15,200,25);
+				/* default value has be set HERE, setGridOffset doesn't support changing JSlider (yet) */
+				sl_gridoffset = new JSlider(View.GRID_MIN, View.GRID_MAX, View.GRID_DEFAULT);
 				sl_gridoffset.setPaintTicks(true);
-				sl_gridoffset.setMinorTickSpacing(10);
-				sl_gridoffset.setMajorTickSpacing(50);
+				sl_gridoffset.setMinorTickSpacing(View.SL_MINTICK);
+				sl_gridoffset.setMajorTickSpacing(View.SL_MAJTICK);
 				
 
 				b_colorch_grid = new JButton(myXMLParser.getText(103));
