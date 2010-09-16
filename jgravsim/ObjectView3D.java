@@ -39,9 +39,14 @@ public class ObjectView3D extends ObjectView {
 
 	private static final float DEFAULT_RADIUS = 2.0f;
 	private static final float CONVERT3D = 2.0E8f;
+
+	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
 	private static Texture2D texture_sun;
+
+	private float fZoomLevel_old;
+	private float fGridOffset_old;
 	
 	ObjectView3D(Step current) {
 		super();
@@ -75,8 +80,9 @@ public class ObjectView3D extends ObjectView {
 			texture_sun = loadTexture(texturefile_sun);
 		}
 		
+		fZoomLevel_old = iZoomLevel;
+		fGridOffset_old = iGridOffset;
 		// str_clickme = "";
-		//repaint();
 	}
 	
 	public BranchGroup createSceneGraph(SimpleUniverse su) {
@@ -158,11 +164,13 @@ public class ObjectView3D extends ObjectView {
 		myMouseTranslate.setSchedulingBounds(mouseBounds);
 		bg_root.addChild(myMouseTranslate);
 
-	    ///TRANSFORMATION IV - VP ZOOM
+	    ///TRANSFORMATION IV - VP ZOOM - disabled for the time being
+		/*
 		MouseWheelZoom myMouseZoom = new MouseWheelZoom();
 		myMouseZoom.setTransformGroup(tg_vp);
 		myMouseZoom.setSchedulingBounds(mouseBounds);
 		bg_root.addChild(myMouseZoom);
+		*/
 
 		resetCoordOffset3D(tg_vp);
 
@@ -184,10 +192,17 @@ public class ObjectView3D extends ObjectView {
 	public void updateSceneGraph() {
 		if(tg_masspoints == null) {
 			bg_main = createSceneGraph(simpleU);
-			simpleU.getViewingPlatform().setNominalViewingTransform();
+			resetZoom();
 			simpleU.addBranchGraph(bg_main);
 		}
 		else if (stCurrent != null && stCurrent.getMasspoints() != null && stCurrent.getMasspoints().length > 0) {
+			if(iZoomLevel != fZoomLevel_old || fGridOffset_old != iGridOffset) {
+				setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-fZoomLevel_old, iGridOffset/fGridOffset_old);
+				debugout(" factor = "+Math.pow(10, iZoomLevel)/iGridOffset);
+				fZoomLevel_old = iZoomLevel;
+				fGridOffset_old = iGridOffset;
+			}
+			
 			Masspoint_Sim[] masspoints = stCurrent.getMasspoints();
 			for(int i=0; i<masspoints.length && i<tg_masspoints.length; i++) {
 				Transform3D translation = new Transform3D();
@@ -212,6 +227,15 @@ public class ObjectView3D extends ObjectView {
 				debugout("updateSceneGraph() - FIXME: tg_masspoints.length < masspoints.length");
 			}
 		}
+	}
+	
+	public void resetZoom() {
+		debugout("ResetZoom");
+		fZoomLevel_old = iZoomLevel;
+		fGridOffset_old = iGridOffset;
+		debugout(" zoomX = "+Math.pow(10, fZoomLevel_old)/fGridOffset_old);
+		simpleU.getViewingPlatform().setNominalViewingTransform();
+		setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-View.ZOOM_DEFAULT + ObjectView3D.ZOOM_CORRECTION, iGridOffset/View.GRID_DEFAULT);
 	}
 
 	@Override
@@ -333,6 +357,29 @@ public class ObjectView3D extends ObjectView {
 
 		/* reset x,y translation but keep z translation */
 		t3d_vp.setTranslation(new Vector3f(0.0f, 0.0f, v3f_trans.z));
+		tg.setTransform(t3d_vp);
+	}
+
+	/**
+	 * Moves the TransformGroup to (x, y, z*zoom). The coordinate center moves
+	 * out of the screen according to the zoom factor.
+	 * 
+	 * @param tg
+	 *            TransformGroup which should be reset
+	 * @param zoom
+	 *            level of zoom
+	 * @param gridoffset
+	 *            level of small zoom
+	 */
+	private void setZoom3D(TransformGroup tg, double zoom, double gridoffset) {
+		Transform3D t3d_vp = new Transform3D();
+		tg.getTransform(t3d_vp);
+
+		Vector3d v3d_trans = new Vector3d();
+		t3d_vp.get(v3d_trans);
+
+		/* reset x,y translation but keep z translation */
+		t3d_vp.setTranslation(new Vector3d(v3d_trans.x, v3d_trans.y, v3d_trans.z*Math.pow(10, zoom)/gridoffset));
 		tg.setTransform(t3d_vp);
 	}
 	
