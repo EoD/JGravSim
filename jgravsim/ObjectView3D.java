@@ -34,6 +34,7 @@ public class ObjectView3D extends ObjectView {
 	private BranchGroup bg_main;
 	private Canvas3D canvas_main;
 	private SimpleUniverse simpleU;
+	private TransformGroup tg_rotation;
 	private TransformGroup[] tg_masspoints;
 
 	private static final float DEFAULT_RADIUS = 2.0f;
@@ -98,6 +99,7 @@ public class ObjectView3D extends ObjectView {
 		TransformGroup tg_rotate = new TransformGroup();
 		tg_rotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		tg_rotate.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+		tg_rotate.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
 
 		//add coordinate axis
 		tg_rotate.addChild(new Axis());
@@ -109,39 +111,8 @@ public class ObjectView3D extends ObjectView {
 			tg_masspoints = new TransformGroup[num_masspoints];
 			
 			for (int i = 0; i < num_masspoints; i++) {
-				Masspoint_Sim masspoint = masspoints[i];
-				tg_masspoints[i] = new TransformGroup();
-				//tg_masspoints[i].setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-				tg_masspoints[i].setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-				
-				if(masspoint == null)
-					continue;
-				
-				Appearance appear = new Appearance();
-				appear.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
-				if(masspoint.isBlackHole())
-					appear.setTexture(texture_bh);
-				else
-					appear.setTexture(texture_earth);
-				
-				TransparencyAttributes transparency = new TransparencyAttributes(TransparencyAttributes.FASTEST,0.0f);
-				transparency.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-				appear.setTransparencyAttributes(transparency);
-				
-				///TRANSOFMRATION I - MP TRANSLATION
-				Transform3D t3d_mptrans = new Transform3D();
-				Vector3d v3d_mptrans = postovector3d(masspoint);
-				//Controller.debugout("createSceneGraph() - masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel="+masspoint.getPosX()/CalcCode.LACCURACY/CONVERT3D/iZoomLevel);
-				t3d_mptrans.setTranslation(v3d_mptrans);
-				t3d_mptrans.setScale( radiusToScale(masspoint.getRadius()) );
-				tg_masspoints[i].setTransform(t3d_mptrans);
-				
+				tg_masspoints[i] = createMasspointTG(masspoints[i]);
 				tg_rotate.addChild(tg_masspoints[i]);
-				
-				//finally create the sphere itself
-				Sphere sphere = new Sphere(DEFAULT_RADIUS, Primitive.GENERATE_TEXTURE_COORDS, appear);		    
-				sphere.setAppearance(appear);
-				tg_masspoints[i].addChild(sphere);
 			}
 		}
 		
@@ -168,7 +139,57 @@ public class ObjectView3D extends ObjectView {
 		// Let Java 3D perform optimizations on this scene graph.
 		bg_root.compile();
 
+		tg_rotation = tg_rotate;
 		return bg_root;
+	}
+
+	/**
+	 * Creates a TransformGroup with a Sphere inside. Moves the TransformGroup
+	 * to position of masspoint and scales it according to the radius of the
+	 * masspoint.
+	 * 
+	 * @param masspoint
+	 *            which should be transformed
+	 * @return A scaled/moved TransformGroup which contains a sphere
+	 */
+	private TransformGroup createMasspointTG(Masspoint_Sim masspoint) {
+		TransformGroup tg_masspoint = new TransformGroup();
+		
+		/* Masspoint translation, scaling */
+		//tg_masspoints[i].setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+		tg_masspoint.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+		
+		Transform3D t3d_mptrans = new Transform3D();
+		Vector3d v3d_mptrans = postovector3d(masspoint);
+		t3d_mptrans.setTranslation(v3d_mptrans);
+		t3d_mptrans.setScale( radiusToScale(masspoint.getRadius()) );
+		tg_masspoint.setTransform(t3d_mptrans);
+		
+		
+		/* Appearance */
+		Appearance appear = new Appearance();
+		
+		/* Appearance - Texture */
+		appear.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+		if(masspoint.isBlackHole())
+			appear.setTexture(texture_bh);
+		else if(masspoint.isHighlighted())
+			appear.setTexture(texture_sun);
+		else
+			appear.setTexture(texture_earth);
+
+		/* Appearance - Transparency */
+		TransparencyAttributes transparency = new TransparencyAttributes(TransparencyAttributes.FASTEST,0.0f);
+		transparency.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+		appear.setTransparencyAttributes(transparency);
+		
+		
+		/* Sphere - convert massPOINT to massSPHERE ;) */
+		Sphere sphere = new Sphere(DEFAULT_RADIUS, Primitive.GENERATE_TEXTURE_COORDS, appear);
+		sphere.setAppearance(appear);
+		
+		tg_masspoint.addChild(sphere);
+		return tg_masspoint;
 	}
 	
 	public void updateSceneGraph() {
@@ -185,27 +206,50 @@ public class ObjectView3D extends ObjectView {
 			}
 			
 			Masspoint_Sim[] masspoints = stCurrent.getMasspoints();
+
+			/* if there are more TransformGroups than masspoints, hide spare ones */
+			if(tg_masspoints.length > masspoints.length) {
+				for(int i=masspoints.length; i<tg_masspoints.length; i++) {
+					changeAppearance(tg_masspoints[i], false);
+				}
+			}
+			/* TODO Check if there is a nicer fix available */
+			else if(tg_masspoints.length < masspoints.length) {
+				debugout("updateSceneGraph() - tg_masspoints.length = "+tg_masspoints.length+" < "+masspoints.length+" = masspoints.length. Adding additional tg_mps.");
+				
+				/* Copy tg_masspoints to new extended tg_masspoints_new */
+				TransformGroup[] tg_masspoints_new = new TransformGroup[masspoints.length];
+				System.arraycopy(tg_masspoints, 0, tg_masspoints_new, 0, tg_masspoints.length);
+				
+				/* Create a new BranchGroup which can be added to tg_rotation during runtime */
+				BranchGroup bg_add = new BranchGroup();
+				
+				/* Add each tg_masspoint to the new BranchGroup and tg_masspoints_new */
+				for(int i=tg_masspoints.length; i<masspoints.length; i++) {
+					tg_masspoints_new[i] = createMasspointTG(masspoints[i]);
+					bg_add.addChild(tg_masspoints_new[i]);
+				}
+				
+				/* Replace old tg_masspoints with tg_masspoints_new */
+				tg_masspoints = tg_masspoints_new;
+				
+				/* Compile and add bg_add to tg_rotation */
+				bg_add.compile();
+				tg_rotation.addChild(bg_add);
+			}
+			
 			for(int i=0; i<masspoints.length && i<tg_masspoints.length; i++) {
 				Transform3D translation = new Transform3D();
 				translation.setTranslation( postovector3d(masspoints[i]) );
 				translation.setScale( radiusToScale(masspoints[i].getRadius()) );
 				tg_masspoints[i].setTransform(translation);
+
 				if(masspoints[i].isBlackHole())
 					changeAppearance(tg_masspoints[i], true, texture_bh);
 				else if(masspoints[i].isHighlighted())
 					changeAppearance(tg_masspoints[i], true, texture_sun);
 				else
 					changeAppearance(tg_masspoints[i], true);
-			}
-			//If we have more transform groups than masspoints, hide all of them
-			if(tg_masspoints.length > masspoints.length) {
-				for(int i=masspoints.length; i<tg_masspoints.length; i++) {
-					changeAppearance(tg_masspoints[i], false);
-				}
-			}
-			//FIXME The following case should be fixed
-			else if(tg_masspoints.length < masspoints.length) {
-				debugout("updateSceneGraph() - FIXME: tg_masspoints.length < masspoints.length");
 			}
 		}
 	}
