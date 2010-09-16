@@ -309,17 +309,25 @@ public class ObjectView3D extends ObjectView {
 		//There is only one child at the moment
 		Sphere sphere = (Sphere) tg_masspoint.getChild(0);
 		Appearance appear = sphere.getAppearance();
-		
-		if(appear.getTexture() != texture)
-			appear.setTexture(texture);
-		
+
+		/* 
+		 * Avoid flickering textures:
+		 * in case of visible objects change texture first and make it non-transparent afterwards
+		 * in case of invisible objects change texture after object got transparent
+		 */
 		TransparencyAttributes transparency = appear.getTransparencyAttributes();
 		if(visible) {
+			if(appear.getTexture() != texture)
+				appear.setTexture(texture);
+
 			if(transparency.getTransparency() > 0.0f)
 				transparency.setTransparency(0.0f);
 		} else {
 			if(transparency.getTransparency() < 1.0f)
 				transparency.setTransparency(1.0f);
+
+			if(appear.getTexture() != texture)
+				appear.setTexture(texture);
 		}
 	}
 	
