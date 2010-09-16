@@ -39,8 +39,9 @@ public class ObjectView3D extends ObjectView {
 
 	private static final float DEFAULT_RADIUS = 2.0f;
 	private static final float CONVERT3D = 2.0E8f;
-
+	private static final float SCALE_TRESHOLD = 1f/500f;
 	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
+
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
 	private static Texture2D texture_sun;
@@ -422,6 +423,11 @@ public class ObjectView3D extends ObjectView {
 	}
 	
 	private double radiusToScale(double radius) {
-		return radius/CONVERT3D/DEFAULT_RADIUS;
+		double scale = radius/CONVERT3D/DEFAULT_RADIUS;
+		
+		if(scale < SCALE_TRESHOLD)
+			return SCALE_TRESHOLD;
+		
+		return scale;
 	}
 }
