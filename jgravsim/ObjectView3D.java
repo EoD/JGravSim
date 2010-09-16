@@ -26,6 +26,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.ImageException;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
+import com.sun.j3d.utils.universe.Viewer;
 
 public class ObjectView3D extends ObjectView {
 
@@ -41,6 +42,8 @@ public class ObjectView3D extends ObjectView {
 	private static final float CONVERT3D = 2.0E8f;
 	private static final float SCALE_TRESHOLD = 1f/500f;
 	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
+	private static final double DISTANCE_BACKCLIP = 1000;
+	private static final double DISTANCE_FRONTCLIP = 0.001;
 
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
@@ -84,6 +87,14 @@ public class ObjectView3D extends ObjectView {
 		fZoomLevel_old = iZoomLevel;
 		fGridOffset_old = iGridOffset;
 		// str_clickme = "";
+
+		/* set setBackClipDistance to see very far away objects */
+		Viewer[] viewers = simpleU.getViewingPlatform().getViewers();
+		for(int i = 0; i < viewers.length; i++)	{
+			javax.media.j3d.View view = viewers[i].getView();
+			view.setBackClipDistance(DISTANCE_BACKCLIP);
+			view.setFrontClipDistance(DISTANCE_FRONTCLIP);
+		}
 	}
 	
 	public BranchGroup createSceneGraph(SimpleUniverse su) {
