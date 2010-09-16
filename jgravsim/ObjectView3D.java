@@ -3,7 +3,6 @@ package jgravsim;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
-import java.awt.event.MouseWheelListener;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -15,15 +14,15 @@ import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TransparencyAttributes;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
+import javax.vecmath.Vector3f;
 
-import javax.vecmath.*;
-
-import com.sun.j3d.utils.behaviors.keyboard.KeyNavigatorBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehavior;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
-import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.geometry.Primitive;
+import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.image.ImageException;
 import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -164,29 +163,12 @@ public class ObjectView3D extends ObjectView {
 		myMouseTranslate.setSchedulingBounds(mouseBounds);
 		bg_root.addChild(myMouseTranslate);
 
-	    ///TRANSFORMATION IV - VP ZOOM - disabled for the time being
-		/*
-		MouseWheelZoom myMouseZoom = new MouseWheelZoom();
-		myMouseZoom.setTransformGroup(tg_vp);
-		myMouseZoom.setSchedulingBounds(mouseBounds);
-		bg_root.addChild(myMouseZoom);
-		*/
-
 		resetCoordOffset3D(tg_vp);
-
-		//add also support for keyboard transformations
-		KeyNavigatorBehavior keyNavBeh = new KeyNavigatorBehavior(tg_vp);
-		keyNavBeh.setSchedulingBounds(new BoundingSphere(new Point3d(),1000.0));
-		bg_root.addChild(keyNavBeh);
 
 		// Let Java 3D perform optimizations on this scene graph.
 		bg_root.compile();
 
 		return bg_root;
-	}
-	
-	@Override
-	public synchronized void addMouseWheelListener(MouseWheelListener l) {
 	}
 	
 	public void updateSceneGraph() {
@@ -198,7 +180,6 @@ public class ObjectView3D extends ObjectView {
 		else if (stCurrent != null && stCurrent.getMasspoints() != null && stCurrent.getMasspoints().length > 0) {
 			if(iZoomLevel != fZoomLevel_old || fGridOffset_old != iGridOffset) {
 				setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-fZoomLevel_old, iGridOffset/fGridOffset_old);
-				debugout(" factor = "+Math.pow(10, iZoomLevel)/iGridOffset);
 				fZoomLevel_old = iZoomLevel;
 				fGridOffset_old = iGridOffset;
 			}
@@ -228,12 +209,17 @@ public class ObjectView3D extends ObjectView {
 			}
 		}
 	}
-	
+
+	/**
+	 * Resets zoom default values. Resets fZoomLevel_old/fGridOffset_old, sets
+	 * NominalViewingTransform() and zooms accordingly to iZoomLevel and
+	 * iGridOffset. 
+	 * ZOOM_CORRECTION guarantees that ObjectView2D and ObjectView3D have the 
+	 * same level of zoom.
+	 */
 	public void resetZoom() {
-		debugout("ResetZoom");
 		fZoomLevel_old = iZoomLevel;
 		fGridOffset_old = iGridOffset;
-		debugout(" zoomX = "+Math.pow(10, fZoomLevel_old)/fGridOffset_old);
 		simpleU.getViewingPlatform().setNominalViewingTransform();
 		setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-View.ZOOM_DEFAULT + ObjectView3D.ZOOM_CORRECTION, iGridOffset/View.GRID_DEFAULT);
 	}
