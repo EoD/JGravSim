@@ -981,7 +981,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}
 		}		
 		else if(source == myView.pa_computetab.ov_front || 
-				(ObjectView2D)e.getSource() == myView.pa_computetab.ov_top) {
+					source == myView.pa_computetab.ov_top) {
 			float curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
 			curZoom -= e.getWheelRotation();
 			if(curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN) {
