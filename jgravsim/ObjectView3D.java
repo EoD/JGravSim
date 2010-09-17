@@ -3,6 +3,8 @@ package jgravsim;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -14,6 +16,7 @@ import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TransparencyAttributes;
+import javax.swing.event.EventListenerList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
@@ -28,7 +31,7 @@ import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.Viewer;
 
-public class ObjectView3D extends ObjectView {
+public class ObjectView3D extends ObjectView implements MouseWheelListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -51,6 +54,7 @@ public class ObjectView3D extends ObjectView {
 
 	private float fZoomLevel_old;
 	private float fGridOffset_old;
+	EventListenerList privateEventListeners;
 	
 	ObjectView3D(Step current) {
 		super();
@@ -59,6 +63,7 @@ public class ObjectView3D extends ObjectView {
 		cAxes[0] = 'x';
 		cAxes[1] = 'y';
 		
+		privateEventListeners = new EventListenerList();
 		stCurrent = current;
 
 		setLayout(new BorderLayout());
@@ -440,5 +445,26 @@ public class ObjectView3D extends ObjectView {
 			return SCALE_TRESHOLD;
 		
 		return scale;
+	}
+
+	@Override
+	public synchronized void addMouseWheelListener(java.awt.event.MouseWheelListener l) {
+		/* add "private" MouseWheelListener */
+		privateEventListeners.add(MouseWheelListener.class, l);
+		canvas_main.addMouseWheelListener(this);
+	}
+
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		e.setSource(this);
+		/*
+		 * If listener is a MouseWheelListener pass the MouseWheelEvent to the
+		 * listeners "event dispatch method" (aka mouseWheelMoved)
+		 */
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseWheelListener.class) {
+				((MouseWheelListener)listeners[i+1]).mouseWheelMoved(e);
+			}
+		}
 	}
 }
