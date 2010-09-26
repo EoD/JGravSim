@@ -521,7 +521,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			
 			myView.pa_computetab.ButtonsDeactive(false);
 			fc.setFileFilter(new WPTFilter(this));
-			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+"."+Model.FILE_ENDING));
+			fc.setSelectedFile(new File(String.valueOf(System.currentTimeMillis())+"."+Model.FILE_ENDING+"."+Model.FILE_ENDING_GZIP));
 			int ret = fc.showSaveDialog(myView);
 			if(ret == JFileChooser.APPROVE_OPTION) {
 				File fpInputFile = fc.getSelectedFile().getAbsoluteFile();

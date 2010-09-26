@@ -4,7 +4,7 @@ import java.io.*;
 
 public class DynamicWPTLoader {
 
-	public static final int revision = 1;
+	public static final int revision = 2;
 	private static final boolean DEBUG = false;	
 	/* ------- Prefetch Standard! ------------------- */
 	public static int STANDARDBUFFERSIZE = 10000; 
@@ -45,13 +45,16 @@ public class DynamicWPTLoader {
 		iCurMax = 0;
 		
 		try {
-			FileReader fr;
+			InputStream in;
+			InputStreamReader sr;
 			BufferedReader br;
 			String sCurLine;
 			String[] saCurLine;
 			int iCurLine = 1;
-			fr = new FileReader(fpInputFile);	
-			br = new BufferedReader(fr);
+			
+			in = Model.loadInputStream(fpInputFile);
+			sr = new InputStreamReader(in);	
+			br = new BufferedReader(sr);
 			
 			int curStepNumber = 0;
 			
@@ -65,7 +68,7 @@ public class DynamicWPTLoader {
 			saCurLine = sCurLine.split(";");
 			if(saCurLine.length != Model.VALUES_HEADER) {
 				br.close();
-				return iCurLine;
+				return INFILE_EOFSTARTERROR;
 			}
 			
 			try {
@@ -163,12 +166,15 @@ public class DynamicWPTLoader {
 		
 		long stepline = steps[start].getWPTLineNumber();
 		
-		FileReader fr;
+		InputStream in;
+		InputStreamReader sr;
 		BufferedReader br;
 		String sCurLine;
 		String[] saCurLine;
-		fr = new FileReader(fpInputFile);	
-		br = new BufferedReader(fr);
+		
+		in = Model.loadInputStream(fpInputFile);
+		sr = new InputStreamReader(in);	
+		br = new BufferedReader(sr);
 		
 		for(long i=0;i<stepline-1;i++) { /* go to the first step */
 			br.readLine();
@@ -265,6 +271,7 @@ public class DynamicWPTLoader {
 			loadSteps(iCurMin, iCurMax);
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			debugout("Error while fetching steps");
 		}
 		

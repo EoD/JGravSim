@@ -1,13 +1,21 @@
 package jgravsim;
 
 import java.io.*;
+import java.util.Enumeration;
 import java.util.Vector;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 public class Model {
 	
-	public static final int revision = 5;
+	public static final int revision = 6;
 	public static final boolean DEBUG = false;
 	public static final String FILE_ENDING = "wpt";
+	public static final String FILE_ENDING_GZIP = "gz";
+	public static final String FILE_ENDING_ZIP = "zip";
 	public static final String FILE_TEMP = "temp."+FILE_ENDING;
 	public static final String FILE_PERCENT = "percent.tmp";
 	
@@ -170,6 +178,28 @@ public class Model {
 			System.out.println(a);
 	}
 	
+	public static InputStream loadInputStream(File file) {
+		InputStream in = null;
+		try {
+			if (file.getName().endsWith(FILE_ENDING_GZIP)) {
+				debugout("loadInputFile - using gzip decompression");
+				in = new GZIPInputStream(new FileInputStream(file));
+			} else if (file.getName().endsWith(FILE_ENDING_ZIP)) {
+				debugout("loadInputFile - using zip decompression");
+				ZipFile zipfile = new ZipFile(file);
+				/* We only care about the first entry. This may be extended in the future */
+				Enumeration<? extends ZipEntry> zipentries = zipfile.entries();
+				in = zipfile.getInputStream(zipentries.nextElement());
+			} else {
+				debugout("loadInputFile - using no decompression");
+				in = new FileInputStream(file);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return in;
+	}
+	
 	public int loadInputFile(File infile) {
 		dynamicLoader = new DynamicWPTLoader(infile);
 		int ret = dynamicLoader.init();
@@ -260,14 +290,17 @@ public class Model {
 		file_loaded = infile;
 		
 		try {
-		
-			FileReader fr;
+
+			InputStream in;
+			InputStreamReader fr;
 			BufferedReader br;
 			String sCurLine;
 			String[] saCurLine;
 			int iCurLine = 1;
 			int numObjects = 0;
-			fr = new FileReader(infile);	
+
+			in = loadInputStream(infile);
+			fr = new InputStreamReader(in);	
 			br = new BufferedReader(fr);
 			
 			sCurLine = br.readLine(); /* read the first line */		
@@ -280,7 +313,7 @@ public class Model {
 			saCurLine = sCurLine.split(DELIMDATA);
 			if(saCurLine.length != Model.VALUES_HEADER) {
 				br.close();
-				return iCurLine;
+				return INFILE_EOFSTARTERROR;
 			}
 
 			try {
@@ -385,24 +418,36 @@ public class Model {
 	    	outstream.write( buffer, 0, length ); 
 	} 
 	 
-	public void saveOutputfile(File file)  { 
-		FileInputStream  fis = null; 
-		FileOutputStream fos = null; 
-	 
-	    try { 
-	    	fis = new FileInputStream( FILE_TEMP ); 
-	    	fos = new FileOutputStream( file ); 
-	 
-	    	copydata( fis, fos ); 
-	    } 
-	    catch ( IOException e ) { 
-	    	e.printStackTrace(); 
-	    } 
+	public void saveOutputfile(File file) {
+		FileInputStream fis = null;
+		OutputStream os = null;
+
+		try {
+			fis = new FileInputStream(FILE_TEMP);
+			FileOutputStream fos = new FileOutputStream(file);
+
+			if (file.getName().endsWith(FILE_ENDING_GZIP)) {
+				debugout("saveOutputfile - using gzip compression");
+				os = new GZIPOutputStream(fos);
+			} else if (file.getName().endsWith(FILE_ENDING_ZIP)) {
+				debugout("saveOutputfile - using zip compression");
+				os = new ZipOutputStream(fos);
+				/* Strip off ".zip" of the compressed file */
+				String name = file.getName().substring(0, file.getName().lastIndexOf('.'));
+				((ZipOutputStream) os).putNextEntry(new ZipEntry(name));
+			} else {
+				debugout("saveOutputfile - using no compression");
+				os = fos;
+			}
+			copydata(fis, os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	    finally { 
 	    	if ( fis != null ) 
 	    		try { fis.close(); } catch ( IOException e ) { } 
-	    	if ( fos != null ) 
-	    		try { fos.close(); } catch ( IOException e ) { } 
+	    	if ( os != null ) 
+	    		try { os.close(); } catch ( IOException e ) { } 
 	    } 
 	}
 	

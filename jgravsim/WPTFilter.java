@@ -17,16 +17,19 @@ public class WPTFilter extends FileFilter {
 
 		String extension = null;
 		String name = file.getName();
-		int i = name.lastIndexOf('.');
 
-		if(i > 0 && i < name.length() - 1)
-			extension = name.substring(i + 1).toLowerCase();
+		int i = name.lastIndexOf(Model.FILE_ENDING);
 
-		if(extension != null) {
-			if(extension.equals(Model.FILE_ENDING))
+		if (i > 0) {
+			if (i == name.length() - Model.FILE_ENDING.length())
 				return true;
-			else
-				return false;
+			else if (i < name.length() - Model.FILE_ENDING.length() - 1) {
+				/* take the string after "wpt" + "." (dot) */
+				extension = name.substring(i + Model.FILE_ENDING.length() + 1).toLowerCase();
+				if (extension.equals(Model.FILE_ENDING_GZIP)
+						|| extension.equals(Model.FILE_ENDING_ZIP))
+					return true;
+			}
 		}
 
 		return false;
@@ -38,6 +41,9 @@ public class WPTFilter extends FileFilter {
 		if(myController == null)
 			return Model.FILE_ENDING;
 		else
-			return myController.myView.myXMLParser.getText(179)+" v"+Controller.WPT_VERSION+" (*." + Model.FILE_ENDING + ")";
+			return myController.myView.myXMLParser.getText(179) + " v" + Controller.WPT_VERSION
+					+ " (*." + Model.FILE_ENDING
+					+ ", *." + Model.FILE_ENDING + "." + Model.FILE_ENDING_GZIP
+					+ ", *." + Model.FILE_ENDING + "." + Model.FILE_ENDING_ZIP + ")";
 	}
 }
