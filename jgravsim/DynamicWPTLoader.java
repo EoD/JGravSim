@@ -72,11 +72,13 @@ public class DynamicWPTLoader {
 				int iwpt = Integer.parseInt(saCurLine[0]);
 				if(iwpt != Controller.WPT_VERSION) {
 					debugout("init() - Found WPT version "+iwpt+", but should be "+Controller.WPT_VERSION);
+					br.close();
 					return Model.INFILE_WPTERROR;
 				}
 			}
 			catch(NumberFormatException e) {
 				debugout("init() - Found WPT version "+saCurLine[0]+"! NumberFormatException!");
+				br.close();
 				return Model.INFILE_WPTERROR;
 			}
 			
