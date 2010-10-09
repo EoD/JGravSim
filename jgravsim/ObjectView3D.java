@@ -14,6 +14,9 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.PointArray;
+import javax.media.j3d.PointAttributes;
+import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
@@ -49,7 +52,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	private static final float CONVERT3D = 2.0E8f;
 	private static final float SCALE_TRESHOLD = 1f/500f;
 	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
-	private static final double DISTANCE_BACKCLIP = 1000;
+	private static final double DISTANCE_BACKCLIP = 10000;
 	private static final double DISTANCE_FRONTCLIP = 0.001;
 
 	private static Texture2D texture_earth;
@@ -138,7 +141,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		}
 		
 		// Create BoundingSphere for Mouse
-		BoundingSphere mouseBounds = new BoundingSphere(new Point3d(0,0,0), 1000.0);
+		BoundingSphere mouseBounds = new BoundingSphere(new Point3d(0,0,0), DISTANCE_BACKCLIP*10);
 		
 	    ///TRANSFORMATION II - SCENE ROTATION
 		MouseRotate myMouseRotate = new MouseRotate(MouseBehavior.INVERT_INPUT);
@@ -204,12 +207,25 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		transparency.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
 		appear.setTransparencyAttributes(transparency);
 		
+		/* Point */
+		PointArray p_array = new PointArray(1, PointArray.COORDINATES | PointArray.COLOR_3 | PointArray.BY_REFERENCE);
+		p_array.setColorRefFloat( new float[] { 1.0f, 1.0f, 0.25f } );
+		p_array.setCoordRefFloat( new float[] { 0.0f, 0.0f, 0.0f } );
+		
+		/* Point - Appearance */
+		//FIXME point is drawn inside of Sphere. Probably fixable with RenderingAttributes()
+		Appearance p_appear = new Appearance();
+		PointAttributes p_attr = new PointAttributes(2.0f, true);
+		p_appear.setPointAttributes( p_attr );
+		
+		/* Point - Shape - the real massPOINT */
+		Shape3D point = new Shape3D(p_array, p_appear);
 		
 		/* Sphere - convert massPOINT to massSPHERE ;) */
 		Sphere sphere = new Sphere(DEFAULT_RADIUS, Primitive.GENERATE_TEXTURE_COORDS, appear);
-		sphere.setAppearance(appear);
 		
 		tg_masspoint.addChild(sphere);
+		tg_masspoint.addChild(point);
 		return tg_masspoint;
 	}
 	
