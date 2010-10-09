@@ -776,7 +776,40 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
+		/*
+		 * Check if we want to zoom or if we want to move. You can zoom holding the middle mouse
+		 * button or turning the mouse wheel. 
+		 * Pressing the middle mouse button is equivalent to holding down ALT!
+		 */
+		if (e.isAltDown()) {
+			if (e.getSource() == myView.pa_visualtab.ov_vis_top
+					|| e.getSource() == myView.pa_visualtab.ov_vis_right
+					|| e.getSource() == myView.pa_visualtab.ov_vis_front) {
+				ObjectView source = (ObjectView) e.getSource();
+				int zoom = -(source.iLastMouseY - e.getY());
+
+				double curZoom = myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getValue();
+				curZoom -= zoom;
+				if (curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN)
+					myView.pa_visualtab.addZoom(zoom * View.ZOOM_STEP);
+
+				source.iLastMouseY = e.getY();
+			} else if (e.getSource() == myView.pa_computetab.ov_front
+					|| e.getSource() == myView.pa_computetab.ov_top) {
+				ObjectView source = (ObjectView) e.getSource();
+				int zoom = -(source.iLastMouseY - e.getY());
+				
+				float curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
+				curZoom -= zoom;
+				if (curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN) {
+					myView.pa_computetab.setZoom(curZoom * View.ZOOM_STEP);
+					myView.pa_computetab.sl_zoomlevel.setValue((int) curZoom);
+				}
+				
+				source.iLastMouseY = e.getY();
+			}
+		}
+		else if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			myView.pa_visualtab.changeOffsetX(e.getX()-source.iLastMouseX);
 			myView.pa_visualtab.changeOffsetY(-(e.getY()-source.iLastMouseY));
@@ -916,18 +949,16 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}	
 		
 		if(source == myView.pa_visualtab.ov_vis_top) {	
-			((ObjectView2D)source).iLastMouseX = e.getX();
-			((ObjectView2D)source).iLastMouseY = e.getY();
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 		else if(source == myView.pa_visualtab.ov_vis_front) {			
-			((ObjectView2D)source).iLastMouseX = e.getX();
-			((ObjectView2D)source).iLastMouseY = e.getY();
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 		else if(source == myView.pa_visualtab.ov_vis_right) {
-			if(!myView.pa_visualtab.Is3dEnabled()) {
-				((ObjectView2D)source).iLastMouseX = e.getX();
-				((ObjectView2D)source).iLastMouseY = e.getY();
-			}
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 	}
 

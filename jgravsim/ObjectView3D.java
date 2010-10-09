@@ -3,6 +3,9 @@ package jgravsim;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -17,6 +20,7 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TransparencyAttributes;
 import javax.swing.event.EventListenerList;
+import javax.swing.event.MouseInputListener;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
@@ -31,7 +35,7 @@ import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.Viewer;
 
-public class ObjectView3D extends ObjectView implements MouseWheelListener {
+public class ObjectView3D extends ObjectView implements MouseWheelListener, MouseInputListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -447,6 +451,8 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener {
 		return scale;
 	}
 
+	/* BEGIN OF REDIRECTED MOUSE EVENTS */
+	
 	@Override
 	public synchronized void addMouseWheelListener(java.awt.event.MouseWheelListener l) {
 		/* add "private" MouseWheelListener */
@@ -454,6 +460,20 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener {
 		canvas_main.addMouseWheelListener(this);
 	}
 
+	@Override
+	public synchronized void addMouseMotionListener(java.awt.event.MouseMotionListener l) {
+		/* add "private" addMouseMotionListener */
+		privateEventListeners.add(MouseMotionListener.class, l);
+		canvas_main.addMouseMotionListener(this);
+	}
+
+	@Override
+	public synchronized void addMouseListener(java.awt.event.MouseListener l) {
+		/* add "private" addMouseListener */
+		privateEventListeners.add(MouseListener.class, l);
+		canvas_main.addMouseListener(this);
+	}
+	
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		e.setSource(this);
 		/*
@@ -467,4 +487,76 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener {
 			}
 		}
 	}
+
+	public void mouseDragged(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseMotionListener.class) {
+				((MouseMotionListener)listeners[i+1]).mouseDragged(e);
+			}
+		}
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseMotionListener.class) {
+				((MouseMotionListener)listeners[i+1]).mouseMoved(e);
+			}
+		}
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseListener.class) {
+				((MouseListener)listeners[i+1]).mouseClicked(e);
+			}
+		}
+	}
+
+	public void mousePressed(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseListener.class) {
+				((MouseListener)listeners[i+1]).mousePressed(e);
+			}
+		}
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseListener.class) {
+				((MouseListener)listeners[i+1]).mouseReleased(e);
+			}
+		}
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseListener.class) {
+				((MouseListener)listeners[i+1]).mouseEntered(e);
+			}
+		}
+	}
+
+	public void mouseExited(MouseEvent e) {
+		e.setSource(this);
+		Object[] listeners = privateEventListeners.getListenerList();
+		for(int i=0; i < listeners.length; i += 2) {
+			if(listeners[i] == MouseListener.class) {
+				((MouseListener)listeners[i+1]).mouseExited(e);
+			}
+		}
+	}
+	
+	/* END OF REDIRECTED MOUSE EVENTS */
 }
