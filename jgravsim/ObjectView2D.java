@@ -5,20 +5,30 @@ import java.awt.Graphics;
 
 public class ObjectView2D extends ObjectView {
 	private static final long serialVersionUID = 1L;
-	
+
+	protected static final Color COLOR_BH = Color.BLACK;
+	protected static final Color COLOR_BH_SEL = new Color(0, 0, 128);
+	protected static final Color COLOR_STD = Color.DARK_GRAY;
+	protected static final Color COLOR_STD_SEL = Color.RED; // Color(34,139,34); // ==ForestGreen
+
+	protected static final Color COLOR_SPEEDVEC = Color.RED;
+	protected static final Color COLOR_STRING = Color.BLACK;
+	protected static final Color COLOR_STRING_BRIGHT = new Color(220, 220, 220);
+	protected static final Color COLOR_CLICKME = Color.ORANGE;
+
 	ObjectView2D(String axes) {
 		super();
-		cAxes = new char[2];
-		cAxes[0] = axes.charAt(0); /* set "x" axis*/
-		cAxes[1] = axes.charAt(1); /* set "y" axis */
-		this.setBackground(Color.white);
-		str_clickme = "";
-		repaint();
+		init( axes.charAt(0), axes.charAt(1) );
 	}	
 	ObjectView2D(char[] axes) {
 		super();
-		cAxes = new char[2];
-		cAxes = axes;
+		init(axes[0], axes[1]);
+	}
+	
+	private void init(char axis0, char axis1) {
+		cAxes = new char[] { axis0, axis1};
+		coSpeedvecColor = COLOR_SPEEDVEC;
+		coObjColor = COLOR_STD;
 		this.setBackground(Color.white);
 		str_clickme = "";
 		repaint();
@@ -43,7 +53,7 @@ public class ObjectView2D extends ObjectView {
 				
 				/* Speedvector */
 				double mpSpeed = getVectorLength(masspoint.getSpeedX(), masspoint.getSpeedY(), masspoint.getSpeedZ());
-				double factor = ((speedvecmax * mpSpeed / LIGHTSPEED) +5);
+				double factor = ((speedvecmax * mpSpeed / CalcCode.LIGHTSPEED) +5);
 					
 				boolean bselected = false;
 				if(mp_selected != null && mp_selected.id == masspoint.getID())
@@ -53,23 +63,23 @@ public class ObjectView2D extends ObjectView {
 				double totradius = masspoint.getRadius();
 				if(masspoint.isBlackHole()) {
 					if(bselected)
-						coObjColor = BLACKHOLE_SELECTED;
+						coObjColor = COLOR_BH_SEL;
 					else
-						coObjColor = BLACKHOLE;
+						coObjColor = COLOR_BH;
 				}
 				else {
 					if(bselected)
-						coObjColor = STANDARD_SELECTED;
+						coObjColor = COLOR_STD_SEL;
 					else
-						coObjColor = STANDARD;
+						coObjColor = COLOR_STD;
 				}
 				
 				double dRadius = MVMath.mtopx(totradius, this);
 				//dRadius /= Math.pow(10.0, iZoomLevel);
 				//dRadius *= iGridOffset;///CalcCode.LACCURACY;
 
-				if(dRadius<2) 
-					dRadius=2;
+				if (dRadius < RADIUS_MIN)
+					dRadius = RADIUS_MIN;
 				
 				/* Masspoint */
 				double[] mppos = MVMath.coordtopx(masspoint.getPos(), cAxes, this);
@@ -120,9 +130,9 @@ public class ObjectView2D extends ObjectView {
 					
 						
 						if(coObjColor == Color.BLACK || hsb_color[2] <= hsb_lgray[2])
-							coString = STRING_BRIGHT;
+							coString = COLOR_STRING_BRIGHT;
 						else if(hsb_color[2] > hsb_lgray[2]) {
-							coString = STRING;
+							coString = COLOR_STRING;
 						} else 
 							coString = Color.RED;
 					}
@@ -151,17 +161,17 @@ public class ObjectView2D extends ObjectView {
 						if(masspoint.isBlackHole()) {
 							if(masspoint.isHighlighted()) {
 								dRadius = 1.5;
-								coObjColor = BLACKHOLE_SELECTED;
+								coObjColor = COLOR_BH_SEL;
 							} else
-								coObjColor = BLACKHOLE;
+								coObjColor = COLOR_BH;
 						}
 						else {
 							if(masspoint.isHighlighted()) {
 								dRadius = 1.5;
-								coObjColor = STANDARD_SELECTED;
+								coObjColor = COLOR_STD_SEL;
 							}
 							else
-								coObjColor = STANDARD;
+								coObjColor = COLOR_STD;
 						}
 						
 						/* Masspoint */
@@ -206,15 +216,15 @@ public class ObjectView2D extends ObjectView {
 			double factor = 30;
 			
 			if(masspoint.isBlackHole()) {
-				coObjColor = BLACKHOLE;
+				coObjColor = COLOR_BH;
 			} else {
-				coObjColor = STANDARD;
+				coObjColor = COLOR_STD;
 			}
 			
 			double dRadius = 5;
 
-			if(dRadius<2) 
-				dRadius=2;
+			if (dRadius < RADIUS_MIN)
+				dRadius = RADIUS_MIN;
 			
 			/* Masspoint */
 			double[] mppos = MVMath.coordtopx(new MLVector(0,0,0), cAxes, this);

@@ -16,17 +16,10 @@ public class ObjectView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	public static final boolean DEBUG = true;
-	public static final double LIGHTSPEED = CalcCode.LIGHTSPEED;
-	public static final Color BLACKHOLE = Color.BLACK;
-	public static final Color BLACKHOLE_SELECTED = new Color(0, 0, 128);
-	public static final Color STANDARD = Color.DARK_GRAY;
-	public static final Color STANDARD_SELECTED = Color.RED; // Color(34,139,34); // ==ForestGreen
-	public static final Color HIDDEN = Color.LIGHT_GRAY; // gainsboro
-	public static final Color SPEEDVEC = Color.RED;
-	public static final Color STRING = Color.BLACK;
-	public static final Color STRING_BRIGHT = new Color(220, 220, 220);
-	public static final Color CLICKME = Color.ORANGE; // gainsboro
-	public static final int speedvecmax = 55;
+
+	protected static final float RADIUS_MIN = 2.0f;
+	protected static final int speedvecmax = 55;
+
 	protected int iGridOffset = 25;
 	protected int iLastMouseX = 0;
 	protected int iLastMouseY = 0;
@@ -36,8 +29,8 @@ public class ObjectView extends JPanel {
 	boolean boxed = true;
 	protected Masspoint mp_selected = null;
 	protected Color coGridColor = Color.decode("#DDDDDD");
-	protected Color coSpeedvecColor = SPEEDVEC;
-	Color coObjColor = STANDARD;
+	protected Color coSpeedvecColor;
+	protected Color coObjColor;
 	protected char[] cAxes;
 	protected double dCoordOffsetX = 0.0;
 	protected double dCoordOffsetY = 0.0;

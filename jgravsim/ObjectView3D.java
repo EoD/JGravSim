@@ -48,6 +48,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	private TransformGroup tg_rotation;
 	private TransformGroup[] tg_masspoints;
 
+	protected static final float[] COLOR_STD = new float[] {1.0f, 1.0f, 0.25f};
 	private static final float DEFAULT_RADIUS = 2.0f;
 	private static final float CONVERT3D = 2.0E8f;
 	private static final float SCALE_TRESHOLD = 1f/500f;
@@ -209,13 +210,13 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		
 		/* Point */
 		PointArray p_array = new PointArray(1, PointArray.COORDINATES | PointArray.COLOR_3 | PointArray.BY_REFERENCE);
-		p_array.setColorRefFloat( new float[] { 1.0f, 1.0f, 0.25f } );
+		p_array.setColorRefFloat( COLOR_STD );
 		p_array.setCoordRefFloat( new float[] { 0.0f, 0.0f, 0.0f } );
 		
 		/* Point - Appearance */
 		//FIXME point is drawn inside of Sphere. Probably fixable with RenderingAttributes()
 		Appearance p_appear = new Appearance();
-		PointAttributes p_attr = new PointAttributes(2.0f, true);
+		PointAttributes p_attr = new PointAttributes(RADIUS_MIN, true);
 		p_appear.setPointAttributes( p_attr );
 		
 		/* Point - Shape - the real massPOINT */
