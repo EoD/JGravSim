@@ -235,6 +235,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						
 						if(System.getProperty("os.arch").matches("i[1-9]86"))
 							filename += "_x86";
+						else if(System.getProperty("os.name").matches("(?i)SunOS"))
+							filename += "_sun4u";
 						else
 							filename += "_"+System.getProperty("os.arch");
 						
