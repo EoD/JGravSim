@@ -51,7 +51,6 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	protected static final float[] COLOR_STD = new float[] {1.0f, 1.0f, 0.25f};
 	private static final float DEFAULT_RADIUS = 2.0f;
 	private static final float CONVERT3D = 2.0E8f;
-	private static final float SCALE_TRESHOLD = 1f/500f;
 	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
 	private static final double DISTANCE_BACKCLIP = 10000;
 	private static final double DISTANCE_FRONTCLIP = 0.001;
@@ -460,12 +459,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	}
 	
 	private double radiusToScale(double radius) {
-		double scale = radius/CONVERT3D/DEFAULT_RADIUS;
-		
-		if(scale < SCALE_TRESHOLD)
-			return SCALE_TRESHOLD;
-		
-		return scale;
+		return radius/CONVERT3D/DEFAULT_RADIUS;
 	}
 
 	/* BEGIN OF REDIRECTED MOUSE EVENTS */
