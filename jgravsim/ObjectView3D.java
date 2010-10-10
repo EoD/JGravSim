@@ -46,14 +46,17 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	private Canvas3D canvas_main;
 	private SimpleUniverse simpleU;
 	private TransformGroup tg_rotation;
+	private TransformGroup tg_axis;
 	private TransformGroup[] tg_masspoints;
 
 	protected static final float[] COLOR_STD = new float[] {1.0f, 1.0f, 0.25f};
 	private static final float DEFAULT_RADIUS = 2.0f;
 	private static final float CONVERT3D = 2.0E8f;
 	private static final float ZOOM_CORRECTION = 0.2f;	/* Offset between Canvas3D and ObjectView2D is about 0.2f (zoom factors) */
-	private static final double DISTANCE_BACKCLIP = 10000;
-	private static final double DISTANCE_FRONTCLIP = 0.001;
+	private static final float ZOOM_AXIS = 0.25f;				/* Value which is multiplied with the axis scale factor in order to see them properly */
+	
+	private static final double DISTANCE_BACKCLIP = Math.pow(10, View.ZOOM_MAX*View.ZOOM_STEP - View.ZOOM_DEFAULT + ZOOM_CORRECTION ) * ((float)View.GRID_DEFAULT) / ((float)View.GRID_MIN);
+	private static final double DISTANCE_FRONTCLIP = Math.pow(10, View.ZOOM_MIN*View.ZOOM_STEP - View.ZOOM_DEFAULT + ZOOM_CORRECTION ) * ((float)View.GRID_DEFAULT) / ((float)View.GRID_MAX);
 
 	private static Texture2D texture_earth;
 	private static Texture2D texture_bh;
@@ -126,7 +129,11 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		tg_rotate.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
 
 		//add coordinate axis
-		tg_rotate.addChild(new Axis());
+		TransformGroup tg_coordaxes = new TransformGroup();
+		tg_coordaxes.setCapability( TransformGroup.ALLOW_TRANSFORM_READ);
+		tg_coordaxes.setCapability( TransformGroup.ALLOW_TRANSFORM_WRITE);
+		tg_coordaxes.addChild(new Axis());
+		tg_rotate.addChild(tg_coordaxes);
 		
 		if (stCurrent != null && stCurrent.getMasspoints() != null && stCurrent.getMasspoints().length > 0) {
 			///TRANSOFMRATION - SCENE
@@ -164,6 +171,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		bg_root.compile();
 
 		tg_rotation = tg_rotate;
+		tg_axis = tg_coordaxes;
 		return bg_root;
 	}
 
@@ -237,7 +245,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		}
 		else if (stCurrent != null && stCurrent.getMasspoints() != null && stCurrent.getMasspoints().length > 0) {
 			if(iZoomLevel != fZoomLevel_old || fGridOffset_old != iGridOffset) {
-				setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-fZoomLevel_old, iGridOffset/fGridOffset_old);
+				setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-fZoomLevel_old, ((float)iGridOffset)/fGridOffset_old);
 				fZoomLevel_old = iZoomLevel;
 				fGridOffset_old = iGridOffset;
 			}
@@ -302,7 +310,7 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		fZoomLevel_old = iZoomLevel;
 		fGridOffset_old = iGridOffset;
 		simpleU.getViewingPlatform().setNominalViewingTransform();
-		setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-View.ZOOM_DEFAULT + ObjectView3D.ZOOM_CORRECTION, iGridOffset/View.GRID_DEFAULT);
+		setZoom3D(simpleU.getViewingPlatform().getViewPlatformTransform(), iZoomLevel-View.ZOOM_DEFAULT + ObjectView3D.ZOOM_CORRECTION, ((float)iGridOffset)/View.GRID_DEFAULT);
 	}
 
 	@Override
@@ -446,15 +454,32 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 	 * @param gridoffset
 	 *            level of small zoom
 	 */
-	private void setZoom3D(TransformGroup tg, double zoom, double gridoffset) {
+	private void setZoom3D(TransformGroup tg, double zoom, float gridoffset) {
+
+		double dfactor = Math.pow(10, zoom)/gridoffset;
+		
+		/*
+		 * Viewpoint Zoom
+		 */
 		Transform3D t3d_vp = new Transform3D();
 		tg.getTransform(t3d_vp);
 
 		Vector3d v3d_trans = new Vector3d();
 		t3d_vp.get(v3d_trans);
 
-		/* reset x,y translation but keep z translation */
-		t3d_vp.setTranslation(new Vector3d(v3d_trans.x, v3d_trans.y, v3d_trans.z*Math.pow(10, zoom)/gridoffset));
+		/* only zoom along viewpoint's z axis */
+		v3d_trans.z *= dfactor;
+		t3d_vp.setTranslation(v3d_trans);
+
+		/*
+		 * Axis Zoom
+		 */
+		Transform3D t3d_axis = new Transform3D();
+		tg_axis.getTransform(t3d_axis);
+		t3d_axis.setScale(v3d_trans.z * ZOOM_AXIS);
+
+		/* apply first axis and then viewpoint transformation - avoids flickering of axis */
+		tg_axis.setTransform(t3d_axis);
 		tg.setTransform(t3d_vp);
 	}
 	

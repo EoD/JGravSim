@@ -15,7 +15,7 @@ public class View extends JFrame  {
 
 	public static final float ZOOM_STEP = 0.1f;
 	public static final float ZOOM_DEFAULT = 7.5f;
-	public static final int ZOOM_MIN = 10;
+	public static final int ZOOM_MIN = 13;
 	public static final int ZOOM_MAX = 162;
 	
 	public static final int GRID_MIN = 15;
