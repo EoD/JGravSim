@@ -210,10 +210,9 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		else
 			appear.setTexture(texture_earth);
 
-		/* Appearance - Transparency */
+		/* Appearance - TransparencyAttributes - shared between point and sphere */
 		TransparencyAttributes transparency = new TransparencyAttributes(TransparencyAttributes.FASTEST,0.0f);
 		transparency.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-		appear.setTransparencyAttributes(transparency);
 		
 		/* Point */
 		PointArray p_array = new PointArray(1, PointArray.COORDINATES | PointArray.COLOR_3 | PointArray.BY_REFERENCE);
@@ -227,9 +226,11 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 		p_appear.setPointAttributes( p_attr );
 		
 		/* Point - Shape - the real massPOINT */
+		p_appear.setTransparencyAttributes(transparency);
 		Shape3D point = new Shape3D(p_array, p_appear);
 		
 		/* Sphere - convert massPOINT to massSPHERE ;) */
+		appear.setTransparencyAttributes(transparency);
 		Sphere sphere = new Sphere(DEFAULT_RADIUS, Primitive.GENERATE_TEXTURE_COORDS, appear);
 		
 		tg_masspoint.addChild(sphere);
