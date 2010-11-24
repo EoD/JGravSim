@@ -24,6 +24,15 @@ public class View extends JFrame  {
 	
 	public static final int SL_MINTICK = 10;
 	public static final int SL_MAJTICK = 50;
+
+	public static final int TAB_VISUAL_ID = 1;
+
+	public static final int WIDTH_VIEW = 975;
+	public static final int HEIGHT_VIEW = 740;
+	/* Variables for 3D visual controls JFrame */
+	public static final int WIDTH_VISUALFRAME = 500;
+	public static final int HEIGHT_VISUALFRAME = 400;
+	public static final int HEIGHT_VISUALFRAME_OFFSET = 50;
 	
 	View(int lang) {
 		super();
@@ -48,7 +57,7 @@ public class View extends JFrame  {
 		tp_tabs.addTab(myXMLParser.getText(4), pa_abouttab);
 
 		add(tp_tabs);
-		setSize(975,740);
+		setSize(WIDTH_VIEW, HEIGHT_VIEW);
 		setVisible(true);
 	}
 

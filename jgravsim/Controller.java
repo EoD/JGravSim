@@ -182,7 +182,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.b_savefile.addActionListener(this);
 		myView.pa_computetab.b_loadfile.addActionListener(this);
 		
-
+		myView.tp_tabs.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_playcontr_slider.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_gridoffset.addChangeListener(this);
@@ -723,29 +723,28 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
     }
 
 	public void stateChanged(ChangeEvent e) {
-		JSlider source = (JSlider)e.getSource();
+		Object source = e.getSource();
 		
 		if(source == myView.pa_visualtab.pa_visual_contrtab.sl_playcontr_slider) {
-			myView.pa_visualtab.setCurFrame(source.getValue());
-			myView.pa_visualtab.displayStep(myModel.dynamicLoader.getStep(source.getValue()));
+			myView.pa_visualtab.setCurFrame(((JSlider)source).getValue());
+			myView.pa_visualtab.displayStep(myModel.dynamicLoader.getStep(((JSlider)source).getValue()));
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel) {
 			/* "/(1.f/View.ZOOM_STEP)" == "*ZOOM_STEP" required to avoid rounding errors */
-			float zoomLevel = (View.ZOOM_MAX - source.getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
+			float zoomLevel = (View.ZOOM_MAX - ((JSlider)source).getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
 			myView.pa_visualtab.setZoom(zoomLevel, false);
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_gridoffset) {
-			myView.pa_visualtab.setGridOffset(source.getValue());
+			myView.pa_visualtab.setGridOffset(((JSlider)source).getValue());
 		}
 		else if(source == myView.pa_computetab.sl_zoomlevel) {
-			float zoomLevel = (View.ZOOM_MAX - source.getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
+			float zoomLevel = (View.ZOOM_MAX - ((JSlider)source).getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
 			myView.pa_computetab.setZoom(zoomLevel);
 			myView.pa_computetab.repaintViews();
 		}
 		else if(source == myView.pa_computetab.sl_gridoffset) {
-			myView.pa_computetab.setGridOffset(source.getValue());
+			myView.pa_computetab.setGridOffset(((JSlider)source).getValue());
 		}
-		
 		else if(source == myView.pa_computetab.pa_compute_dataeasy.sl_Mass) {
 			double dmass = myView.pa_computetab.pa_compute_dataeasy.sl_Mass.getValue();
 			dmass = Math.pow(dmass,CalcCode.SMASSCONST);
@@ -772,6 +771,16 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			GetSelectedMasspoint().setAbsRadius(dradius+Double.MIN_VALUE);
 			//debugout("sRadius - Slider moved. Value="+myMPDataView.sRadius.getValue()+", dradius="+dradius);
 			updateComputePanels(GetSelectedMasspoint(),source);
+		}
+		/* If someone switches to the visualisation tab, show him the controls */
+		else if(myView.pa_visualtab.b_enable3d && source == myView.tp_tabs) {
+			if(myView.tp_tabs.getSelectedIndex() == View.TAB_VISUAL_ID) {
+				myView.pa_visualtab.jf_visual_tabs.setVisible(true);
+				myView.pa_visualtab.jf_visual_tabs.toFront();
+			}
+			else if(myView.pa_visualtab.jf_visual_tabs.isVisible()) {
+				myView.pa_visualtab.jf_visual_tabs.setVisible(false);
+			}
 		}
 	}
 

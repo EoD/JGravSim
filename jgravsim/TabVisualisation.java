@@ -24,8 +24,10 @@ public class TabVisualisation extends JPanel  {
 	TabVisualisationControls pa_visual_contrtab;
 	TabVisualisationPlot pa_visual_plottab;
 	TabVisualisationOptions pa_visual_optiontab;
-		
+
 	JTabbedPane tp_visual = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
+	JFrame jf_visual_tabs;	/* Use a JFrame for tp_visual in order to have a "full" 3d view */
+	
 	XMLParser myXMLParser;
 	
 	public TabVisualisation(XMLParser parser, boolean b_3d) {
@@ -41,13 +43,17 @@ public class TabVisualisation extends JPanel  {
 	}
 	
 	private void initializeVariables() {
-		setLayout(new GridLayout(2,2));
-		
 		if(b_enable3d) {
+			setLayout(new GridLayout());
+			/*
+			 * The top and front visual tab are here for compatibility only.
+			 * Should be removed in the future.
+			 */
 			ov_vis_top = new ObjectView2D("xy");
 			ov_vis_front = new ObjectView2D("xz");
 			ov_vis_right = new ObjectView3D(null);
 		} else {
+			setLayout(new GridLayout(2,2));
 			ov_vis_top = new ObjectView2D("xy");
 			ov_vis_front = new ObjectView2D("xz");
 			ov_vis_right = new ObjectView2D("yz");
@@ -58,18 +64,31 @@ public class TabVisualisation extends JPanel  {
 		pa_visual_plottab = new TabVisualisationPlot(myXMLParser); /* Visualisierung berechneter Daten */
 		pa_visual_optiontab = new TabVisualisationOptions(myXMLParser); /* Visualisierung berechneter Daten */
 		
-		ov_vis_top.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(111)));
-		ov_vis_front.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(112)));
-		ov_vis_right.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(113)));
+		if(!b_enable3d) {
+			ov_vis_top.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(111)));
+			ov_vis_front.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(112)));
+			ov_vis_right.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),myXMLParser.getText(113)));
+		}
 		
 		tp_visual.addTab(myXMLParser.getText(30), pa_visual_contrtab);
 		tp_visual.addTab(myXMLParser.getText(31), pa_visual_datatab);
 		tp_visual.addTab(myXMLParser.getText(32), pa_visual_plottab);
 		tp_visual.addTab(myXMLParser.getText(33), pa_visual_optiontab);
-		
-		add(ov_vis_top);
-		add(tp_visual);
-		add(ov_vis_front);
+	
+		if(b_enable3d) {
+			jf_visual_tabs = new JFrame();
+			jf_visual_tabs.setTitle(myXMLParser.getText(3));
+			jf_visual_tabs.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			jf_visual_tabs.add(tp_visual);
+			jf_visual_tabs.setPreferredSize(new Dimension(View.WIDTH_VISUALFRAME, View.HEIGHT_VISUALFRAME));
+			jf_visual_tabs.pack();
+			jf_visual_tabs.setLocation(View.WIDTH_VIEW-jf_visual_tabs.getWidth(), View.HEIGHT_VISUALFRAME_OFFSET);
+			jf_visual_tabs.setVisible(false);
+		} else {
+			add(ov_vis_top);
+			add(tp_visual);
+			add(ov_vis_front);
+		}
 		add(ov_vis_right);
 		
 		setPlayControlsEnabled(false);
