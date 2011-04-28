@@ -87,15 +87,15 @@ public class ObjectView3D extends ObjectView implements MouseWheelListener, Mous
 
 		///TEXTURE////
 		if(texture_earth == null) {
-			String texturefile_earth = "earth.jpg";
+			String texturefile_earth = "textures/earth.jpg";
 			texture_earth = loadTexture(texturefile_earth);
 		}
 		if(texture_bh == null) {
-			String texturefile_bh = "bh.jpg";
+			String texturefile_bh = "textures/bh.jpg";
 			texture_bh = loadTexture(texturefile_bh);
 		}
 		if(texture_sun == null) {
-			String texturefile_sun = "sun.jpg";
+			String texturefile_sun = "textures/sun.jpg";
 			texture_sun = loadTexture(texturefile_sun);
 		}
 		
