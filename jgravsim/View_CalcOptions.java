@@ -220,21 +220,13 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 					Runtime run = Runtime.getRuntime();
 					debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
 					try {
-						debugout("EoD - See: os.name	= "+System.getProperty("os.name"));
-						debugout("EoD - See: os.arch	= "+System.getProperty("os.arch"));
-						debugout("EoD - See: os.version	= "+System.getProperty("os.version"));
-						debugout("EoD - See: file.separator = "+System.getProperty("file.separator"));
-
 						String exedir= System.getProperty("user.dir").toString();
 
 						String filename = exe;
 						if(Controller.CPPDEBUG)
 							filename += "dbg";
 						
-						if(System.getProperty("os.arch").matches("i[1-9]86"))
-							filename += "_x86";
-						else
-							filename += "_"+System.getProperty("os.arch");
+						filename += "_" + myController.getArch();
 						
 						String[] command = new String[4];
 						command[0] = exedir+File.separator+filename;
@@ -247,8 +239,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 						File fcalc = new File(command[0]);
 						while(!fcalc.exists()) {
-							if(System.getProperty("os.arch").contains("amd64") && command[0].contains("amd64")) {
-								debugout("WARNING - actionPerformed() - could not find C++ file for amd64, switchting to x86");
+							if(myController.getArch() == "amd64" && command[0].contains("amd64")) {
+								debugout("WARNING - actionPerformed() - could not find C++ file for amd64, switching to x86");
 								command[0] = command[0].replace("amd64", "x86");
 								fcalc = new File(command[0]);
 								continue;

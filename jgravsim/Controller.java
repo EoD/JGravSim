@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -43,6 +44,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
 	static final String EMAIL = "jgravsim@gmail.com";
+	static final String libdir = "lib";
 
 	static final Masspoint mpdf_sun		=	new Masspoint(CalcCode.SM,CalcCode.SR);
 	static final Masspoint mpdf_earth	=	new Masspoint(CalcCode.EM,CalcCode.ER);
@@ -73,6 +75,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	View_CalcOptions myView_CalcOptions;
 	View_CalcProgress myView_CalcProgress;
 	File fpInputFile = null;
+	String strArch = null;
 	
 	Vector<Masspoint> vmasspoints = new Vector<Masspoint>();
 	Masspoint mp_default;
@@ -137,6 +140,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	Controller(int language) {	
 		/* Register Stuff from Visualisation */
+		updateJavaLibraryPath(getArch());
 		myView = new View(language);
 		myModel = new Model();
 		
@@ -1969,5 +1973,46 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 	public void startCalcProgress(int i) {
 		myView_CalcProgress = new View_CalcProgress(i, this);
+	}
+
+	
+	public String getArch() {
+		if (strArch == null) {
+			debugout("detectArch() - os.name    = "
+					+ System.getProperty("os.name"));
+			debugout("detectArch() - os.arch    = "
+					+ System.getProperty("os.arch"));
+			debugout("detectArch() - os.version = "
+					+ System.getProperty("os.version"));
+			debugout("detectArch() - file.separator = "
+					+ System.getProperty("file.separator"));
+
+			if (System.getProperty("os.arch").matches("i[3-6]86"))
+				strArch = "x86";
+			else
+				strArch = System.getProperty("os.arch");
+		}
+		return strArch;
+	}
+	
+	private boolean updateJavaLibraryPath(String arch) {
+		if (arch == "x86")
+			arch = "i386";
+		
+		Controller.debugout("updateLibraryPath() - adding library path \"" + libdir+ File.separator + arch + "\" to java.library.path!");
+		String newLibPath = libdir + File.separator + arch + File.pathSeparator + System.getProperty("java.library.path");
+		System.setProperty("java.library.path", newLibPath);
+
+		try {
+			//If cache is not empty, clear it
+			Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			if (fieldSysPath != null)
+				fieldSysPath.set(System.class.getClassLoader(), null);
+			return true;
+		} catch (Exception e) {
+			debugout("updateLibraryPath("+arch+") - exception: "+e);
+			return false;
+		}
 	}
 }
