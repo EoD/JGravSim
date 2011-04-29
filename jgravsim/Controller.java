@@ -1996,7 +1996,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 	
 	private boolean updateJavaLibraryPath(String arch) {
-		if (arch == "x86")
+		if (arch.equals("x86"))
 			arch = "i386";
 		
 		Controller.debugout("updateLibraryPath() - adding library path \"" + libdir+ File.separator + arch + "\" to java.library.path!");

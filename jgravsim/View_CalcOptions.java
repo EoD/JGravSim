@@ -239,7 +239,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 
 						File fcalc = new File(command[0]);
 						while(!fcalc.exists()) {
-							if(myController.getArch() == "amd64" && command[0].contains("amd64")) {
+							if(myController.getArch().equals("amd64") && command[0].contains("amd64")) {
 								debugout("WARNING - actionPerformed() - could not find C++ file for amd64, switching to x86");
 								command[0] = command[0].replace("amd64", "x86");
 								fcalc = new File(command[0]);
