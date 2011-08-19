@@ -200,7 +200,7 @@ public class MVMath {
 			case 'y': 
 				debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
 				double dy = MVMath.pxtod(a-centerY, ov_front.iZoomLevel, ov_front.iGridOffset);
-				dy += ov_front.getCoordOffsetY();
+				dy -= ov_front.getCoordOffsetY();
 				return -ConvertToL(dy);
 			case 'z': 
 				debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
