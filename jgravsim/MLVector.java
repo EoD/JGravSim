@@ -49,4 +49,9 @@ public class MLVector {
 		else
 			return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "("+x1+", "+x2+", "+x3+")";
+	}
 }

@@ -51,4 +51,9 @@ public class MDVector {
 		else
 			return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "("+x1+", "+x2+", "+x3+")";
+	}
 }
