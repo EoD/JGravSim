@@ -186,31 +186,25 @@ public class MVMath {
 		
 		ObjectView2D ov_front = ov_xy;
 		ObjectView2D ov_top = ov_yz;
-		double centerX = ov_front.getWidth()/2;
-		double centerY = ov_front.getHeight()/2;
-		double centerZ = ov_top.getHeight()/2;
+		int centerX = ov_front.getWidth()/2;
+		int centerY = ov_front.getHeight()/2;
+		int centerZ = ov_top.getHeight()/2;
 		
 		
 		switch(axe) {
 			case 'x': 
 				debugout("pxtomm() - getCoordOffsetX()="+ov_front.getCoordOffsetX());
-				double dx = (a-centerX);
-				dx /= ov_front.iGridOffset;
-				dx *= Math.pow(10, ov_front.iZoomLevel);
+				double dx = MVMath.pxtod(a-centerX, ov_front.iZoomLevel, ov_front.iGridOffset);
 				dx -= ov_front.getCoordOffsetX();
 				return ConvertToL(dx);
 			case 'y': 
 				debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
-				double dy = (a-centerY);
-				dy /= ov_front.iGridOffset;
-				dy *= Math.pow(10, ov_front.iZoomLevel);
+				double dy = MVMath.pxtod(a-centerY, ov_front.iZoomLevel, ov_front.iGridOffset);
 				dy += ov_front.getCoordOffsetY();
 				return -ConvertToL(dy);
 			case 'z': 
 				debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
-				double dz = (a-centerZ);
-				dz /= ov_front.iGridOffset;
-				dz *= Math.pow(10, ov_front.iZoomLevel);
+				double dz = MVMath.pxtod(a-centerZ, ov_front.iZoomLevel, ov_front.iGridOffset);
 				dz += ov_front.getCoordOffsetZ();
 				return -ConvertToL(dz); 
 			default: 
@@ -234,27 +228,21 @@ public class MVMath {
 			case 'x': 
 				double centerX = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetX()="+ov.getCoordOffsetX());
-				double ax = (ds.x1+ov.getCoordOffsetX()-1);
-				ax /= Math.pow(10, ov.iZoomLevel);
-				ax *= ov.iGridOffset;
+				double ax = MVMath.dtopx(ds.x1+ov.getCoordOffsetX()-1, ov.iZoomLevel, ov.iGridOffset);
 				ax += centerX;
 				a[0] = ax;
 				break;
 			case 'y': 
 				double centerY = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetY()="+ov.getCoordOffsetY());
-				double ay = (ds.x2+ov.getCoordOffsetY()-1);
-				ay /= Math.pow(10, ov.iZoomLevel);
-				ay *= ov.iGridOffset;
+				double ay = MVMath.dtopx(ds.x2+ov.getCoordOffsetY()-1, ov.iZoomLevel, ov.iGridOffset);
 				ay += centerY;
 				a[0] = ay;
 				break;
 			case 'z': 
 				double centerZ = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetZ()="+ov.getCoordOffsetZ());
-				double az = (ds.x3+ov.getCoordOffsetZ()-1);
-				az /= Math.pow(10, ov.iZoomLevel);
-				az *= ov.iGridOffset;
+				double az = MVMath.dtopx(ds.x3+ov.getCoordOffsetZ()-1, ov.iZoomLevel, ov.iGridOffset);
 				az += centerZ;
 				a[0] = az;
 				break;
@@ -266,27 +254,21 @@ public class MVMath {
 		case 'x': 
 			double centerX = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetX()="+ov.getCoordOffsetX());
-			double ax = (ds.x1+ov.getCoordOffsetX()-1);
-			ax /= Math.pow(10, ov.iZoomLevel);
-			ax *= ov.iGridOffset;
+			double ax = MVMath.dtopx(ds.x1+ov.getCoordOffsetX()-1, ov.iZoomLevel, ov.iGridOffset);
 			ax = centerX - ax;
 			a[1] = ax;
 			break;
 		case 'y': 
 			double centerY = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetY()="+ov.getCoordOffsetY());
-			double ay = (ds.x2+ov.getCoordOffsetY()-1);
-			ay /= Math.pow(10, ov.iZoomLevel);
-			ay *= ov.iGridOffset;
+			double ay = MVMath.dtopx(ds.x2+ov.getCoordOffsetY()-1, ov.iZoomLevel, ov.iGridOffset);
 			ay = centerY - ay;
 			a[1] = ay;
 			break;
 		case 'z': 
 			double centerZ = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetZ()="+ov.getCoordOffsetZ());
-			double az = (ds.x3+ov.getCoordOffsetZ()-1);
-			az /= Math.pow(10, ov.iZoomLevel);
-			az *= ov.iGridOffset;
+			double az = MVMath.dtopx(ds.x3+ov.getCoordOffsetZ()-1, ov.iZoomLevel, ov.iGridOffset);
 			az = centerZ - az;
 			a[1] = az;
 			break;
@@ -310,25 +292,19 @@ public class MVMath {
 		
 		double centerX = ov.getWidth()/2;
 		debugout("mtopx() - getCoordOffsetX()="+ov.getCoordOffsetX());
-		double ax = (ds.x1+ov.getCoordOffsetX()-1);
-		ax /= Math.pow(10, ov.iZoomLevel);
-		ax *= ov.iGridOffset;
+		double ax = MVMath.dtopx(ds.x1+ov.getCoordOffsetX()-1, ov.iZoomLevel, ov.iGridOffset);
 		ax += centerX;
 		a[0] = ax;
 			
 		double centerY = ov.getHeight()/2;
 		debugout("mtopx() - getCoordOffsetY()="+ov.getCoordOffsetY());
-		double ay = (ds.x2+ov.getCoordOffsetY()-1);
-		ay /= Math.pow(10, ov.iZoomLevel);
-		ay *= ov.iGridOffset;
+		double ay = MVMath.dtopx(ds.x2+ov.getCoordOffsetY()-1, ov.iZoomLevel, ov.iGridOffset);
 		ay = centerY - ay;
 		a[1] = ay;
 			
 		double centerZ = ov.getHeight()/2;
 		debugout("mtopx() - getCoordOffsetZ()="+ov.getCoordOffsetZ());
-		double az = (ds.x3+ov.getCoordOffsetZ()-1);
-		az /= Math.pow(10, ov.iZoomLevel);
-		az *= ov.iGridOffset;
+		double az = MVMath.dtopx(ds.x3+ov.getCoordOffsetZ()-1, ov.iZoomLevel, ov.iGridOffset);
 		az = centerZ - az;
 		a[2] = az;
 			
