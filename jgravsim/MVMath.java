@@ -358,6 +358,6 @@ public class MVMath {
 		ds *= iGridOffset;
 		ds /= Math.pow(10, fZoomLevel);
 		debugout("dtopx() -d="+d+", ds="+ds);
-		return d;
+		return ds;
 	}
 }
