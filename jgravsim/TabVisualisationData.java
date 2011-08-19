@@ -262,10 +262,6 @@ public class TabVisualisationData extends JPanel {
 		cb_Objects.setEnabled(b);
 	}
 
-	public double pxtomm(int px) {
-		return (px*Math.pow(10, ov_top.iZoomLevel))/ov_top.iGridOffset;
-	}
-	
 	public double mmtopx(long mm) {
 		return (mm*ov_top.iGridOffset/Math.pow(10, ov_top.iZoomLevel));
 	}

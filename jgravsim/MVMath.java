@@ -218,45 +218,7 @@ public class MVMath {
 				return 0;
 		}
 	}
-	/*public static double pxtom(int a, char axe, ObjectView2D ov_xy, ObjectView2D ov_yz) {
-		if(a == 0) {
-			debugout("pxtom() - a = 0");
-			return 0;
-		}
-		
-		ObjectView2D ov_front = ov_xy;
-		ObjectView2D ov_top = ov_yz;
-		double centerX = ov_front.getWidth()/2;
-		double centerY = ov_front.getHeight()/2;
-		double centerZ = ov_top.getHeight()/2;
-		
-		switch(axe) {
-			case 'x': 
-				debugout("pxtom() - getCoordOffsetX()="+ov_front.getCoordOffsetX());
-				double dx = (a-centerX);
-				dx /= ov_front.iGridOffset;
-				dx *= Math.pow(10, ov_front.iZoomLevel);
-				dx -= ov_front.getCoordOffsetX();
-				return dx;
-			case 'y': 
-				debugout("pxtom() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
-				double dy = (a-centerY);
-				dy /= ov_front.iGridOffset;
-				dy *= Math.pow(10, ov_front.iZoomLevel);
-				dy += ov_front.getCoordOffsetY();
-				return -dy;
-			case 'z': 
-				debugout("pxtom() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
-				double dz = (a-centerZ);
-				dz /= ov_front.iGridOffset;
-				dz *= Math.pow(10, ov_front.iZoomLevel);
-				dz += ov_front.getCoordOffsetZ();
-				return -dz; 
-			default: 
-				debugout("pxtom() - ERROR"); 
-				return 0;
-		}
-	}*/
+	
 	public static double[] coordtopx(MLVector ds, char[] axe, ObjectView2D ov) {
 		double[] a = new double[2];
 		a[0] = 0.0;
@@ -373,19 +335,18 @@ public class MVMath {
 		return a;
 	}
 	
-	public static double pxtom(float a, ObjectView2D ov) {
-		if(a == 0) {
-			debugout("pxtom() - a = 0");
+	public static double pxtod(int px, float fZoomLevel, int iGridOffset) {
+		if(px == 0) {
+			debugout("pxtod() - a = 0");
 			return 0;
 		}
 		
-		double ds = a;
-		ds /= ov.iGridOffset;
-		ds *= Math.pow(10, ov.iZoomLevel);
-		debugout("pxtom() - a="+a+", ds="+ds);
+		double ds = px;
+		ds /= iGridOffset;
+		ds *= Math.pow(10, fZoomLevel);
+		debugout("pxtod() - px="+px+", ds="+ds);
 		return ds;
 	}
-	
 	
 	public static double mtopx(double a, ObjectView2D ov) {
 		if(a == 0) {

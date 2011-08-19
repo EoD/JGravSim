@@ -645,8 +645,8 @@ public class TabCompute extends JPanel {
 		repaintViews();
 	}
 	
-	public double pxtomm(int px) {
-		return (px*Math.pow(10, ov_top.iZoomLevel))/ov_top.iGridOffset;
+	private double pxtomm(int px) {
+		return MVMath.pxtod(px, ov_top.iZoomLevel, ov_top.iGridOffset);
 	}
 	
 	public double mmtopx(long mm) {

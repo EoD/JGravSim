@@ -253,8 +253,8 @@ public class TabVisualisation extends JPanel  {
 		updateCurFrame();
 	}
 	
-	public double pxtomm(int px) {
-		return (px*Math.pow(10, ov_vis_top.iZoomLevel))/ov_vis_top.iGridOffset;
+	private double pxtomm(int px) {
+		return MVMath.pxtod(px, ov_vis_top.iZoomLevel, ov_vis_top.iGridOffset);
 	}
 	
 	public void resetOffset() {
