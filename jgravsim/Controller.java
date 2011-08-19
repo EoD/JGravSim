@@ -1542,46 +1542,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		return null;
 	}
 	
-	public long pxtocoord(int a, char axe) {
-		if(a == 0) {
-			debugout("pxtomm() - a = 0");
-			return 0;
-		}
-		
-		ObjectView2D ov_front = myView.pa_computetab.ov_front;
-		ObjectView2D ov_top = myView.pa_computetab.ov_top;
-		
-		double centerX = ov_front.getWidth()/2;
-		double centerY = ov_front.getHeight()/2;
-		double centerZ = ov_top.getHeight()/2;
-		
-		
-		switch(axe) {
-			case 'x': 
-				//debugout("pxtomm() - getCoordOffsetX()="+ov_front.getCoordOffsetX());
-				double dx = (a-centerX);
-				dx /= ov_front.iGridOffset;
-				dx *= Math.pow(10, ov_front.iZoomLevel);
-				dx -= ov_front.getCoordOffsetX();
-				return MVMath.ConvertToL(dx);
-			case 'y': 
-				//debugout("pxtomm() - getCoordOffsetY()="+ov_front.getCoordOffsetY());
-				double dy = (a-centerY);
-				dy /= ov_front.iGridOffset;
-				dy *= Math.pow(10, ov_front.iZoomLevel);
-				dy += ov_front.getCoordOffsetY();
-				return -MVMath.ConvertToL(dy);
-			case 'z': 
-				//debugout("pxtomm() - getCoordOffsetZ()="+ov_front.getCoordOffsetZ());
-				double dz = (a-centerZ);
-				dz /= ov_front.iGridOffset;
-				dz *= Math.pow(10, ov_front.iZoomLevel);
-				dz += ov_front.getCoordOffsetZ();
-				return -MVMath.ConvertToL(dz); 
-			default: 
-				debugout("pxtomm() - ERROR"); 
-				return 0;
-		}
+	private long pxtocoord(int a, char axe) {
+		return MVMath.pxtocoord(a, axe, myView.pa_computetab.ov_front, myView.pa_computetab.ov_top);
 	}
 	
 	/**
