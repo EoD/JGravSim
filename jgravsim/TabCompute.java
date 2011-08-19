@@ -649,10 +649,6 @@ public class TabCompute extends JPanel {
 		return MVMath.pxtod(px, ov_top.iZoomLevel, ov_top.iGridOffset);
 	}
 	
-	public double mmtopx(long mm) {
-		return (mm*ov_top.iGridOffset/Math.pow(10, ov_top.iZoomLevel));
-	}
-	
 	public void resetOffset() {
 		ov_front.resetCoordOffset();
 		ov_top.resetCoordOffset();

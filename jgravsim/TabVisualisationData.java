@@ -261,10 +261,6 @@ public class TabVisualisationData extends JPanel {
 	public void buttonsInactive(boolean b) {
 		cb_Objects.setEnabled(b);
 	}
-
-	public double mmtopx(long mm) {
-		return (mm*ov_top.iGridOffset/Math.pow(10, ov_top.iZoomLevel));
-	}
 	
 	public void UpdatePanels(Masspoint_Sim mpsim) {
 		Masspoint mp = new Masspoint(mpsim.getID(),mpsim.getPosX(),mpsim.getPosY(),mpsim.getPosZ());

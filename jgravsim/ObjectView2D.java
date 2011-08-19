@@ -65,7 +65,7 @@ public class ObjectView2D extends ObjectView {
 						coObjColor = STANDARD;
 				}
 				
-				double dRadius = MVMath.mtopx(totradius, this);
+				double dRadius = MVMath.dtopx(totradius, iZoomLevel, iGridOffset);
 				//dRadius /= Math.pow(10.0, iZoomLevel);
 				//dRadius *= iGridOffset;///CalcCode.LACCURACY;
 

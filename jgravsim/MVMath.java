@@ -348,28 +348,16 @@ public class MVMath {
 		return ds;
 	}
 	
-	public static double mtopx(double a, ObjectView2D ov) {
-		if(a == 0) {
-			debugout("pxtom() - a = 0");
+	public static double dtopx(double d, float fZoomLevel, int iGridOffset) {
+		if(d == 0) {
+			debugout("dtopx() - a = 0");
 			return 0;
 		}
 		
-		double ds = a;
-		ds *= ov.iGridOffset;
-		ds /= Math.pow(10, ov.iZoomLevel);
-		debugout("pxtom() - a="+a+", ds="+ds);
-		return ds;
-	}
-	public static double mtopx(double a, ObjectView3D ov) {
-		if(a == 0) {
-			debugout("pxtom() - a = 0");
-			return 0;
-		}
-		
-		double ds = a;
-		ds *= ov.iGridOffset;
-		ds /= Math.pow(10, ov.iZoomLevel);
-		debugout("pxtom() - a="+a+", ds="+ds);
-		return ds;
+		double ds = d;
+		ds *= iGridOffset;
+		ds /= Math.pow(10, fZoomLevel);
+		debugout("dtopx() -d="+d+", ds="+ds);
+		return d;
 	}
 }
