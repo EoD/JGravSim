@@ -747,8 +747,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			if(flagclick < 0 && flagctrl == false) {
 				Masspoint mphit = GetSelectedMasspoint();
-				mphit.setCoordx(pxtomm(e.getX(), 'x'));
-				mphit.setCoordy(pxtomm(e.getY(), 'y'));
+				mphit.setCoordx(pxtocoord(e.getX(), 'x'));
+				mphit.setCoordy(pxtocoord(e.getY(), 'y'));
 				updateComputePanels(GetSelectedMasspoint(),source);
 			}
 			else if(flagctrl == true || (e.getModifiers() & InputEvent.BUTTON1_MASK) == 0) {
@@ -762,8 +762,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			if(flagclick < 0 && flagctrl == false) {
 				Masspoint mphit = GetSelectedMasspoint();
-				mphit.setCoordx(pxtomm(e.getX(), 'x'));
-				mphit.setCoordz(pxtomm(e.getY(), 'z'));
+				mphit.setCoordx(pxtocoord(e.getX(), 'x'));
+				mphit.setCoordz(pxtocoord(e.getY(), 'z'));
 				updateComputePanels(GetSelectedMasspoint(),source);
 			}
 			else if(flagctrl == true || (e.getModifiers() & InputEvent.BUTTON1_MASK) == 0) {
@@ -1473,9 +1473,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				id = mptemp.getID() + 1;
 		}
 		
-		long lx = pxtomm(x, 'x');
-		long ly = pxtomm(y, 'y');
-		long lz = pxtomm(z, 'z');
+		long lx = pxtocoord(x, 'x');
+		long ly = pxtocoord(y, 'y');
+		long lz = pxtocoord(z, 'z');
 		Masspoint mp;
 		
 		if(mp_clone == null)
@@ -1503,9 +1503,9 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		else /*if(axe == side)*/
 		{	x=0; y=a; z=b; }
 		
-		long lx = pxtomm(x, 'x');
-		long ly = pxtomm(y, 'y');
-		long lz = pxtomm(z, 'z');
+		long lx = pxtocoord(x, 'x');
+		long ly = pxtocoord(y, 'y');
+		long lz = pxtocoord(z, 'z');
 		
 		for(int i=0;i<vmasspoints.size();i++) {
 			Masspoint mptemp = (Masspoint)vmasspoints.get(i);
@@ -1542,7 +1542,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		return null;
 	}
 	
-	public long pxtomm(int a, char axe) {
+	public long pxtocoord(int a, char axe) {
 		if(a == 0) {
 			debugout("pxtomm() - a = 0");
 			return 0;
