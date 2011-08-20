@@ -81,18 +81,14 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.coGridColor = newColor;
 		ov_vis_right.coGridColor = newColor;
 		ov_vis_top.coGridColor = newColor;
-		updateViews();
+		updateViews(false);
 	}
 	
 	public void setObjectColor(Color newColor) {
 		ov_vis_front.coSpeedvecColor = newColor;
 		ov_vis_right.coSpeedvecColor = newColor;
 		ov_vis_top.coSpeedvecColor = newColor;
-		updateViews();		
-	}
-	
-	public void updateViews() {
-		updateCurFrame();
+		updateViews(false);		
 	}
 
 	public void updateViews(boolean bresize) {
@@ -193,7 +189,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.displayStep(nextStep);
 		ov_vis_right.displayStep(nextStep);
 		ov_vis_top.displayStep(nextStep);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void setZoom(float zoomLevel, boolean bslider) {
@@ -209,7 +205,7 @@ public class TabVisualisation extends JPanel  {
 			//Controller.debugout("setZoom() - Changed from "+	pa_visual_contrtab.sl_zoomlevel.getValue()+" to "+newzoom);
 			pa_visual_contrtab.sl_zoomlevel.setValue((newzoom));
 		}
-		updateCurFrame();
+		updateViews(false);
 	}
 
 	public void setZoom(float zoomLevel) {
@@ -226,7 +222,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_top.iGridOffset = gridOffset;
 		
 		pa_visual_contrtab.la_gridoffset.setText(myXMLParser.getText(102)+": "+gridOffset);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetX(int deltaXpx) {
@@ -234,7 +230,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaX = pxtomm(deltaXpx);
 		ov_vis_front.addCoordOffsetX(deltaX);
 		ov_vis_top.addCoordOffsetX(deltaX);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetY(int deltaYpx) {
@@ -242,7 +238,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaY = pxtomm(deltaYpx);
 		ov_vis_top.addCoordOffsetY(deltaY);
 		ov_vis_right.addCoordOffsetY(deltaY);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetZ(int deltaZpx) {
@@ -250,7 +246,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaZ = pxtomm(deltaZpx);
 		ov_vis_front.addCoordOffsetZ(-deltaZ);
 		ov_vis_right.addCoordOffsetZ(-deltaZ);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	private double pxtomm(int px) {
@@ -283,7 +279,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_top.alldots = null;
 		ov_vis_front.alldots = null;
 		ov_vis_right.alldots = null;
-		updateViews();
+		updateViews(false);
 	}
 	public void drawPlot(DynamicWPTLoader dynamicLoader, int data, boolean repaint) {
 		data_plot = data;
@@ -319,7 +315,7 @@ public class TabVisualisation extends JPanel  {
 
 		pa_visual_plottab.updateDrawStatus(dynamicLoader.steps, ov_vis_front.getCurrentStep());
 		if(repaint)
-			updateViews();
+			updateViews(false);
 	}
 	public void setSpeedvecEnabled(boolean state) {
 		pa_visual_optiontab.chb_vvector.setSelected(state);
