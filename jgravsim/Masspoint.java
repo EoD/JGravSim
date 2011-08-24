@@ -263,6 +263,16 @@ public class Masspoint {
 	public long getPosZ() {
 		return dPosZ;
 	}
+	public long getPos(int i) {
+		if(i==0)
+			return dPosX;
+		else if(i==1)
+			return dPosY;
+		else if(i==2)
+			return dPosZ;
+		else
+			throw new IndexOutOfBoundsException(i+" not valid");
+	}
 
 	
 	public void setAbsRadius(double a) {

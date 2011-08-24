@@ -261,4 +261,17 @@ public class ObjectView2D extends ObjectView {
 		stCurrent = next;
 		repaint();
 	}
+
+	public int getSize(char axe) {
+		int size = -1;
+		for(int i=0; i<cAxes.length; i++) {
+			if(cAxes[i] == axe)
+				size = i==0?getSize().width:getSize().height; 
+		}
+		
+		if(size==-1)
+			throw new IndexOutOfBoundsException("checked for "+axe+" on my axes "+String.copyValueOf(cAxes));
+		
+		return size;
+	}
 }
