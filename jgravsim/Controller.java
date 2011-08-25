@@ -58,7 +58,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static final double VERSION = 1.8;
 	static final int WPT_VERSION = 2;
 	
-	static final String HOMEPAGE = "http://jgravsim.eod.xmw.de/";
+	static final String HOMEPAGE = "http://eod.github.com/JGravSim/";
 	static final String EMAIL = "jgravsim@gmail.com";
 
 	static final Masspoint mpdf_sun		=	new Masspoint(CalcCode.SM,CalcCode.SR);
