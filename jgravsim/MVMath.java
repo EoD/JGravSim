@@ -5,7 +5,7 @@ import java.lang.Long;
 public class MVMath {
 
 	public static final double ACCURACY = CalcCode.LACCURACY;
-	public static final int revision = 1;
+	public static final int revision = 2;
 	public static final boolean DEBUG = false;
 	
 	@SuppressWarnings("unused")
