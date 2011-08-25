@@ -7,7 +7,7 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class TabVisualisation extends JPanel  {
-	public static final int revision = 5;
+	public static final int revision = 6;
 
 	public static final int ZOOM_MAX = 162;
 	public static final int ZOOM_MIN = CalcCode.SZOOMCONST;
