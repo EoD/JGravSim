@@ -81,18 +81,14 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.coGridColor = newColor;
 		ov_vis_right.coGridColor = newColor;
 		ov_vis_top.coGridColor = newColor;
-		updateViews();
+		updateViews(false);
 	}
 	
 	public void setObjectColor(Color newColor) {
 		ov_vis_front.coSpeedvecColor = newColor;
 		ov_vis_right.coSpeedvecColor = newColor;
 		ov_vis_top.coSpeedvecColor = newColor;
-		updateViews();		
-	}
-	
-	public void updateViews() {
-		updateCurFrame();
+		updateViews(false);		
 	}
 
 	public void updateViews(boolean bresize) {
@@ -193,7 +189,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.displayStep(nextStep);
 		ov_vis_right.displayStep(nextStep);
 		ov_vis_top.displayStep(nextStep);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void setZoom(float zoomLevel, boolean bslider) {
@@ -209,7 +205,7 @@ public class TabVisualisation extends JPanel  {
 			//Controller.debugout("setZoom() - Changed from "+	pa_visual_contrtab.sl_zoomlevel.getValue()+" to "+newzoom);
 			pa_visual_contrtab.sl_zoomlevel.setValue((newzoom));
 		}
-		updateCurFrame();
+		updateViews(false);
 	}
 
 	public void setZoom(float zoomLevel) {
@@ -226,7 +222,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_top.iGridOffset = gridOffset;
 		
 		pa_visual_contrtab.la_gridoffset.setText(myXMLParser.getText(102)+": "+gridOffset);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetX(int deltaXpx) {
@@ -234,7 +230,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaX = pxtomm(deltaXpx);
 		ov_vis_front.addCoordOffsetX(deltaX);
 		ov_vis_top.addCoordOffsetX(deltaX);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetY(int deltaYpx) {
@@ -242,7 +238,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaY = pxtomm(deltaYpx);
 		ov_vis_top.addCoordOffsetY(deltaY);
 		ov_vis_right.addCoordOffsetY(deltaY);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	public void changeOffsetZ(int deltaZpx) {
@@ -250,7 +246,7 @@ public class TabVisualisation extends JPanel  {
 		double deltaZ = pxtomm(deltaZpx);
 		ov_vis_front.addCoordOffsetZ(-deltaZ);
 		ov_vis_right.addCoordOffsetZ(-deltaZ);
-		updateCurFrame();
+		updateViews(false);
 	}
 	
 	private double pxtomm(int px) {
@@ -283,7 +279,7 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_top.alldots = null;
 		ov_vis_front.alldots = null;
 		ov_vis_right.alldots = null;
-		updateViews();
+		updateViews(false);
 	}
 	public void drawPlot(DynamicWPTLoader dynamicLoader, int data, boolean repaint) {
 		data_plot = data;
@@ -319,7 +315,7 @@ public class TabVisualisation extends JPanel  {
 
 		pa_visual_plottab.updateDrawStatus(dynamicLoader.steps, ov_vis_front.getCurrentStep());
 		if(repaint)
-			updateViews();
+			updateViews(false);
 	}
 	public void setSpeedvecEnabled(boolean state) {
 		pa_visual_optiontab.chb_vvector.setSelected(state);
@@ -359,84 +355,221 @@ public class TabVisualisation extends JPanel  {
 		}
 		
 		Masspoint_Sim[] mps_current = ov_vis_top.getCurrentStep().getMasspoints();
-		long max_x = 0, max_y = 0, max_z = 0;
-		int size = mps_current.length;
+		/* We have to do both max and min independently as the offset will be consider in coordtopx */
 		
-		for(int i=0; i < size; i++) {
+		long radius = MVMath.ConvertToL(mps_current[0].getAbsRadius());
+		long[] max = {mps_current[0].getPos(0)+radius, mps_current[0].getPos(1)+radius, mps_current[0].getPos(2)+radius};
+		long[] min = {mps_current[0].getPos(0)-radius, mps_current[0].getPos(1)-radius, mps_current[0].getPos(2)-radius};
+		
+		/* We first want to know the maximum and minimum value of all coordinates with i=0 being our start values*/
+		for(int i=1; i < mps_current.length; i++) {
 			Masspoint_Sim mp_tmp = mps_current[i];
 			long radius2 = MVMath.ConvertToL(mp_tmp.getAbsRadius());
-			
-			if( Math.abs(mp_tmp.getPosX())+radius2 > max_x)
-				max_x = Math.abs(mp_tmp.getPosX())+radius2;
-			
-			if( Math.abs(mp_tmp.getPosY())+radius2 > max_y)
-				max_y = Math.abs(mp_tmp.getPosY())+radius2;
-			
-			if( Math.abs(mp_tmp.getPosZ())+radius2 > max_z)
-				max_z = Math.abs(mp_tmp.getPosZ())+radius2;		
+			for(int j=0; j<3; j++) {
+				if(max[j] < mp_tmp.getPos(j)+radius2)
+					max[j] = mp_tmp.getPos(j)+radius2;
+				else if(min[j] > mp_tmp.getPos(j)-radius2)
+					min[j] = mp_tmp.getPos(j)-radius2;
+			}
 		}
-		Dimension d_t = ov_vis_top.getSize();
-		Controller.debugout("autoresize() - This are the dt: h="+d_t.height+", w="+d_t.width);
-		Dimension d_f = ov_vis_front.getSize();
-		Dimension d_r = ov_vis_right.getSize();
+		//Controller.debugout("autoresize() - max="+max[0]+", "+max[1]+", "+max[2]);
+		//Controller.debugout("autoresize() - min="+min[0]+", "+min[1]+", "+min[2]);
 		
-		double[] px_t = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top);
-		double[] px_f = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front);
-		double[] px_r= MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right);
+		/*
+		 * We are doing a more or less complicated algorithm in order to
+		 * guarantee that our masspoints are all inside the ObjectView2D.
+		 * 
+		 * First of all we find the maximal point max(x,y,z) and the minimal
+		 * point min=(x,y,z) and transform those values for all OVs to pixels 
+		 * relative to their respective OV.
+		 * 
+		 * All ObjectView2Ds have their coordinate system with the (0,0) being
+		 * the top left corner and (d_t.width,d_t.height) being the bottom right
+		 * corner.
+		 * 
+		 * We now move the maximum x pixel coordinate -ov.width (to the left!) and 
+		 * take the negative value of it:
+		 * 		*this is positive if it has been inside the ObjectView
+		 * 		*this is negative if it has been outside the ObjectView
+		 * and we take the minimal x pixel coordinate
+		 * 		*this is positive if it has been inside the ObjectView
+		 * 		*this is negative if it has been outside the ObjectView
+		 * 
+		 * We now take the smallest x pixel coordinate (both min and max) of all OVs, 
+		 * the one which was furthest out of all OVs and save this pixel coordinate 
+		 * in px[0], together with the respective OV, axe, real coordinate (sup[0]).
+		 * Repeat the same for y/px[1], but change max/min depending on the 
+		 * horizontal/vertical axe.
+		 * 
+		 * The above procedure generates new points being outside/inside the
+		 * ObjectView2D. Hence we can treat the new values as usual points and 
+		 * also can compare them with "0".
+		 * 
+		 * With all the values we got from above, we start the real resizing.
+		 */
+		
+		double[][] max_px = {	MVMath.coordtopx(new MLVector(max[0], max[1], max[2]), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top),
+								MVMath.coordtopx(new MLVector(max[0], max[1], max[2]), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front),
+								MVMath.coordtopx(new MLVector(max[0], max[1], max[2]), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right)
+		};
 
-		//if any point is outside of the maximum width/height of the view, zoom out
-		if(	px_t[1] > d_t.height || px_t[0] > d_t.width ||
-			px_f[1] > d_f.height || px_f[0] > d_f.width ||
-			px_r[1] > d_r.height || px_r[0] > d_r.width	) {
-			
-			Controller.debugout("autoresize() - Starting negative calculation");
-	
-			px_t = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top);
-			while( px_t[1] > d_t.height || px_t[0] > d_t.width ) {
-				px_t = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top);
-				ov_vis_top.iZoomLevel += 0.1;
-			}
-			
-			ov_vis_front.iZoomLevel = ov_vis_top.iZoomLevel;
-			ov_vis_right.iZoomLevel = ov_vis_top.iZoomLevel;
-			px_f = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front);
-			while( px_f[1] > d_f.height || px_f[0] > d_f.width ) {
-				px_f = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front);
-				ov_vis_front.iZoomLevel += 0.1;
-				
-			}
-	
-			ov_vis_right.iZoomLevel = ov_vis_top.iZoomLevel;
-			px_r= MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right);
-			while( px_r[1] > d_r.height || px_r[0] > d_r.width ) {
-				px_r = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right);
-				ov_vis_right.iZoomLevel += 0.1;
+		double[][] min_px =	{	MVMath.coordtopx(new MLVector(min[0], min[1], min[2]), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top),
+								MVMath.coordtopx(new MLVector(min[0], min[1], min[2]), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front),
+								MVMath.coordtopx(new MLVector(min[0], min[1], min[2]), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right)
+		};
+		
+		
+		/*
+		Controller.debugout("autoresize() - max_px={ ("+max_px[0][0]+", "+max_px[0][1]+")," +
+													"("+max_px[1][0]+", "+max_px[1][1]+")," +
+													"("+max_px[2][0]+", "+max_px[2][1]+"),"	);
+		
+		Controller.debugout("autoresize() - min_px={ ("+min_px[0][0]+", "+min_px[0][1]+")," +
+													"("+min_px[1][0]+", "+min_px[1][1]+")," +
+													"("+min_px[2][0]+", "+min_px[2][1]+"),"	);
+		*/
+
+		/*
+		 * Initial values!
+		 * This px gets start values of top.x, top.y, front.y which is equal to (x,y,z)
+		 * Therefore the axes have to be (0,1,1)
+		 * sup gets the minimal values
+		 * and the objectviews are (top,top,front)
+		 */
+		double[] px = {min_px[0][0],min_px[0][1],min_px[1][1]};
+		int[] axe = {0,1,1};
+		long[] sup = min.clone();
+		ObjectView2D[] ovs = {(ObjectView2D)ov_vis_top, (ObjectView2D)ov_vis_top, (ObjectView2D)ov_vis_front};
+		
+		/*
+		 * Try to find values of x,y,z which are furthest away from their respective ObjectView2D.
+		 * Save 
+		 * 	ovs:	ObjectView where it happens
+		 * 	axe:	axe of the respective ObjectView
+		 * 	px:		pixel 'coordinate' of that point relative to the ObjectView
+		 * 			move positive pixels as described above (-x + ov.getSize(axe))
+		 * 	sup:	coordinate of the point
+		 */
+		
+		ObjectView2D ov_tmp;
+		for(int i=0; i<max_px.length; i++) {
+			if(i==0)
+				ov_tmp = (ObjectView2D)ov_vis_top;
+			else if(i==1)
+				ov_tmp = (ObjectView2D)ov_vis_front;
+			else if(i==2)
+				ov_tmp = (ObjectView2D)ov_vis_right;
+			else
+				throw new IndexOutOfBoundsException("Tried to access "+i+" at a length of "+max_px.length+", but only 0,1,2 are allowed.");
+
+			double max_px_fixed, min_px_fixed;
+			long[] max_sup_fixed, min_sup_fixed;
+			for (int k = 0; k < ov_tmp.cAxes.length; k++) {
+				// horizontal axe (goes from 0 to ov.width)
+				if (k == 0) {
+					max_px_fixed = max_px[i][k];
+					min_px_fixed = min_px[i][k];
+					max_sup_fixed = max;
+					min_sup_fixed = min;
+				}
+				// vertical axe (goes from ov.height to 0)
+				else {
+					max_px_fixed = min_px[i][k];
+					min_px_fixed = max_px[i][k];
+					max_sup_fixed = min;
+					min_sup_fixed = max;
+				}
+
+				switch (ov_tmp.cAxes[k]) {
+				case 'x':
+					if (-max_px_fixed + ov_tmp.getSize('x') < px[0]) {
+						ovs[0] = ov_tmp;
+						axe[0] = k;
+						sup[0] = max_sup_fixed[0];
+						px[0]  = -max_px_fixed + ov_tmp.getSize('x');
+					} else if (min_px_fixed < px[0]) {
+						ovs[0] = ov_tmp;
+						axe[0] = k;
+						sup[0] = min_sup_fixed[0];
+						px[0]  = min_px_fixed;
+					}
+					break;
+				case 'y':
+					if (-max_px_fixed + ov_tmp.getSize('y') < px[1]) {
+						ovs[1] = ov_tmp;
+						axe[1] = k;
+						sup[1] = max_sup_fixed[1];
+						px[1]  = -max_px_fixed + ov_tmp.getSize('y');
+					} else if (min_px_fixed < px[1]) {
+						ovs[1] = ov_tmp;
+						axe[1] = k;
+						sup[1] = min_sup_fixed[1];
+						px[1]  = min_px_fixed;
+					}
+					break;
+				case 'z':
+					if (-max_px_fixed + ov_tmp.getSize('z') < px[2]) {
+						ovs[2] = ov_tmp;
+						axe[2] = k;
+						sup[2] = max_sup_fixed[2];
+						px[2]  = -max_px_fixed + ov_tmp.getSize('z');
+					} else if (min_px_fixed < px[2]) {
+						ovs[2] = ov_tmp;
+						axe[2] = k;
+						sup[2] = min_sup_fixed[2];
+						px[2]  = min_px_fixed;
+					}
+					break;
+				}
 			}
 		}
-		//if all points are inside of ZOOM_THRESHOLD (=80%) of the view, zoom in
-		else if (	px_t[1] < ZOOM_THRESHOLD*d_t.height && px_t[0] < ZOOM_THRESHOLD*d_t.width &&
-					px_f[1] < ZOOM_THRESHOLD*d_f.height && px_f[0] < ZOOM_THRESHOLD*d_f.width &&
-					px_r[1] < ZOOM_THRESHOLD*d_r.height && px_r[0] < ZOOM_THRESHOLD*d_r.width	) {
+		//Controller.debugout("autoresize() - sup="+sup[0]+", "+sup[1]+", "+sup[2]);
+		//Controller.debugout("autoresize() - px="+px[0]+", "+px[1]+", "+px[2]);
+		
+		/* 
+		 * We  check if any of the px values is < 0 (= outside, see above)
+		 * We then repeat the calculation for the sup point
+		 */
+		if(	px[0] < 0 || px[1] < 0 || px[2] < 0) {
 			
-			Controller.debugout("autoresize() - Starting positive calculation.");
-			d_t.setSize( ZOOM_THRESHOLD*d_t.width, ZOOM_THRESHOLD*d_t.height);
-			d_f.setSize( ZOOM_THRESHOLD*d_f.width, ZOOM_THRESHOLD*d_f.height);
-			d_r.setSize( ZOOM_THRESHOLD*d_r.width, ZOOM_THRESHOLD*d_r.height);
+			Controller.debugout("autoresize() - Starting resize calculation - zooming out");
 			
-			px_t = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top);
-			px_f = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front);
-			px_r= MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right);
+			for(int i=0; i<3; i++) {				
+				while( px[i] < 0 || -px[i]+ovs[i].getSize(ovs[i].cAxes[axe[i]]) < 0) {
+					//Controller.debugout("autoresize() - checking for #"+i+" on the axe "+ovs[i].cAxes[axe[i]]+" on "+String.copyValueOf(ovs[i].cAxes));
+					ovs[i].iZoomLevel += 0.1;
+					px[i] = MVMath.coordtopx(new MLVector(sup[0], sup[1], sup[2]), ovs[i].cAxes, ovs[i])[axe[i]];
+					//Controller.debugout("autoresize() - new px="+px[0]+", "+px[1]+", "+px[2]);
+				}
+				/* Save the new zoomlevel on all ObjectViews */
+				ov_vis_top.iZoomLevel = ovs[i].iZoomLevel;
+				ov_vis_front.iZoomLevel = ovs[i].iZoomLevel;
+				ov_vis_right.iZoomLevel = ovs[i].iZoomLevel;
+			}
+		}
+		//if all points are inside of a box of size (1.0-ZOOM_THRESHOLD) (=20%) of the view, zoom in
+		else if (	px[0] > (1.0-ZOOM_THRESHOLD)*ovs[0].getSize(ovs[0].cAxes[axe[0]]) &&
+					px[1] > (1.0-ZOOM_THRESHOLD)*ovs[1].getSize(ovs[1].cAxes[axe[1]]) &&
+					px[2] > (1.0-ZOOM_THRESHOLD)*ovs[2].getSize(ovs[2].cAxes[axe[2]])
+				) {
 			
-			//do all at once in order to be sure all are still inside the ZOOM_THRESHOLD
-			while(	px_t[1] < d_t.height && px_t[0] < d_t.width &&
-					px_f[1] < d_f.height && px_f[0] < d_f.width &&
-					px_r[1] < d_r.height && px_r[0] < d_r.width ) {
+			Controller.debugout("autoresize() - Starting resize calculation - zooming in");
+			
+			double[] ovs_sizes = {
+					ovs[0].getSize(ovs[0].cAxes[axe[0]]),
+					ovs[1].getSize(ovs[1].cAxes[axe[1]]),
+					ovs[2].getSize(ovs[2].cAxes[axe[2]]) };
+	
+			while(	px[0] > (1.0-ZOOM_THRESHOLD)*ovs_sizes[0] && px[0] < ZOOM_THRESHOLD*ovs_sizes[0] &&
+					px[1] > (1.0-ZOOM_THRESHOLD)*ovs_sizes[1] && px[1] < ZOOM_THRESHOLD*ovs_sizes[1] &&
+					px[2] > (1.0-ZOOM_THRESHOLD)*ovs_sizes[2] && px[2] < ZOOM_THRESHOLD*ovs_sizes[2]
+					) {
 				ov_vis_top.iZoomLevel -= 0.1;
 				ov_vis_front.iZoomLevel -= 0.1;
 				ov_vis_right.iZoomLevel -= 0.1;
-				px_t = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_top.cAxes, (ObjectView2D)ov_vis_top);
-				px_f = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_front.cAxes, (ObjectView2D)ov_vis_front);
-				px_r = MVMath.coordtopx(new MLVector(max_x, max_y, max_z), ov_vis_right.cAxes, (ObjectView2D)ov_vis_right);
+				
+				for(int i=0; i<3; i++) 
+					px[i] = MVMath.coordtopx(new MLVector(sup[0], sup[1], sup[2]), ovs[i].cAxes, ovs[i])[axe[i]];
 			}
 		}
 		

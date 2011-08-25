@@ -224,57 +224,52 @@ public class MVMath {
 		//	return a;
 		//}
 		
+		double center = ov.getWidth()/2.0;
 		switch(axe[0]) {
 			case 'x': 
-				double centerX = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetX()="+ov.getCoordOffsetX());
 				double ax = MVMath.dtopx(ds.x1+ov.getCoordOffsetX()-1, ov.iZoomLevel, ov.iGridOffset);
-				ax += centerX;
+				ax += center;
 				a[0] = ax;
 				break;
 			case 'y': 
-				double centerY = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetY()="+ov.getCoordOffsetY());
 				double ay = MVMath.dtopx(ds.x2+ov.getCoordOffsetY()-1, ov.iZoomLevel, ov.iGridOffset);
-				ay += centerY;
+				ay += center;
 				a[0] = ay;
 				break;
 			case 'z': 
-				double centerZ = ov.getWidth()/2;
 				debugout("mtopx() - getCoordOffsetZ()="+ov.getCoordOffsetZ());
 				double az = MVMath.dtopx(ds.x3+ov.getCoordOffsetZ()-1, ov.iZoomLevel, ov.iGridOffset);
-				az += centerZ;
+				az += center;
 				a[0] = az;
 				break;
 			default: 
-				debugout("mtopx() - ERROR"); 
-				return a;
+				throw new IllegalArgumentException("axe="+String.copyValueOf(axe)+" , error at '"+axe[0]+"'");
 		}
+		
+		center = ov.getHeight()/2.0;
 		switch(axe[1]) {
 		case 'x': 
-			double centerX = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetX()="+ov.getCoordOffsetX());
 			double ax = MVMath.dtopx(ds.x1+ov.getCoordOffsetX()-1, ov.iZoomLevel, ov.iGridOffset);
-			ax = centerX - ax;
+			ax = center - ax;
 			a[1] = ax;
 			break;
 		case 'y': 
-			double centerY = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetY()="+ov.getCoordOffsetY());
 			double ay = MVMath.dtopx(ds.x2+ov.getCoordOffsetY()-1, ov.iZoomLevel, ov.iGridOffset);
-			ay = centerY - ay;
+			ay = center - ay;
 			a[1] = ay;
 			break;
 		case 'z': 
-			double centerZ = ov.getHeight()/2;
 			debugout("mtopx() - getCoordOffsetZ()="+ov.getCoordOffsetZ());
 			double az = MVMath.dtopx(ds.x3+ov.getCoordOffsetZ()-1, ov.iZoomLevel, ov.iGridOffset);
-			az = centerZ - az;
+			az = center - az;
 			a[1] = az;
 			break;
 		default: 
-			debugout("mtopx() - ERROR"); 
-			return a;
+			throw new IllegalArgumentException("axe="+String.copyValueOf(axe)+" , error at '"+axe[1]+"'");
 		}
 		return a;
 	}
