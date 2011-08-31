@@ -287,10 +287,10 @@ public class TabVisualisationData extends JPanel {
 		tf_Speedx.setText(InterpretInput.niceInput_Speed(mvspeed.x1, myXMLParser));
 		tf_Speedy.setText(InterpretInput.niceInput_Speed(mvspeed.x2, myXMLParser));
 		tf_Speedz.setText(InterpretInput.niceInput_Speed(mvspeed.x3, myXMLParser));
-		tf_Speed_abs.setText(InterpretInput.niceInput_Speed(mp.getSpeed(), myXMLParser));
+		tf_Speed_abs.setText(InterpretInput.niceInput_UnsignedSpeed(mp.getSpeed(), myXMLParser));
 		tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myXMLParser));
 		
-		tf_Radius.setText(InterpretInput.niceInput_Length(mp.getRadius(), myXMLParser));
+		tf_Radius.setText(InterpretInput.niceInput_UnsignedLength(mp.getRadius(), myXMLParser));
 		if(mp.isBlackHole()) {
 			la_Schwarzschild.setVisible(true);
 			la_Blackhole.setVisible(true);

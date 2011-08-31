@@ -1094,54 +1094,40 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.pa_compute_dataeasy.sl_Speed.removeChangeListener(this);
 		myView.pa_computetab.pa_compute_dataeasy.sl_Radius.removeChangeListener(this);
 
-		DecimalFormat df_d = new DecimalFormat("0.###E0");
-		DecimalFormat df_s = new DecimalFormat("0.#####E0");
-		DecimalFormat df_l = new DecimalFormat("0.#######E0");
-		DecimalFormat df_c = new DecimalFormat("0.###########");
-		
+		/* pa_compute_dataeasy */
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Coordx) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Coordx.setText(InterpretInput.niceInput_Length(mvcoord.x1, myView.myXMLParser,df_l));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Coordx.setText(InterpretInput.niceInput_Length(mvcoord.x1, myView.myXMLParser));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Coordy) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Coordy.setText(InterpretInput.niceInput_Length(mvcoord.x2, myView.myXMLParser,df_l));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Coordy.setText(InterpretInput.niceInput_Length(mvcoord.x2, myView.myXMLParser));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Coordz) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Coordz.setText(InterpretInput.niceInput_Length(mvcoord.x3, myView.myXMLParser,df_l));
-		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact) {
-			if(mvspeed.x1 >= 0.1*CalcCode.LIGHTSPEED)
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.setText(df_c.format(mvspeed.x1/CalcCode.LIGHTSPEED)+" c");
-			else
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.setText(df_s.format(mvspeed.x1)+" m/s");
-			
-		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact)  {
-			if(mvspeed.x2 >= 0.1*CalcCode.LIGHTSPEED)
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.setText(df_c.format(mvspeed.x2/CalcCode.LIGHTSPEED)+" c");
-			else
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.setText(df_s.format(mvspeed.x2)+" m/s");
-		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact) {
-			if(mvspeed.x3 >= 0.1*CalcCode.LIGHTSPEED) {
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.setText(df_c.format(mvspeed.x3/CalcCode.LIGHTSPEED)+" c");
-			}
-			else 
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.setText(df_s.format(mvspeed.x3)+" m/s");
-		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs) {
-			if(mp.getSpeed() >= 0.1*CalcCode.LIGHTSPEED)
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_c.format(mp.getSpeed()/CalcCode.LIGHTSPEED)+" c");
-			else
-				myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(df_s.format(mp.getSpeed())+" m/s");
-		} if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Mass) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, df_s));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Coordz.setText(InterpretInput.niceInput_Length(mvcoord.x3, myView.myXMLParser));
+		
+		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact) 
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x1, myView.myXMLParser));
+		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact)
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x2, myView.myXMLParser));
+		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact)
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x3, myView.myXMLParser));
+		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs)
+			myView.pa_computetab.pa_compute_dataeasy.tf_Speedabs.setText(InterpretInput.niceInput_UnsignedSpeed(mp.getSpeed(), myView.myXMLParser));
+	
+		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Mass) 
+			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Radius) 
-			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser, df_s));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_UnsignedLength(mp.getAbsRadius(), myView.myXMLParser));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.tf_Dense)	{
 			if(mp.isBlackHole())
 				myView.pa_computetab.pa_compute_dataeasy.tf_Dense.setText(myView.myXMLParser.getText(6));
 			else
-				myView.pa_computetab.pa_compute_dataeasy.tf_Dense.setText(InterpretInput.niceInput_Density(mp.getDensity(), myView.myXMLParser, df_d));
+				myView.pa_computetab.pa_compute_dataeasy.tf_Dense.setText(InterpretInput.niceInput_Density(mp.getDensity(), myView.myXMLParser));
 		} if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Speed) 
 			myView.pa_computetab.pa_compute_dataeasy.sl_Speed.setValue((int)(100*Math.pow(mp.getSpeed()/CalcCode.LIGHTSPEED, 1.0/CalcCode.SSPEEDCONST)));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Mass) 
 			myView.pa_computetab.pa_compute_dataeasy.sl_Mass.setValue((int)(Math.pow(mp.getAbsMass(),1.0/CalcCode.SMASSCONST)));
 		if(object != myView.pa_computetab.pa_compute_dataeasy.sl_Radius)
 			myView.pa_computetab.pa_compute_dataeasy.sl_Radius.setValue((int)(Math.pow(mp.getAbsRadius(),1.0/CalcCode.SRADIUSCONST)));
+		
+		/* pa_compute_dataadvanced */
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Coordx.setText(InterpretInput.niceInput_Length(mvcoord.x1, myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordy) 
@@ -1149,17 +1135,17 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Coordz.setText(InterpretInput.niceInput_Length(mvcoord.x3, myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedabs) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedabs.setText(InterpretInput.niceInput_Speed(mvspeed.abs(), myView.myXMLParser, null));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedabs.setText(InterpretInput.niceInput_Speed(mvspeed.abs(), myView.myXMLParser, null, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x1, myView.myXMLParser, null));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedx_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x1, myView.myXMLParser, null, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_exact) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x2, myView.myXMLParser, null));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedy_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x2, myView.myXMLParser, null, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_exact) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x3, myView.myXMLParser, null));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Speedz_exact.setText(InterpretInput.niceInput_Speed(mvspeed.x3, myView.myXMLParser, null, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Mass) 
 			myView.pa_computetab.pa_compute_dataadvanced.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Radius) 
-			myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser));
+			myView.pa_computetab.pa_compute_dataadvanced.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser, null));
 		if(object != myView.pa_computetab.pa_compute_dataadvanced.tf_Dense) {
 			if(mp.isBlackHole())
 				myView.pa_computetab.pa_compute_dataadvanced.tf_Dense.setText(myView.myXMLParser.getText(6));	//inf
@@ -1203,10 +1189,10 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			updateComputePanels(GetSelectedMasspoint(), object);
 		}
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Mass) {
-			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser, null));
+			myView.pa_computetab.pa_compute_dataeasy.tf_Mass.setText(InterpretInput.niceInput_Mass(mp.getAbsMass(), myView.myXMLParser));
 		}
 		if(object == myView.pa_computetab.pa_compute_dataeasy.sl_Radius) {
-			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_Length(mp.getAbsRadius(), myView.myXMLParser, null));		
+			myView.pa_computetab.pa_compute_dataeasy.tf_Radius.setText(InterpretInput.niceInput_UnsignedLength(mp.getAbsRadius(), myView.myXMLParser));		
 		}			
 		if(mp.isBlackHole()) 
 			setBHVisible(true);

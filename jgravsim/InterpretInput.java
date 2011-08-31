@@ -6,9 +6,15 @@ import java.util.Locale;
 
 public class InterpretInput {
 
-	public static final int revision = 1;
+	public static final int revision = 2;
 	private static final boolean DEBUG = false;
 
+	private static final DecimalFormat df_s = new DecimalFormat("+0.00000E0;-0.00000E0");
+	private static final DecimalFormat df_c = new DecimalFormat("+0.000000000;-0.000000000");
+	private static final DecimalFormat df_c_unsigned = new DecimalFormat("0.0000000000");
+	private static final DecimalFormat df_l = new DecimalFormat("+0.000000E0;-0.000000E0");
+	private static final DecimalFormat df_l_unsigned = new DecimalFormat("0.0000E0");
+	
 	@SuppressWarnings("unused")
 	private static void debugout(String a) {
 		if (Controller.CURRENTBUILD && DEBUG)
@@ -221,7 +227,7 @@ public class InterpretInput {
 		} 
 		//else
 		//	return myXMLParser.getText(159);
-
+		
 		if(df == null)
 			return stringCommataRevert(String.valueOf(dvar / factor))+" "+unit;
 		else
@@ -286,8 +292,28 @@ public class InterpretInput {
 		else
 			return (df.format(var / factor) + " " + unit);
 	}
-	public static String niceInput_Speed(double var, XMLParser myXMLParser, DecimalFormat df) {
-		return niceInput_Length(var, myXMLParser, df)+"/s";
+
+	/**
+	 * 
+	 * Returns a nice String for value of var. If dfc is null, the value will
+	 * always be displayed in the df format. If dfc is not null and if the value
+	 * >= 10% CalcCode.LIGHTSPEED it will be displayed in units of 'c' instead of
+	 * length/s.
+	 * 
+	 * @param var
+	 *            Number
+	 * @param myXMLParser
+	 * @param df
+	 *            DecimalFormat for length/s or null
+	 * @param dfc
+	 *            DecimalFormat for c or null
+	 * @return String like "5.000 m/s"
+	 */
+	public static String niceInput_Speed(double var, XMLParser myXMLParser, DecimalFormat df, DecimalFormat dfc) {		
+		if(dfc != null && Math.abs(var) >= 0.1*CalcCode.LIGHTSPEED)
+			return dfc.format(var/CalcCode.LIGHTSPEED)+" c";
+		else
+			return niceInput_Length(var, myXMLParser, df)+"/s";
 	}
 	public static String niceInput_Density(double var, XMLParser myXMLParser, DecimalFormat df) {
 		return niceInput_Mass(var, myXMLParser, df)+"/m³";
@@ -492,22 +518,32 @@ public class InterpretInput {
 		return strtemp;
 	}
 
+	
 	public static String niceInput_Time(double time, XMLParser myXMLParser) {
 		return niceInput_Time(time, myXMLParser, null);
 	}
+	
 	public static String niceInput_Length(double var, XMLParser myXMLParser) {
-		return niceInput_Length(var, myXMLParser, null);
+		return niceInput_Length(var, myXMLParser, df_l);
 	}
 	public static String niceInput_Length(long var, XMLParser myXMLParser) {
-		return niceInput_Length(var, myXMLParser, null);
+		return niceInput_Length(var, myXMLParser, df_l);
 	}
+	public static String niceInput_UnsignedLength(double var, XMLParser myXMLParser) {
+		return niceInput_Length(var, myXMLParser, df_l_unsigned);
+	}
+	
 	public static String niceInput_Speed(double var, XMLParser myXMLParser) {
-		return niceInput_Speed(var, myXMLParser, null);
+		return niceInput_Speed(var, myXMLParser, df_s, df_c);
 	}
+	public static String niceInput_UnsignedSpeed(double var, XMLParser myXMLParser) {
+		return niceInput_Speed(var, myXMLParser, df_l_unsigned, df_c_unsigned);
+	}
+	
 	public static String niceInput_Mass(double var, XMLParser myXMLParser) {
-		return niceInput_Mass(var, myXMLParser, null);
+		return niceInput_Mass(var, myXMLParser, df_l_unsigned);
 	}
 	public static String niceInput_Density(double var, XMLParser myXMLParser) {
-		return niceInput_Density(var, myXMLParser, null);
+		return niceInput_Density(var, myXMLParser, df_l_unsigned);
 	}
 }
