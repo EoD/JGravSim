@@ -160,7 +160,7 @@ public class InterpretInput {
 		if(df == null)
 			return stringCommataRevert(String.valueOf( MVMath.ConvertToD(lvar)/factor ))+" "+unit;
 		else
-			return (df.format( MVMath.ConvertToD(lvar)/factor )) + " " + unit;
+			return (df.format( MVMath.ConvertToD(lvar)/factor )) + " " + String.format("%2s", unit);
 	}
 	
 	public static String niceInput_Length(double dvar, XMLParser myXMLParser, DecimalFormat df) {
@@ -231,7 +231,7 @@ public class InterpretInput {
 		if(df == null)
 			return stringCommataRevert(String.valueOf(dvar / factor))+" "+unit;
 		else
-			return (df.format(dvar / factor) + " " + unit);
+			return (df.format(dvar / factor) + " " + String.format("%2s", unit));
 	}
 
 	public static String niceInput_Mass(double var, XMLParser myXMLParser, DecimalFormat df) {
@@ -290,7 +290,7 @@ public class InterpretInput {
 		if(df == null)
 			return stringCommataRevert(String.valueOf(var / factor))+" "+unit;
 		else
-			return (df.format(var / factor) + " " + unit);
+			return (df.format(var / factor) + " " + String.format("%2s", unit));
 	}
 
 	/**
