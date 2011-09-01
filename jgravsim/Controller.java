@@ -54,7 +54,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static final boolean CPPDEBUG = false;
 
 	static final boolean DEBUG = true;
-	static final double VERSION = 1.8;
+	static final double VERSION = 1.9;
 	static final int WPT_VERSION = 2;
 	
 	static final String HOMEPAGE = "http://eod.github.com/JGravSim/";
