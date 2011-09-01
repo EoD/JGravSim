@@ -997,7 +997,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			try {
 				Masspoint_Sim mp = (Masspoint_Sim)myView.pa_visualtab.pa_visual_datatab.cb_Objects.getSelectedItem();
 				if(mp != null) {
-					myView.pa_visualtab.pa_visual_datatab.UpdatePanels(mp);
+					myView.pa_visualtab.pa_visual_datatab.UpdatePanels(myView.pa_visualtab.ov_vis_top.getCurrentStep(), mp.getID());
 				   	//debugout("Object "+(int)mp.getID()+" selected");
 				}
 			}

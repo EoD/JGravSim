@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -255,6 +256,15 @@ public class TabVisualisationData extends JPanel {
 
 	public void buttonsInactive(boolean b) {
 		cb_Objects.setEnabled(b);
+	}
+
+	public void UpdatePanels(Step step, int id) {
+		for(int i=0; i<step.getMasspoints().length; i++) {
+			if(step.getMasspoints()[i].getID() == id) {
+				UpdatePanels(step.getMasspoints()[i]);
+				break;
+			}
+		}
 	}
 	
 	public void UpdatePanels(Masspoint mp) {

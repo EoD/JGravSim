@@ -143,30 +143,83 @@ public class TabVisualisation extends JPanel  {
 		ov_vis_front.repaint();
 		ov_vis_right.repaint();
 		
-		int id = -1;
-		try {
-			Masspoint_Sim mp = (Masspoint_Sim) pa_visual_datatab.cb_Objects.getSelectedItem();
-			if(mp != null)
-				id = mp.getID();
-		}
-		catch (RuntimeException e) {
-			//Controller.debugout("updateCurFrame() - cb_Objects is empty");
-		}
-		
-		pa_visual_datatab.cb_Objects.removeAllItems();
 		
 		if(ov_vis_top.getCurrentStep() != null 
 				&& ov_vis_top.getCurrentStep().getMasspoints() != null
 				&& ov_vis_top.getCurrentStep().getMasspoints().length > 0) {
-			for(int i=0;i<ov_vis_top.getCurrentStep().getMasspoints().length;i++) {
+
+			/* In case we got only the initial "masspoint list" entry, remove it */
+			if(pa_visual_datatab.cb_Objects.getItemCount() == 1) {
+				if(pa_visual_datatab.cb_Objects.getItemAt(0).getClass() == String.class)
+					pa_visual_datatab.cb_Objects.removeAllItems();
+			}
+
+			/* Sort the mp array, so we can speed up the search and we get an ordered list afterwards */
+			ov_vis_top.getCurrentStep().sort();
+			
+			int id = -1;
+			try {
+				/* Try to getSelectedItem(), if it fails our list is empty so we can skip the first loop */
+				Masspoint_Sim mp = (Masspoint_Sim) pa_visual_datatab.cb_Objects.getSelectedItem();
+				if (mp != null)
+					id = mp.getID();
+
+				/* Check the cb_Objects if masspoint is been destroyed and remove it if in that case */
+				for (int k = 0; k < pa_visual_datatab.cb_Objects.getItemCount(); k++) {
+					boolean bsurvived = false;
+					Masspoint_Sim mp_list = (Masspoint_Sim) pa_visual_datatab.cb_Objects.getItemAt(k);
+
+					for (int i = 0; i < ov_vis_top.getCurrentStep().getMasspoints().length; i++) {
+						Masspoint_Sim mp_temp = ov_vis_top.getCurrentStep().getMasspoints()[i];
+						if (mp_list.getID() == mp_temp.getID()) {
+							bsurvived = true;
+							break;
+						}
+					}
+					/* In case the item in the list can't be found in the current step, remove it */
+					if (!bsurvived)
+						pa_visual_datatab.cb_Objects.removeItemAt(k);
+				}
+			} catch (RuntimeException e) {
+				Controller.debugout("updateCurFrame() - cb_Objects is empty");
+			}
+
+
+
+			/* Check the if all masspoint are already in the list, if not, add them */
+			for (int i = 0; i < ov_vis_top.getCurrentStep().getMasspoints().length; i++) {
+				boolean binlist = false;
 				Masspoint_Sim mp_temp = ov_vis_top.getCurrentStep().getMasspoints()[i];
-				pa_visual_datatab.cb_Objects.addItem(mp_temp);
-				if(mp_temp.getID() == id)
-					pa_visual_datatab.cb_Objects.setSelectedItem(mp_temp);
+
+				/* If we hit our selected masspoint, skip the search, but update the mp data */
+				if (mp_temp.getID() == id) {
+					pa_visual_datatab.UpdatePanels(mp_temp);
+					continue;
+				}
+
+				for (int k = 0; k < pa_visual_datatab.cb_Objects.getItemCount(); k++) {
+					Masspoint_Sim mp_list = (Masspoint_Sim) pa_visual_datatab.cb_Objects.getItemAt(k);
+					if (mp_list.getID() == mp_temp.getID()) {
+						/* We found our masspoint, so search the next one */
+						binlist = true;
+						break;
+					} else if (mp_list.getID() > mp_temp.getID()) {
+						/*
+						 * Due to our ordered masspoint list, we can break the search
+						 * if we haven't found it yet and the current mp_list got a
+						 * higher ID then the mp_temp. In that case, we squeeze the
+						 * object before position k and tell the loop that we found it.
+						 */
+						pa_visual_datatab.cb_Objects.insertItemAt(mp_temp, k);
+						binlist = true;
+						break;
+					}
+				}
+				/* In case we haven't found it, add the item to the end of the list */
+				if (!binlist)
+					pa_visual_datatab.cb_Objects.addItem(mp_temp);
 			}
 		}
-		else
-			pa_visual_datatab.cb_Objects.addItem(myXMLParser.getText(309));
 	}
 	
 	public void setCurFrame(int frame) {
