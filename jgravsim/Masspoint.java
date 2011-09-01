@@ -1,6 +1,6 @@
 package jgravsim;
 
-public class Masspoint {
+public class Masspoint implements Comparable<Masspoint> {
 	
 	public static final int revision = 1;
 	public static final boolean DEBUG = false;
@@ -76,6 +76,15 @@ public class Masspoint {
 			return myXMLParser.getText(256)+" "+iID;
 		else
 			return sName;
+	}
+	
+	public int compareTo(Masspoint mp2) {
+		if(mp2.getID() < iID)
+			return -1;
+		else if(mp2.getID() > iID)
+			return 1;
+		else
+			return 0;
 	}
 	
 	@SuppressWarnings("unused")

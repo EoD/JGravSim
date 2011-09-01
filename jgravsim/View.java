@@ -13,6 +13,27 @@ public class View extends JFrame  {
 	TabVisualisation pa_visualtab; /* Visualisierung berechneter Daten */
 	TabAbout pa_abouttab; /* Über dieses Programm */
     XMLParser myXMLParser;
+
+	public static final float ZOOM_STEP = 0.1f;
+	public static final float ZOOM_DEFAULT = 7.5f;
+	public static final int ZOOM_MIN = 13;
+	public static final int ZOOM_MAX = 162;
+	
+	public static final int GRID_MIN = 15;
+	public static final int GRID_MAX = 200;
+	public static final int GRID_DEFAULT = 25;
+	
+	public static final int SL_MINTICK = 10;
+	public static final int SL_MAJTICK = 50;
+
+	public static final int TAB_VISUAL_ID = 1;
+
+	public static final int WIDTH_VIEW = 975;
+	public static final int HEIGHT_VIEW = 740;
+	/* Variables for 3D visual controls JFrame */
+	public static final int WIDTH_VISUALFRAME = 500;
+	public static final int HEIGHT_VISUALFRAME = 400;
+	public static final int HEIGHT_VISUALFRAME_OFFSET = 50;
 	
 	View(int lang) {
 		super();
@@ -24,7 +45,7 @@ public class View extends JFrame  {
 		
 		int answer = 1;
 		if(Controller.CURRENTBUILD && hasJ3D())
-			answer = JOptionPane.showConfirmDialog(this, myXMLParser.getText(1), myXMLParser.getText(1),JOptionPane.YES_NO_OPTION);
+			answer = 0;
 		
 		tp_tabs = new JTabbedPane(); /* Die Tabs werden hierrin dargestellt ... */
 		pa_computetab = new TabCompute(myXMLParser); /* Berechnung und Ausgabe der Daten */
@@ -37,7 +58,7 @@ public class View extends JFrame  {
 		tp_tabs.addTab(myXMLParser.getText(4), pa_abouttab);
 
 		add(tp_tabs);
-		setSize(975,740);
+		setSize(WIDTH_VIEW, HEIGHT_VIEW);
 		setVisible(true);
 	}
 

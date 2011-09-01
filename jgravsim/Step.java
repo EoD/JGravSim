@@ -1,5 +1,7 @@
 package jgravsim;
 
+import java.util.Arrays;
+
 public class Step {
 	private int iStepNumber;
 	private Masspoint_Sim[] mpMasspoints;
@@ -40,5 +42,9 @@ public class Step {
 	
 	public long getWPTLineNumber() {
 		return lWPTLineNumber;
+	}
+	
+	public void sort() {
+		Arrays.sort(mpMasspoints);
 	}
 }

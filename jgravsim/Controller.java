@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.*;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -54,12 +55,12 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	static final boolean CPPDEBUG = false;
 
 	static final boolean DEBUG = true;
-	static final float ZOOMLEVEL = 10.0f;
 	static final double VERSION = 1.8;
 	static final int WPT_VERSION = 2;
 	
 	static final String HOMEPAGE = "http://eod.github.com/JGravSim/";
 	static final String EMAIL = "jgravsim@gmail.com";
+	static final String libdir = "lib";
 
 	static final Masspoint mpdf_sun		=	new Masspoint(CalcCode.SM,CalcCode.SR);
 	static final Masspoint mpdf_earth	=	new Masspoint(CalcCode.EM,CalcCode.ER);
@@ -89,6 +90,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	CalcProgress myCalcProgress;
 	View_CalcOptions myView_CalcOptions;
 	View_CalcProgress myView_CalcProgress;
+	String strArch = null;
 	
 	Vector<Masspoint> vmasspoints = new Vector<Masspoint>();
 	Masspoint mp_default;
@@ -156,6 +158,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	
 	Controller(int language) {	
 		/* Register Stuff from Visualisation */
+		updateJavaLibraryPath(getArch());
 		myView = new View(language);
 		myModel = new Model();
 		
@@ -201,7 +204,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.b_savefile.addActionListener(this);
 		myView.pa_computetab.b_loadfile.addActionListener(this);
 		
-
+		myView.tp_tabs.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_playcontr_slider.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.addChangeListener(this);
 		myView.pa_visualtab.pa_visual_contrtab.sl_gridoffset.addChangeListener(this);
@@ -241,11 +244,11 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		myView.pa_computetab.ov_front.addMouseWheelListener(this);
 		myView.pa_computetab.ov_top.addMouseWheelListener(this);
 	
-		myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.setValue(95);	//=Zoom 7.5
-		myView.pa_visualtab.setGridOffset(25);
+		myView.pa_visualtab.setZoom(View.ZOOM_DEFAULT);
+		myView.pa_visualtab.setGridOffset(View.GRID_DEFAULT);
 
-		myView.pa_computetab.sl_zoomlevel.setValue(95);	//=Zoom 7.5
-		myView.pa_computetab.setGridOffset(25);
+		myView.pa_computetab.setZoom(View.ZOOM_DEFAULT);
+		myView.pa_computetab.setGridOffset(View.GRID_DEFAULT);
 	}
 	
 	public static void main(String[] args) {
@@ -405,9 +408,6 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			if(curFrame+1<=myView.pa_visualtab.getMaxFrame()) {
 				myView.pa_visualtab.setCurFrame(curFrame+1);
 			}
-		}
-		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_resetoffset) {
-			myView.pa_visualtab.resetOffset();
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.b_resetoffset) {
 			myView.pa_visualtab.resetOffset();
@@ -668,28 +668,28 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
     }
 
 	public void stateChanged(ChangeEvent e) {
-		JSlider source = (JSlider)e.getSource();
+		Object source = e.getSource();
 		
 		if(source == myView.pa_visualtab.pa_visual_contrtab.sl_playcontr_slider) {
-			myView.pa_visualtab.setCurFrame(source.getValue());
-			myView.pa_visualtab.displayStep(myModel.dynamicLoader.getStep(source.getValue()));
+			myView.pa_visualtab.setCurFrame(((JSlider)source).getValue());
+			myView.pa_visualtab.displayStep(myModel.dynamicLoader.getStep(((JSlider)source).getValue()));
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel) {
-			float zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
+			/* "/(1.f/View.ZOOM_STEP)" == "*ZOOM_STEP" required to avoid rounding errors */
+			float zoomLevel = (View.ZOOM_MAX - ((JSlider)source).getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
 			myView.pa_visualtab.setZoom(zoomLevel, false);
 		}
 		else if(source == myView.pa_visualtab.pa_visual_contrtab.sl_gridoffset) {
-			myView.pa_visualtab.setGridOffset(source.getValue());
+			myView.pa_visualtab.setGridOffset(((JSlider)source).getValue());
 		}
 		else if(source == myView.pa_computetab.sl_zoomlevel) {
-			float zoomLevel = (source.getMaximum()-source.getValue()+CalcCode.SZOOMCONST)/ZOOMLEVEL;
+			float zoomLevel = (View.ZOOM_MAX - ((JSlider)source).getValue() + View.ZOOM_MIN)/(1.f/View.ZOOM_STEP);
 			myView.pa_computetab.setZoom(zoomLevel);
 			myView.pa_computetab.repaintViews();
 		}
 		else if(source == myView.pa_computetab.sl_gridoffset) {
-			myView.pa_computetab.setGridOffset(source.getValue());
+			myView.pa_computetab.setGridOffset(((JSlider)source).getValue());
 		}
-		
 		else if(source == myView.pa_computetab.pa_compute_dataeasy.sl_Mass) {
 			double dmass = myView.pa_computetab.pa_compute_dataeasy.sl_Mass.getValue();
 			dmass = Math.pow(dmass,CalcCode.SMASSCONST);
@@ -717,10 +717,53 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			//debugout("sRadius - Slider moved. Value="+myMPDataView.sRadius.getValue()+", dradius="+dradius);
 			updateComputePanels(GetSelectedMasspoint(),source);
 		}
+		/* If someone switches to the visualisation tab, show him the controls */
+		else if(myView.pa_visualtab.b_enable3d && source == myView.tp_tabs) {
+			if(myView.tp_tabs.getSelectedIndex() == View.TAB_VISUAL_ID) {
+				myView.pa_visualtab.jf_visual_tabs.setVisible(true);
+				myView.pa_visualtab.jf_visual_tabs.toFront();
+			}
+			else if(myView.pa_visualtab.jf_visual_tabs.isVisible()) {
+				myView.pa_visualtab.jf_visual_tabs.setVisible(false);
+			}
+		}
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
+		/*
+		 * Check if we want to zoom or if we want to move. You can zoom holding the middle mouse
+		 * button or turning the mouse wheel. 
+		 * Pressing the middle mouse button is equivalent to holding down ALT!
+		 */
+		if (e.isAltDown()) {
+			if (e.getSource() == myView.pa_visualtab.ov_vis_top
+					|| e.getSource() == myView.pa_visualtab.ov_vis_right
+					|| e.getSource() == myView.pa_visualtab.ov_vis_front) {
+				ObjectView source = (ObjectView) e.getSource();
+				int zoom = -(source.iLastMouseY - e.getY());
+
+				double curZoom = myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getValue();
+				curZoom -= zoom;
+				if (curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN)
+					myView.pa_visualtab.addZoom(zoom * View.ZOOM_STEP);
+
+				source.iLastMouseY = e.getY();
+			} else if (e.getSource() == myView.pa_computetab.ov_front
+					|| e.getSource() == myView.pa_computetab.ov_top) {
+				ObjectView source = (ObjectView) e.getSource();
+				int zoom = -(source.iLastMouseY - e.getY());
+				
+				float curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
+				curZoom -= zoom;
+				if (curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN) {
+					myView.pa_computetab.setZoom(curZoom * View.ZOOM_STEP);
+					myView.pa_computetab.sl_zoomlevel.setValue((int) curZoom);
+				}
+				
+				source.iLastMouseY = e.getY();
+			}
+		}
+		else if(e.getSource() == myView.pa_visualtab.ov_vis_top) {
 			ObjectView2D source = (ObjectView2D)e.getSource();
 			myView.pa_visualtab.changeOffsetX(e.getX()-source.iLastMouseX);
 			myView.pa_visualtab.changeOffsetY(-(e.getY()-source.iLastMouseY));
@@ -860,18 +903,16 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 			}	
 		
 		if(source == myView.pa_visualtab.ov_vis_top) {	
-			((ObjectView2D)source).iLastMouseX = e.getX();
-			((ObjectView2D)source).iLastMouseY = e.getY();
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 		else if(source == myView.pa_visualtab.ov_vis_front) {			
-			((ObjectView2D)source).iLastMouseX = e.getX();
-			((ObjectView2D)source).iLastMouseY = e.getY();
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 		else if(source == myView.pa_visualtab.ov_vis_right) {
-			if(!myView.pa_visualtab.Is3dEnabled()) {
-				((ObjectView2D)source).iLastMouseX = e.getX();
-				((ObjectView2D)source).iLastMouseY = e.getY();
-			}
+			((ObjectView)source).iLastMouseX = e.getX();
+			((ObjectView)source).iLastMouseY = e.getY();
 		}
 	}
 
@@ -920,20 +961,16 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 				source == myView.pa_visualtab.ov_vis_top) {
 			double curZoom = myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getValue();
 			curZoom -= e.getWheelRotation();
-			if((curZoom <= myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getMaximum() 
-					&& curZoom >= myView.pa_visualtab.pa_visual_contrtab.sl_zoomlevel.getMinimum())) {
-				
-				myView.pa_visualtab.addZoom(e.getWheelRotation()/ZOOMLEVEL);
+			if(curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN) {
+				myView.pa_visualtab.addZoom(e.getWheelRotation()*View.ZOOM_STEP);
 			}
 		}		
 		else if(source == myView.pa_computetab.ov_front || 
-				(ObjectView2D)e.getSource() == myView.pa_computetab.ov_top) {
+					source == myView.pa_computetab.ov_top) {
 			float curZoom = myView.pa_computetab.sl_zoomlevel.getValue();
 			curZoom -= e.getWheelRotation();
-			if((curZoom <= myView.pa_computetab.sl_zoomlevel.getMaximum() 
-					&& curZoom >= myView.pa_computetab.sl_zoomlevel.getMinimum())) {
-				
-				myView.pa_computetab.setZoom(curZoom/ZOOMLEVEL);
+			if(curZoom <= View.ZOOM_MAX && curZoom >= View.ZOOM_MIN) {
+				myView.pa_computetab.setZoom(curZoom*View.ZOOM_STEP);
 				myView.pa_computetab.sl_zoomlevel.setValue((int)curZoom);
 			}
 		}
@@ -1847,6 +1884,51 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		return true;
+	}
+	
+	public String getArch() {
+		if (strArch == null) {
+			debugout("detectArch() - os.name    = "
+					+ System.getProperty("os.name"));
+			debugout("detectArch() - os.arch    = "
+					+ System.getProperty("os.arch"));
+			debugout("detectArch() - os.version = "
+					+ System.getProperty("os.version"));
+			debugout("detectArch() - file.separator = "
+					+ System.getProperty("file.separator"));
+
+			if (System.getProperty("os.arch").matches("i[3-6]86"))
+				strArch = "x86";
+			else if(System.getProperty("os.name").matches("(?i)SunOS"))
+				strArch = "sun4u";
+			else
+				strArch = System.getProperty("os.arch");
+		}
+		return strArch;
+	}
+	
+	private boolean updateJavaLibraryPath(String arch) {
+		if (arch.equals("x86"))
+			arch = "i386";
+		/* We don't have a proper check for 32/64bit Solaris here */
+		else if(arch.equals("sun4u"))
+			arch = "sparc";
+		
+		Controller.debugout("updateLibraryPath() - adding library path \"" + libdir+ File.separator + arch + "\" to java.library.path!");
+		String newLibPath = libdir + File.separator + arch + File.pathSeparator + System.getProperty("java.library.path");
+		System.setProperty("java.library.path", newLibPath);
+
+		try {
+			//If cache is not empty, clear it
+			Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+			fieldSysPath.setAccessible(true);
+			if (fieldSysPath != null)
+				fieldSysPath.set(System.class.getClassLoader(), null);
+			return true;
+		} catch (Exception e) {
+			debugout("updateLibraryPath("+arch+") - exception: "+e);
+			return false;
+		}
 	}
 }
 
