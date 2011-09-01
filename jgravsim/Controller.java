@@ -6,7 +6,6 @@ import java.awt.event.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.JColorChooser;
