@@ -257,16 +257,6 @@ public class TabVisualisationData extends JPanel {
 		cb_Objects.setEnabled(b);
 	}
 	
-	public void UpdatePanels(Masspoint_Sim mpsim) {
-		Masspoint mp = new Masspoint(mpsim.getID(),mpsim.getPosX(),mpsim.getPosY(),mpsim.getPosZ());
-		mp.setSpeedx(mpsim.getSpeedX());
-		mp.setSpeedy(mpsim.getSpeedY());
-		mp.setSpeedz(mpsim.getSpeedZ());
-		mp.setMass(mpsim.getAbsMass());
-		mp.setAbsRadius(mpsim.getAbsRadius());
-		UpdatePanels(mp);
-	}
-	
 	public void UpdatePanels(Masspoint mp) {
 		if(mp == null) {
 			cb_Objects.setSelectedItem(new String(myXMLParser.getText(309)));
