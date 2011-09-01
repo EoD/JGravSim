@@ -79,9 +79,9 @@ public class Masspoint implements Comparable<Masspoint> {
 	}
 	
 	public int compareTo(Masspoint mp2) {
-		if(mp2.getID() < iID)
+		if(iID < mp2.getID())
 			return -1;
-		else if(mp2.getID() > iID)
+		else if(iID > mp2.getID())
 			return 1;
 		else
 			return 0;
