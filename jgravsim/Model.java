@@ -131,6 +131,11 @@ public class Model {
 		return INFILE_NOERROR; /* no error detected */	
 	}
 	
+	/**
+	 * Returns the last complete step
+	 * @param infile wpt file
+	 * @return max(0, last step found minus 1)
+	 */
 	public int findlaststep(File infile) {
 		debugout("findlaststep() - Looking for last step...");
 		int step = 0;
@@ -164,7 +169,10 @@ public class Model {
 		}
 			
 		debugout("findlaststep() - Last step found "+step);
-		return step;
+		if(step == 0)
+			return 0;
+		else
+			return step-1;
 	}
 	
 	/* 
