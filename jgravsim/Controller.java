@@ -1449,6 +1449,16 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
     	if(myView.pa_computetab.cb_Objects.getItemCount()<=1) {
     		myView.pa_computetab.cb_Objects.addItem(myView.myXMLParser.getText(240));
     		myView.pa_computetab.ButtonsStart();
+    		myView.pa_computetab.ov_front.addMouseListener(this);
+    		myView.pa_computetab.ov_top.addMouseListener(this);
+    		myView.pa_computetab.ov_front.addMouseMotionListener(this);
+    		myView.pa_computetab.ov_top.addMouseMotionListener(this);
+    		myView.pa_computetab.ov_front.addMouseWheelListener(this);
+    		myView.pa_computetab.ov_top.addMouseWheelListener(this);
+    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedx_exact.addMouseListener(this);
+    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedy_exact.addMouseListener(this);
+    		myView.pa_computetab.pa_compute_dataeasy.tf_Speedz_exact.addMouseListener(this);
+    		myView.pa_computetab.pa_compute_dataeasy.pa_comp_speed_exact.addMouseListener(this);
     		id = 0;
     	}
     	if(mySpeedVector != null && mySpeedVector.masspoint.getID() == mp.getID()) {
