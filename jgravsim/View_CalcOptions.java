@@ -288,7 +288,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 								double dversion = Double.parseDouble(version.split(":")[1]);
 								if(dversion != Controller.VERSION) {
 									debugout("actionPerformed() - wrong version. Expected: v"+Controller.VERSION+", received: v"+dversion);
-									String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(225), 1.22, 1.8);
+									String question = String.format(Locale.getDefault(), myController.myView.myXMLParser.getText(225), dversion, Controller.VERSION);
 									int awnser = JOptionPane.showConfirmDialog(myController.myView, question, myController.myView.myXMLParser.getText(40),JOptionPane.YES_NO_OPTION);
 									if(awnser != 0) {
 										in_version.close();
@@ -296,10 +296,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 										return;
 									}
 								}
-								else {
-									debugout("actionPerformed() - backend dversion:"+dversion);
-									break;
-								}
+								debugout("actionPerformed() - backend dversion:"+dversion);
+								break;
 							}
 							version = null;
 						}
