@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class CalcProgress extends Thread {
 
-	public static final int revision = 1;
+	public static final int revision = 2;
 	private static final boolean DEBUG = false;
 	boolean loop;
 	Controller myController;
@@ -51,6 +51,15 @@ public class CalcProgress extends Thread {
 				}
 				br.close();
 				fr.close();
+				
+				try {
+					/* same as in run() */
+					pcalculation.exitValue();
+					debugout("readfile() - calculation isn't running anymore!");
+					break;
+				} catch (IllegalThreadStateException e) {
+					/* Everything is fine, program is still running */
+				}
 			}
 			
 			if(j+1 >= 100)
@@ -81,11 +90,22 @@ public class CalcProgress extends Thread {
 					error = pcalculation.exitValue();
 					break;
 				}
+				/*
+				 * If we haven't finished our calculation, we check if process is
+				 * still running. If process is still running, we get an
+				 * IllegalThreadStateException and won't execute the break. If it
+				 * isn't we break the loop.
+				 */
+				else {
+					error = pcalculation.exitValue();
+					debugout("run() - calculation halted unexpectedly!");
+					break;
+				}
+				
 			} catch (InterruptedException e) {
 				debugout("run() - InterruptedException0!");
 			} catch (IllegalThreadStateException e) {
-				debugout("run() - IllegalThreadStateException!");
-				break;
+				debugout("run() - IllegalThreadStateException! Program "+pcalculation.toString()+" is still running.");
 			}
 		}
 		if(loop) {
