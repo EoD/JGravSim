@@ -25,7 +25,7 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class View_CalcOptions extends JFrame implements ActionListener, WindowListener, ChangeListener{
-	public static final int revision = 1;
+	public static final int revision = 2;
 	
 	static final boolean DEBUG = false;
 	static final String exe = "cgravsim";
