@@ -125,6 +125,13 @@ public class CalcProgress extends Thread {
 	}
 	
 	public void output(Process calculation) {
+		/*
+		 * Bug: program will h ang when this is executed, as readLine will only
+		 * return null if process exits. But we also want to support reading errors
+		 * when process has been canceled. 
+		 * TODO Fix it!
+		 */
+/*
 		debugout("C++ - Input ready?");
 		try {
 			InputStreamReader input = new InputStreamReader(calculation.getInputStream());
@@ -139,5 +146,6 @@ public class CalcProgress extends Thread {
 		} catch(Exception excep) {
 			debugout(excep.getMessage());
 		}
+*/
 	}
 }

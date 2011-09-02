@@ -311,8 +311,8 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						}
 						else
 							calculation = new ProcessBuilder( command );
-						//TODO Fix stop button functionality
-						//myController.myView.pa_computetab.b_stop.setEnabled(true);
+						
+						myController.myView.pa_computetab.b_stop.setEnabled(true);
 						calculationp = calculation.start();
 						if(calculationp == null)
 							throw new IOException("EoD - Error while executing "+command[0]+" "+command[1]+" "+command[2]+" "+command[3]);
