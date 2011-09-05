@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php header('Content-type: text/html; charset=iso-8859-1'); ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv="Content-type" content="text/html;charset=ISO-8859-1" />
 <style type="text/css">
 <!--
 body {
@@ -33,17 +36,16 @@ a:active {
 -->
 
 </style>
-<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="icon" type="image/png" href="./favicon.png" />
 <title>JGravSim</title>
 <meta name="description" content="This site is about the program JGravSim, a program to calculate and visualize gravitational effects with relativistic corrections." />
 <meta name="google-site-verification" content="c7AMgiZmOgNOACmriRhKmMhotamkQO34imn2ufQqSiI" />
-<link rel="icon" type="image/png" href="./../favicon.png" />
 </head>
 
 <body>
 <center>
 <br />
-<a href="http://github.com/EoD/JGravSim/commits/master"><h1>JGravSim</h1></a>
+<h1><a href="http://github.com/EoD/JGravSim/commits/master">JGravSim</a></h1>
 <b>A program to calculate and visualize gravitational effects with relativistic corrections!</b>
 <br /><br />
 <!--<b><a href="./hive">Goto the Hive</a>.</b>-->
@@ -87,7 +89,7 @@ natcasesort($files_main);
 echo "<u>Main stuff:</u><br />\n";
 foreach ($files_main as $file) {
 	if(strpos($file, "_old") == false)
-		echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$file</a><br />\n";
+		echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"".str_replace(' ', '%20', $file)."\" target=\"_blank\">$file</a><br />\n";
 }
 
 
@@ -96,7 +98,7 @@ echo "<br />&nbsp;<u><i>Outdated stuff:</i></u><br />\n";
 foreach ($files_main as $file) {
 	if(strpos($file, "_old") != false) {
 		$outdated = true;
-		echo "&nbsp;&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<i><a href=\"$file\" target=\"_blank\">$file</a></i><br />\n";
+		echo "&nbsp;&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<i><a href=\"".str_replace(' ', '%20', $file)."\" target=\"_blank\">$file</a></i><br />\n";
 	}
 }
 if(!$outdated) {
@@ -106,14 +108,14 @@ if(!$outdated) {
 echo "<br />";
 echo "<br /><u>Documents:</u><br />\n";
 foreach ($files_docs as $file) {
-	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$file</a><br />\n";
+	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"".str_replace(' ', '%20', $file)."\" target=\"_blank\">$file</a><br />\n";
 }
 
 echo "<br /><u>Scenarios:</u><br />\n";
 foreach ($files_scenario as $file) {
 	$showname = explode (".wpt", $file);
 	$showname = str_replace("_", " ", $showname);
-	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"$file\" target=\"_blank\">$showname[0]</a><br />\n";
+	echo "&nbsp;<small>".date ("Y/m/d", filemtime($file))."</small>&nbsp;&nbsp;<a href=\"".str_replace(' ', '%20', $file)."\" target=\"_blank\">$showname[0]</a><br />\n";
 }
 ?>
 </div>
