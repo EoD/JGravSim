@@ -207,7 +207,13 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						return;
 				}
 				myController.flagcalc = true;
-				myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
+				int error = myModel.writetempHeader(myController.calc_datacount,myController.calc_timecount);
+				if(error != Model.INFILE_NOERROR) {
+					debugout("actionPerformed - writetempHeader ERROR "+error);
+			   		myController.CalculationFinished(CalcCode.UNKNOWN);
+					this.dispose();
+			   		return;
+				}
 				myModel.AddStep(myController.getVMasspoints());
 
 				this.dispose();
