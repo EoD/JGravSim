@@ -160,6 +160,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		updateJavaLibraryPath(getArch());
 		myView = new View(language);
 		myModel = new Model();
+		Model.exe_filename = getExeFilename();
 		
 		myView.addWindowListener(this);
 		myView.addKeyListener(this);	
@@ -248,6 +249,22 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 
 		myView.pa_computetab.setZoom(View.ZOOM_DEFAULT);
 		myView.pa_computetab.setGridOffset(View.GRID_DEFAULT);
+	}
+
+	/**
+	 * Sets the filename of the C/C++ calculation, according to the arch.
+	 */
+	private String getExeFilename() {
+		String filename = Model.FILE_EXE;
+		if(Controller.CPPDEBUG)
+			filename += "dbg";
+		
+		filename += "_" + getArch();
+
+		if(System.getProperty("os.name").contains("Windows"))
+			filename += ".exe";
+		
+		return filename;
 	}
 	
 	public static void main(String[] args) {

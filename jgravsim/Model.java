@@ -18,6 +18,7 @@ public class Model {
 	public static final String FILE_ENDING_ZIP = "zip";
 	public static final String FILE_TEMP = "temp."+FILE_ENDING;
 	public static final String FILE_PERCENT = "percent.tmp";
+	public static final String FILE_EXE = "cgravsim";
 	
 	Vector<Masspoint> stDataset = null;
 	DynamicWPTLoader dynamicLoader = null;
@@ -43,6 +44,7 @@ public class Model {
 
 	public String filename;
 	private File file_loaded;
+	public static String exe_filename = null;
 
 	int istep;
 	double dtimeCount;

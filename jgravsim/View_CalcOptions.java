@@ -28,7 +28,6 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 	public static final int revision = 2;
 	
 	static final boolean DEBUG = false;
-	static final String exe = "cgravsim";
 	static Color defaultColor = null;
 	static boolean bcpp = true; 
 	
@@ -229,27 +228,19 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 					debugout("actionPerformed - C++ - Calculation : datacount="+myController.calc_datacount+", timecount="+myController.calc_timecount+", timestep="+myController.calc_timestep);
 					try {
 						String exedir= System.getProperty("user.dir").toString();
-
-						String filename = exe;
-						if(Controller.CPPDEBUG)
-							filename += "dbg";
-						
-						filename += "_" + myController.getArch();
 						
 						String[] command = new String[4];
-						command[0] = exedir+File.separator+filename;
+						command[0] = exedir+File.separator+Model.exe_filename;
 						command[1] = "-t";
 						command[2] = Double.toString(myController.calc_timestep);
 						command[3] = exedir+File.separator+Model.FILE_TEMP;
-						
-						if(System.getProperty("os.name").contains("Windows"))
-							command[0] += ".exe";
 
 						File fcalc = new File(command[0]);
 						while(!fcalc.exists()) {
 							if(myController.getArch().equals("amd64") && command[0].contains("amd64")) {
 								debugout("WARNING - actionPerformed() - could not find C++ file for amd64, switching to x86");
 								command[0] = command[0].replace("amd64", "x86");
+								Model.exe_filename = Model.exe_filename.replace("amd64", "x86");
 								fcalc = new File(command[0]);
 								continue;
 							}
