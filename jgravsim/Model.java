@@ -264,7 +264,7 @@ public class Model {
     	}
 	}
 	
-	public int deleteFile(String filename) {
+	public static int deleteFile(String filename) {
 	    File f = new File(filename);
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists()) {
@@ -420,7 +420,7 @@ public class Model {
 		return loadDataset(infile, 0);
 	}
 	
-	public void copydata(InputStream instream, OutputStream outstream) throws IOException { 
+	public static void copydata(InputStream instream, OutputStream outstream) throws IOException { 
 		byte[] buffer = new byte[0xFFFF]; 
 	 
 	    for(int length; (length = instream.read(buffer)) != -1;) 

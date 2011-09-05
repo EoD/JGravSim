@@ -120,7 +120,7 @@ public class CalcProgress extends Thread {
 		debugout("halt() - CalcProgress will be halted!");
 		output(pcalculation);
 		pcalculation.destroy();
-		myController.myModel.deleteFile(Model.FILE_PERCENT);
+		Model.deleteFile(Model.FILE_PERCENT);
 		debugout("C++ - Calculation killed!");
 	}
 	

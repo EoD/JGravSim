@@ -1100,7 +1100,7 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 		if(source == myView) {
 			debugout("Controller() - Closing...");
 			if(!CURRENTBUILD)
-				myModel.deleteFile(Model.FILE_TEMP);		
+				Model.deleteFile(Model.FILE_TEMP);		
 		}
 		System.exit(0);
 	}
