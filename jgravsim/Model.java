@@ -37,7 +37,9 @@ public class Model {
 	public static final int INFILE_EOFSTEPERROR = -5;
 	public static final int INFILE_EOFOBJERROR = -6;
 	public static final int INFILE_WPTERROR = -7;
-
+	public static final int INFILE_ACCESSERROR = -8;
+	public static final int INFILE_WRITEERROR = -9;
+	public static final int INFILE_DIRECTORY = -10;
 
 	public String filename;
 	private File file_loaded;
@@ -51,24 +53,21 @@ public class Model {
 		//file = new File(Defaultname);
 	}
 	
-	public void writetempHeader(double datacount, double timecount) {
+	public int writetempHeader(double datacount, double timecount) {
 		istep = 0;
 		//file = new File(Defaultname);
 		
 		//check if file is really deleted
 		int idelete = deleteFile(FILE_TEMP);
-		if(idelete == 1)
-			debugout("writeHeader() - file has been deleted");
-		else if(idelete == -1)
-			debugout("writeHeader() - file doesn't exist yet");
-		else 
-			debugout("writeHeader() - WARNING file couldn't be deleted. ID "+idelete);
+		if(idelete != Model.INFILE_NOERROR)
+			return idelete;
 		
 		filename = FILE_TEMP;
 		String version = String.valueOf(Controller.WPT_VERSION);
 		String steps = String.valueOf((long)(datacount/timecount)+1);
 		String steptime = String.valueOf(timecount);
 		writetempout(version+DELIMDATA+steps+DELIMDATA+steptime+DELIMLINE, filename);
+		return INFILE_NOERROR;
 	}
 	
 	public int correctHeader(File infile, int newSteps) {
@@ -268,12 +267,12 @@ public class Model {
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists()) {
 	      debugout("deleteFile() - no such file or directory: "+filename);
-	      return -1;
+	      return Model.INFILE_FILENOTFOUND;
 	    }
 		    
 	    if (!f.canWrite()) {
 	    	debugout("deleteFile() - write protected: "+filename);
-	    	return -2;
+	    	return Model.INFILE_WRITEERROR;
 	    }
 		    
 		// If it is a directory, make sure it is empty    
@@ -281,15 +280,15 @@ public class Model {
 	      String[] files = f.list();
 	      if (files.length > 0) {
 	        debugout("deleteFile() - directory not empty: "+filename);
-	        return -3;
+	        return Model.INFILE_DIRECTORY;
 	      }
 	    }
 	    
 		//deleting successfull?
 	    if(f.delete())
-	    	return 1;
+	    	return Model.INFILE_NOERROR;
 	    else
-	    	return 0;
+	    	return Model.INFILE_ACCESSERROR;
 	}
 	
 	public int loadDataset(File infile, int istep) {
