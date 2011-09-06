@@ -2,6 +2,7 @@ package jgravsim;
 
 import java.awt.Color;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Locale;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -229,11 +230,11 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 					try {
 						String exedir= System.getProperty("user.dir").toString();
 						
-						String[] command = new String[4];
-						command[0] = exedir+File.separator+Model.exe_filename;
-						command[1] = "-t";
-						command[2] = Double.toString(myController.calc_timestep);
-						command[3] = exedir+File.separator+Model.FILE_TEMP;
+						String[] command = new String[] {
+								exedir + File.separator + Model.exe_filename,
+								"-t", Double.toString(myController.calc_timestep),
+								exedir + File.separator + Model.FILE_TEMP
+						};
 
 						File fcalc = new File(command[0]);
 						while(!fcalc.exists()) {
@@ -302,9 +303,13 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						if(version == null)
 							throw new IOException("EoD - Error while executing "+command[0]+" -v !");
 
-						debugout("actionPerformed - C++ - Calculation : Command='"+command[0]+" "+command[1]+" "+command[2]+" "+command[3]);
+						debugout("actionPerformed - C++ - Calculation : Command='"+Arrays.toString(command));
 						if(System.getProperty("os.name").contains("Windows")) {
-							calculation = new ProcessBuilder( new String[]{"cmd.exe", "/C", command[0], command[1], command[2], command[3]} );
+							String[] wincommand = new String[command.length+2];
+							wincommand[0] = "cmd.exe";
+							wincommand[1] = "/C";
+							System.arraycopy(command, 0, wincommand, 2, command.length);
+							calculation = new ProcessBuilder( wincommand );
 						}
 						else
 							calculation = new ProcessBuilder( command );
@@ -312,7 +317,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 						myController.myView.pa_computetab.b_stop.setEnabled(true);
 						calculationp = calculation.start();
 						if(calculationp == null)
-							throw new IOException("EoD - Error while executing "+command[0]+" "+command[1]+" "+command[2]+" "+command[3]);
+							throw new IOException("EoD - Error while executing "+Arrays.toString(command));
 						
 						myController.myCalcProgress = new CalcProgress(myController, Model.FILE_PERCENT, calculationp);
 						myController.myCalcProgress.start();
