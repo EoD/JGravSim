@@ -63,7 +63,7 @@ public class Model {
 		
 		//check if file is really deleted
 		int idelete = deleteFile(FILE_TEMP);
-		if(idelete != Model.INFILE_NOERROR)
+		if(idelete != Model.INFILE_NOERROR && idelete != Model.INFILE_FILENOTFOUND)
 			return idelete;
 		
 		filename = FILE_TEMP;
