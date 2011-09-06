@@ -2,6 +2,7 @@ package jgravsim;
 
 import java.io.*;
 import java.util.Enumeration;
+import java.util.UUID;
 import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -45,6 +46,7 @@ public class Model {
 	public String filename;
 	private File file_loaded;
 	public static String exe_filename = null;
+	public static String cloned_exe_uuid = null;
 
 	int istep;
 	double dtimeCount;
@@ -479,5 +481,44 @@ public class Model {
 			debugout("parseStep() - We found Step #"+istepid+" (of #"+istep+") and we found "+numObjects+" number of objects");
 		}
 		return new int[] {istepid, numObjects};
+	}
+
+	public static int cloneexe() {
+		if(cloned_exe_uuid != null) {
+			cloneexe_remove();
+		}
+		
+		cloned_exe_uuid = UUID.randomUUID().toString();
+		FileInputStream fis = null;
+		OutputStream fos = null;
+		
+		try {
+			fis = new FileInputStream(Model.exe_filename);
+			fos = new FileOutputStream(Model.exe_filename+cloned_exe_uuid);
+
+			copydata(fis, fos);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return Model.INFILE_ACCESSERROR;
+		}
+	    finally { 
+	    	if ( fis != null ) 
+	    		try { fis.close(); } catch ( IOException e ) { } 
+	    	if ( fos != null ) 
+	    		try { fos.close(); } catch ( IOException e ) { } 
+	    }
+		return Model.INFILE_NOERROR;
+	}
+	
+	public static int cloneexe_remove() {
+		if(cloned_exe_uuid == null)
+			return Model.INFILE_NOERROR;
+		
+		int error = deleteFile(Model.exe_filename+cloned_exe_uuid);
+		if(error != Model.INFILE_NOERROR)
+			return error;
+		
+		cloned_exe_uuid = null;
+		return Model.INFILE_NOERROR;
 	}
 }

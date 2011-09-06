@@ -310,6 +310,13 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 							wincommand[0] = "cmd.exe";
 							wincommand[1] = "/C";
 							System.arraycopy(command, 0, wincommand, 2, command.length);
+							
+							if(Model.cloneexe() != Model.INFILE_NOERROR)
+								throw new IOException("EoD - Error while cloning "+Model.exe_filename);
+
+							debugout("actionPerformed - C++ - Windows: renaming '"+wincommand[2]+"' to '"+wincommand[2]+Model.cloned_exe_uuid+"'");
+							wincommand[2] += Model.cloned_exe_uuid;
+							
 							calculation = new ProcessBuilder( wincommand );
 						}
 						else

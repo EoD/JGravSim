@@ -1395,6 +1395,8 @@ MouseWheelListener, ItemListener, WindowListener, KeyListener {
 	}
 	
 	public void CalculationFinished(int error) {
+		Model.cloneexe_remove();
+		
 		if(myView_CalcProgress != null)
 			myView_CalcProgress.setVisible(false);
 		

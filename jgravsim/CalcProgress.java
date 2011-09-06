@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class CalcProgress extends Thread {
 
-	public static final int revision = 2;
+	public static final int revision = 3;
 	private static final boolean DEBUG = false;
 	boolean loop;
 	Controller myController;
@@ -119,7 +118,28 @@ public class CalcProgress extends Thread {
 		loop = false;
 		debugout("halt() - CalcProgress will be halted!");
 		output(pcalculation);
-		pcalculation.destroy();
+
+		/*
+		 * If we used a cloned exe the uuid string won't be null. We only use
+		 * uuids in Windows, so we will try to kill it via taskkill. Should that
+		 * fail we fall back to destroy() and hope. Currently there is no nice
+		 * way of killing childprocesses in Java (cgravsim.exe is a child if
+		 * cmd.exe)
+		 */
+		if(Model.cloned_exe_uuid != null) {
+			debugout("cloned_exe: "+"cmd"+" /c"+" taskkill /F /IM "+Model.exe_filename+Model.cloned_exe_uuid);
+			ProcessBuilder killer = new ProcessBuilder( new String[]{"cmd","/c","taskkill /F /IM "+Model.exe_filename+Model.cloned_exe_uuid} );
+			try {
+				if(killer.start().waitFor() !=0 )
+					pcalculation.destroy();
+			} catch (Exception e) {
+				pcalculation.destroy();
+				e.printStackTrace();
+			}
+		}
+		else
+			pcalculation.destroy();
+		
 		Model.deleteFile(Model.FILE_PERCENT);
 		debugout("C++ - Calculation killed!");
 	}
