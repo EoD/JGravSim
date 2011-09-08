@@ -234,7 +234,7 @@ public class View_CalcOptions extends JFrame implements ActionListener, WindowLi
 								exedir + File.separator + Model.exe_filename,
 								"-q",
 								"-t", Double.toString(myController.calc_timestep),
-								exedir + File.separator + Model.FILE_TEMP
+								Model.FILE_TEMP
 						};
 
 						File fcalc = new File(command[0]);
